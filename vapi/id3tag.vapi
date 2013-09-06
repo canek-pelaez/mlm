@@ -27,16 +27,17 @@ namespace Id3Tag {
         public void update();
     }
 
-    [CCode(cheader_filename = "id3tag.h", cname = "struct id3_tag", cprefix = "id3_tag_", unref_function = "id3_tag_delete")]
+    [CCode(cheader_filename = "id3tag.h", cname = "struct id3_tag", cprefix = "id3_tag_", unref_function = "")]
     public class Tag {
         [CCode(cname = "id3_tag_new")]
         public Tag();
         uint32 version();
         public int32 options(int options, int b);
-        void setlength(long length);
-        void clearframes();
-        int attachframe(Frame frame);
-        int detachframe(Frame frame);
+        /*void setlength(long length);
+          void clearframes();
+          int attachframe(Frame frame);
+          int detachframe(Frame frame);*/
+        public void delete();
         public Frame? findframe(string id, uint32 index);
         [CCode (array_length_cname = "nframes", array_length_type = "int32")]
         public unowned Frame[] frames;
