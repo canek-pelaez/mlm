@@ -1,5 +1,8 @@
 #include <id3tag.h>
 
+#ifndef _ID3TAG_EXTRA_H
+#define _ID3TAG_EXTRA_H
+
 enum id3_picture_type {
         ID3_PICTURETYPE_OTHER = 0,         /* Other */
         ID3_PICTURETYPE_PNG32ICON = 1,     /* 32x32 pixels 'file icon' (PNG only) */
@@ -23,3 +26,11 @@ enum id3_picture_type {
         ID3_PICTURETYPE_ARTISTLOGO = 19,   /* Band/artist logotype */
         ID3_PICTURETYPE_PUBLISHERLOGO = 20 /* Publisher/Studio logotype */
 };
+
+struct id3_frame*   id3_tag_search_picture_frame   (struct id3_tag*       tag,
+                                                    enum id3_picture_type picture_type);
+struct id3_frame*   id3_tag_search_frame           (struct id3_tag*       tag,
+                                                    const char*           id);
+char*               id3_frame_get_text             (struct id3_frame*     frame);
+
+#endif /* _ID3TAG_EXTRA_H */
