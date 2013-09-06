@@ -81,7 +81,6 @@ namespace MusicCollection {
     }
 
     public void fix_pictures(string filename) {
-        stdout.printf("Processing %s...\n", filename);
         File file = new File(filename, FileMode.READWRITE);
         Tag tag = file.tag();
 
@@ -106,8 +105,6 @@ namespace MusicCollection {
         if (mod_cover || mod_artist) {
             stdout.printf("Updating %s...\n", filename);
             file.update();
-        } else {
-            stdout.printf("Skipping %s...\n", filename);
         }
         file.close();
     }
