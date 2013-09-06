@@ -1,0 +1,15 @@
+*.c
+*.o
+*.stamp
+ChangeLog
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache
+build-aux
+config.*
+configure
+.deps
+.dirstamp
+src/music-collection-fix-pictures
+stamp-h1
