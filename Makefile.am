@@ -1,13 +1,13 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
 # global
-INCLUDES =					\
+AM_CPPFLAGS =					\
 	-include config.h			\
 	-DLOCALEDIR=\""$(localedir)"\"		\
 	-DPKGDATADIR=\""$(pkgdatadir)"\"	\
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-VALAFLAGS =					\
+AM_VALAFLAGS =					\
 	--vapidir=$(srcdir)/vapi 		\
 	--pkg config --pkg id3tag		\
 	@MUSICCOLLECTION_PACKAGES@
