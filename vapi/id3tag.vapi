@@ -41,6 +41,11 @@ namespace Id3Tag {
         public Frame? findframe(string id, uint32 index);
         [CCode (array_length_cname = "nframes", array_length_type = "int32")]
         public unowned Frame[] frames;
+
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public Frame? search_picture_frame(PictureType picture_type);
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public Frame? search_frame(string id);
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "struct id3_frame", cprefix = "id3_frame_", ref_function = "", unref_function = "")]
@@ -51,6 +56,9 @@ namespace Id3Tag {
         public Field field(uint32 fid);
         [CCode (array_length_cname = "nfields", array_length_type = "int32")]
         public unowned Field[] fields;
+
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public string? get_text();
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "enum id3_field_textencoding", cprefix = "ID3_FIELD_TEXTENCODING_")]
