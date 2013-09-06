@@ -10,7 +10,7 @@ id3_tag_search_picture_frame(struct id3_tag*       tag,
         int i, j;
         for (i = 0; i < tag->nframes; i++) {
                 struct id3_frame* frame = tag->frames[i];
-                if (!strcmp(frame->id, "APIC"))
+                if (strcmp(frame->id, "APIC"))
                         continue;
                 for (j = 0; j < frame->nfields; j++) {
                         union id3_field* field = id3_frame_field(frame, j);
