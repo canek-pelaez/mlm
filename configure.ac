@@ -32,7 +32,7 @@ AC_SUBST(MUSICCOLLECTION_PACKAGES)
 
 AC_CONFIG_FILES([
 	Makefile
-#        po/Makefile.in
 ])
+#        po/Makefile.in
 
 AC_OUTPUT
