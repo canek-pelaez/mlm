@@ -1,6 +1,6 @@
 using Id3Tag;
 
-namespace MusicCollection {
+namespace MLM {
 
     public static bool fix_picture_frame(Frame frame, PictureType picture_type, string str) {
         bool modified = false;
