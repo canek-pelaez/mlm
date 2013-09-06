@@ -84,15 +84,17 @@ namespace MusicCollection {
         File file = new File(filename, FileMode.READWRITE);
         Tag tag = file.tag();
 
-        tag.options(TagOption.COMPRESSION, 0);
-
         Frame frame = tag_search_frame(tag, "TPE1");
-        if (frame == null)
+        if (frame == null) {
+            file.close();
             return;
+        }
         string artist = frame_get_text(frame);
         frame = tag_search_frame(tag, "TALB");
-        if (frame == null)
+        if (frame == null) {
+            file.close();
             return;
+        }
         string album = frame_get_text(frame);
         bool mod_cover = false;
         bool mod_artist = false;
@@ -104,8 +106,10 @@ namespace MusicCollection {
             mod_artist = fix_cover_frame(frame, artist);
         if (mod_cover || mod_artist) {
             stdout.printf("Updating %s...\n", filename);
+            tag.options(TagOption.COMPRESSION, 0);
             file.update();
         }
+        tag.delete();
         file.close();
     }
 
