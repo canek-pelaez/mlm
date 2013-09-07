@@ -24,6 +24,12 @@ src_mlm_fix_pictures_SOURCES = src/mlm-fix-pictures.vala
 src_mlm_fix_pictures_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/id3tag-extra
 src_mlm_fix_pictures_LDADD = $(MLM_LIBS) id3tag-extra/libid3tag-extra.a
 
+# mlm-fix-duplicated-pictures
+bin_PROGRAMS += src/mlm-fix-duplicated-pictures
+src_mlm_fix_duplicated_pictures_SOURCES = src/mlm-fix-duplicated-pictures.vala
+src_mlm_fix_duplicated_pictures_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/id3tag-extra
+src_mlm_fix_duplicated_pictures_LDADD = $(MLM_LIBS) id3tag-extra/libid3tag-extra.a
+
 # mlm-tags
 bin_PROGRAMS += src/mlm-tags
 src_mlm_tags_SOURCES =	 			\
