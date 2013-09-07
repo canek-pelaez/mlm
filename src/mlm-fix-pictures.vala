@@ -42,6 +42,10 @@ namespace MLM {
     }
 
     public void fix_pictures(string filename) {
+        if (!FileUtils.test(filename, FileTest.EXISTS)) {
+            stderr.printf("No such file: '%s'\n", filename);
+            return;
+        }
         File file = new File(filename, FileMode.READWRITE);
         Tag tag = file.tag();
 
@@ -75,10 +79,7 @@ namespace MLM {
     }
 
     public static int main(string[] args) {
-        int i;
-        for (i = 1; i < args.length; i++) {
-            if (!args[i].has_suffix(".mp3"))
-                continue;
+        for (int i = 1; i < args.length; i++) {
             fix_pictures(args[i]);
         }
 
