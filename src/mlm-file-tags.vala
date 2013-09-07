@@ -3,58 +3,19 @@ using Gee;
 
 namespace MLM {
 
-    public enum TagId {
-        ARTIST,
-        TITLE,
-        ALBUM,
-        YEAR,
-        TRACK_NUMBER,
-        TRACK_COUNT,
-        DISC_NUMBER,
-        GENRE,
-        COMMENT,
-        COMPOSER,
-        ORIGINAL_ARTIST,
-        FRONT_COVER_PICTURE,
-        ARTIST_PICTURE;
-
-        public static TagId[] all() {
-            return { ARTIST,
-                     TITLE,
-                     ALBUM,
-                     YEAR,
-                     TRACK_NUMBER,
-                     TRACK_COUNT,
-                     DISC_NUMBER,
-                     GENRE,
-                     COMMENT,
-                     COMPOSER,
-                     ORIGINAL_ARTIST,
-                     FRONT_COVER_PICTURE,
-                     ARTIST_PICTURE };
-        }
-
-        public string to_string() {
-            switch (this) {
-            case ARTIST: return "TPE1";
-            case TITLE: return "TIT2";
-            case ALBUM: return "TALB";
-            case YEAR: return "TDRC";
-            case TRACK_NUMBER: return "TRCK";
-            case TRACK_COUNT: return "TRCK";
-            case DISC_NUMBER: return "TPOS";
-            case GENRE: return "TCON";
-            case COMMENT: return "COMM";
-            case COMPOSER: return "TCOM";
-            case ORIGINAL_ARTIST: return "TOPE";
-            case FRONT_COVER_PICTURE: return "APIC";
-            case ARTIST_PICTURE: return "APIC";
-            default: return "INVALID";
-            }
-        }
-    }
-
     public class FileTags {
+
+        private static const string ARTIST   = "TPE1";
+        private static const string TITLE    = "TIT1";
+        private static const string ALBUM    = "TALB";
+        private static const string YEAR     = "TDRC";
+        private static const string TRACK    = "TRCK";
+        private static const string DISC     = "TPOS";
+        private static const string GENRE    = "TCON";
+        private static const string COMMENT  = "COMM";
+        private static const string COMPOSER = "TCOM";
+        private static const string ORIGINAL = "TOPE";
+        private static const string PICTURE  = "APIC";
 
         public string artist { get; set; }
         public string title { get; set; }
@@ -68,7 +29,9 @@ namespace MLM {
         public string composer { get; set; }
         public string original_artist { get; set; }
         public uint8[] front_cover_picture { get; set; }
+        public string front_cover_picture_description { get; set; }
         public uint8[] artist_picture { get; set; }
+        public string artist_picture_description { get; set; }
         public bool has_tags { get; private set; }
 
         private File file;
@@ -78,6 +41,7 @@ namespace MLM {
             artist = title = album = comment = composer = original_artist = null;
             year = track_number = track_count = disc_number = genre = -1;
             front_cover_picture = artist_picture = null;
+            front_cover_picture_description = artist_picture_description = null;
             has_tags = false;
 
             file = new File(filename, FileMode.READWRITE);
@@ -89,15 +53,15 @@ namespace MLM {
             has_tags = tag.frames.length > 0;
             for (int i = 0; i < tag.frames.length; i++) {
                 Frame frame = tag.frames[i];
-                if (frame.id == TagId.ARTIST.to_string()) {
+                if (frame.id == ARTIST) {
                     artist = frame.get_text();
-                } else if (frame.id == TagId.TITLE.to_string()) {
+                } else if (frame.id == TITLE) {
                     title = frame.get_text();
-                } else if (frame.id == TagId.ALBUM.to_string()) {
+                } else if (frame.id == ALBUM) {
                     album = frame.get_text();
-                } else if (frame.id == TagId.YEAR.to_string()) {
+                } else if (frame.id == YEAR) {
                     year = int.parse(frame.get_text());
-                } else if (frame.id == TagId.TRACK_NUMBER.to_string()) {
+                } else if (frame.id == TRACK) {
                     string track = frame.get_text();
                     if (track.index_of("/") != -1) {
                         string[] t = track.split("/");
@@ -107,9 +71,9 @@ namespace MLM {
                         track_number = int.parse(track);
                         track_count = -1;
                     }
-                } else if (frame.id == TagId.DISC_NUMBER.to_string()) {
+                } else if (frame.id == DISC) {
                     disc_number = int.parse(frame.get_text());
-                } else if (frame.id == TagId.GENRE.to_string()) {
+                } else if (frame.id == GENRE) {
                     string g = frame.get_text();
                     Genres[] genres = Genres.all();
                     for (int j = 0; j < genres.length; j++)
@@ -122,22 +86,33 @@ namespace MLM {
                         genre = n;
                     else
                         invalid_frames.add(frame);
-                } else if (frame.id == TagId.COMMENT.to_string()) {
+                } else if (frame.id == COMMENT) {
                     comment = frame.get_text();
-                } else if (frame.id == TagId.COMPOSER.to_string()) {
+                } else if (frame.id == COMPOSER) {
                     composer = frame.get_text();
-                } else if (frame.id == TagId.ORIGINAL_ARTIST.to_string()) {
+                } else if (frame.id == ORIGINAL) {
                     original_artist = frame.get_text();
-                } else if (frame.id == "APIC") {
+                } else if (frame.id == PICTURE) {
                     uint8[] fc_data = frame.get_picture(PictureType.COVERFRONT);
-                    if (fc_data != null)
+                    if (fc_data != null) {
                         front_cover_picture = fc_data;
+                        front_cover_picture_description = frame.get_picture_description();
+                    }
                     uint8[] a_data = frame.get_picture(PictureType.ARTIST);
-                    if (a_data != null)
+                    if (a_data != null) {
                         artist_picture = a_data;
+                        artist_picture_description = frame.get_picture_description();
+                    }
                 } else {
                     invalid_frames.add(frame);
                 }
+            }
+        }
+
+        ~FileTags() {
+            if (file != null) {
+                file.close();
+                file = null;
             }
         }
     }
