@@ -65,3 +65,35 @@ id3_frame_get_binary_field(struct id3_frame* frame)
         }
         return NULL;
 }
+
+unsigned char*
+id3_frame_get_picture(struct id3_frame*     frame,
+                      enum id3_picture_type picture_type,
+                      int*                  length)
+{
+        int j, l = -1;
+        long pt = -1;
+        unsigned char* data = NULL;
+        printf("A2\n");
+        for (j = 0; j < frame->nfields; j++) {
+                printf("A3\n");
+                union id3_field* field = id3_frame_field(frame, j);
+                if (field->type == ID3_FIELD_TYPE_INT8) {
+                        printf("A4\n");
+                        pt = field->number.value;
+                } else if (field->type == ID3_FIELD_TYPE_BINARYDATA) {
+                        printf("A5\n");
+                        data = field->binary.data;
+                        l = field->binary.length;
+                }
+        }
+        printf("A6\n");
+        if (pt == picture_type && data != NULL) {
+                printf("A7\n");
+                *length = l;
+                printf("A8\n");
+                return data;
+        }
+        printf("A9\n");
+        return NULL;
+}
