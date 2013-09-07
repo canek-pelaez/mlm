@@ -54,6 +54,7 @@ Format for printing:
     }
 
     public static void print_standard_tags(string filename) {
+        stderr.printf("print_standard_tags\n");
         if (!FileUtils.test(filename, FileTest.EXISTS)) {
             stderr.printf("No such file: '%s'\n", filename);
             return;
@@ -61,7 +62,7 @@ Format for printing:
         stdout.printf("=============== %s\n",
                       Filename.display_basename(filename));
         var file_tags = new FileTags(filename);
-        if (file_tags == null) {
+        if (!file_tags.has_tags) {
             stderr.printf("The file has no ID3 v2.4.0 tags.\n");
             return;
         }
@@ -97,18 +98,41 @@ Format for printing:
     }
 
     public static void print_tags(string filename, string format) {
+        stderr.printf("print_tags\n");
     }
 
     public static void remove_tags(string filename) {
+        stderr.printf("remove_tags\n");
     }
 
-    public static void save_front_cover(string filename, string fc) {
+    public static void save_front_cover(string filename, string image_filename) {
+        stderr.printf("save_front_cover\n");
+        var file_tags = new FileTags(filename);
+        if (!file_tags.has_tags) {
+            stderr.printf("The file '%s' has no ID3 v2.4.0 tags.\n",
+                          filename);
+            return;
+        }
+        if (file_tags.front_cover_picture == null) {
+            stderr.printf("The file '%s' has no front cover picture.\n",
+                          filename);
+            return;
+        }
+        FileStream file = FileStream.open(image_filename, "w");
+        if (file == null) {
+            stderr.printf("There was an error writing to '%s'.\n",
+                          image_filename);
+            return;
+        }
+        file.write(file_tags.front_cover_picture);
     }
 
-    public static void save_artist(string filename, string fc) {
+    public static void save_artist(string filename, string image_filename) {
+        stderr.printf("save_artist\n");
     }
 
     public static void update_tags(string filename) {
+        stderr.printf("update_tags\n");
     }
 
     public static int main(string[] args) {
@@ -138,26 +162,32 @@ Format for printing:
         for (int i = 1; i < args.length; i++) {
             string a = args[i];
             if (args[i].has_prefix("--")) {
-                if (a == "--help" || a == "--remove") {
-                    flags[a] = "";
+                if (a == "--help") {
+                    flags["-h"] = "";
+                } else if (a == "--remove") {
+                    flags["-r"] = "";
                 } else {
                     int idx = a.index_of("=");
                     if (idx == -1)
                         print_usage(1);
                     string[] t = a.split("=");
-                    if (t.length != 2 || !available_flags.has_key(t[0]))
+                    if (t.length != 2 || !(t[0] in available_flags.values))
                         print_usage(1);
                     flags[t[0]] = t[1];
                 }
             } else if (a.has_prefix("-")) {
-                if (i+1 >= args.length || available_flags.has_key(a))
+                if (i+1 >= args.length || !available_flags.has_key(a))
                     print_usage(1);
-                flags[a] = flags[args[i+1]];
+                flags[available_flags[a]] = args[i+1];
                 i++;
             } else {
                 filenames.add(a);
             }
         }
+
+        /*foreach (var entry in flags.entries) {
+            stdout.printf("%s => %s\n", entry.key, entry.value);
+            }*/
 
         if (flags.has_key("--help"))
             print_usage(0);
@@ -174,7 +204,7 @@ Format for printing:
 
         if (flags.has_key("--print")) {
             foreach (var filename in filenames)
-                print_tags(filename, flags["--print"]);
+            print_tags(filename, flags["--print"]);
             exit(0);
         }
 
