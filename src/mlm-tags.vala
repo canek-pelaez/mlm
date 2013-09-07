@@ -144,10 +144,18 @@ Format for printing:
     }
 
     public static void remove_tags(string filename) {
+        stderr.printf("Removing tags from '%s'...\n", filename);
         if (!FileUtils.test(filename, FileTest.EXISTS)) {
             stderr.printf("No such file: '%s'\n", filename);
             return;
         }
+        var ft = new FileTags(filename);
+        if (!ft.has_tags) {
+            stderr.printf("The file '%s' has no ID3 v2.4.0 tags.\n",
+                          filename);
+            return;
+        }
+        ft.remove_tags();
     }
 
     public static void save_picture(string filename,
