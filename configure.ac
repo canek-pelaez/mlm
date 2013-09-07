@@ -18,8 +18,8 @@ AM_PROG_VALAC([0.20])
 AC_PROG_INSTALL
 AC_PROG_RANLIB
 
-MLM_PACKAGES="--pkg id3tag"
-PKG_CHECK_MODULES(MLM, [ gobject-2.0 id3tag ])
+MLM_PACKAGES="--pkg id3tag --pkg gee-1.0"
+PKG_CHECK_MODULES(MLM, [ gobject-2.0 gee-1.0 id3tag ])
 
 AC_SUBST(MLM_CFLAGS)
 AC_SUBST(MLM_LIBS)
