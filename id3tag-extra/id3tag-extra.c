@@ -42,16 +42,26 @@ id3_frame_get_text(struct id3_frame* frame)
         int i, j;
         for (i = 0; i < frame->nfields; i++) {
                 union id3_field* field = id3_frame_field(frame, i);
-            if (field->type != ID3_FIELD_TYPE_STRINGLIST)
-                    continue;
-            for (j = 0; j < field->stringlist.nstrings; j++) {
-                    const id3_ucs4_t * s = id3_field_getstrings(field, j);
-                    id3_utf8_t* us = id3_ucs4_utf8duplicate(s);
-                    return (char*)us;
-            }
+                if (field->type != ID3_FIELD_TYPE_STRINGLIST)
+                        continue;
+                for (j = 0; j < field->stringlist.nstrings; j++) {
+                        const id3_ucs4_t * s = id3_field_getstrings(field, j);
+                        id3_utf8_t* us = id3_ucs4_utf8duplicate(s);
+                        return (char*)us;
+                }
         }
         return NULL;
 }
 
-
-
+union id3_field*
+id3_frame_get_binary_field(struct id3_frame* frame)
+{
+        int i;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type != ID3_FIELD_TYPE_BINARYDATA)
+                        continue;
+                return field;
+        }
+        return NULL;
+}

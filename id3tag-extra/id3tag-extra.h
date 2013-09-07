@@ -32,5 +32,6 @@ struct id3_frame*   id3_tag_search_picture_frame   (struct id3_tag*       tag,
 struct id3_frame*   id3_tag_search_frame           (struct id3_tag*       tag,
                                                     const char*           id);
 char*               id3_frame_get_text             (struct id3_frame*     frame);
+union id3_field*    id3_frame_get_binary_data      (struct id3_frame*     frame);
 
 #endif /* _ID3TAG_EXTRA_H */
