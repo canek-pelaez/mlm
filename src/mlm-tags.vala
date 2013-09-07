@@ -1,4 +1,3 @@
-using Id3Tag;
 using Gee;
 
 extern void exit(int exit_code);
@@ -54,16 +53,6 @@ Format for printing:
         exit(exit_status);
     }
 
-    public FileTags? read_file_tags(string filename) {
-        File file = new File(filename, FileMode.READWRITE);
-        Tag tag = file.tag();
-        if (tag.frames.length == 0)
-            return null;
-        FileTags tags = new FileTags(tag);
-        file.close();
-        return tags;
-    }
-
     public static void print_standard_tags(string filename) {
         if (!FileUtils.test(filename, FileTest.EXISTS)) {
             stderr.printf("No such file: '%s'\n", filename);
@@ -71,7 +60,7 @@ Format for printing:
         }
         stdout.printf("=============== %s\n",
                       Filename.display_basename(filename));
-        var file_tags = read_file_tags(filename);
+        var file_tags = new FileTags(filename);
         if (file_tags == null) {
             stderr.printf("The file has no ID3 v2.4.0 tags.\n");
             return;

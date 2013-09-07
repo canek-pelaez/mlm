@@ -18,7 +18,8 @@ namespace Id3Tag {
         ID3V1             = 0x0100  /* render ID3v1/ID3v1.1 tag */
     }
 
-    [CCode(cheader_filename = "id3tag.h", cname = "struct id3_file", cprefix = "id3_file_", unref_function = "")]
+    [CCode(cheader_filename = "id3tag.h", cname = "struct id3_file", cprefix = "id3_file_", ref_function = "", unref_function = "")]
+    [Compact]
     public class File {
         [CCode(cname = "id3_file_open")]
         public File(string filename, FileMode mode);
@@ -27,7 +28,8 @@ namespace Id3Tag {
         public void update();
     }
 
-    [CCode(cheader_filename = "id3tag.h", cname = "struct id3_tag", cprefix = "id3_tag_", unref_function = "")]
+    [CCode(cheader_filename = "id3tag.h", cname = "struct id3_tag", cprefix = "id3_tag_", ref_function = "", unref_function = "")]
+    [Compact]
     public class Tag {
         [CCode(cname = "id3_tag_new")]
         public Tag();
@@ -118,6 +120,7 @@ namespace Id3Tag {
     }
     
     [CCode(cheader_filename = "id3tag.h", cname = "union id3_field", cprefix = "id3_field_", ref_function = "", unref_function = "")]
+    [Compact]
     public class Field {
         public FieldType type;
         public unowned uint32* getstrings(int i);

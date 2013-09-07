@@ -70,11 +70,18 @@ namespace MLM {
         public uint8[] front_cover_picture { get; set; }
         public uint8[] artist_picture { get; set; }
 
-        public FileTags(Tag tag) {
+        private File file;
+        private Tag tag;
 
+        public FileTags(string filename) {
             artist = title = album = comment = composer = original_artist = null;
             year = track_number = track_count = disc_number = genre = -1;
             front_cover_picture = artist_picture = null;
+
+            file = new File(filename, FileMode.READWRITE);
+            tag = file.tag();
+            if (tag.frames.length == 0)
+                return;
 
             var invalid_frames = new ArrayList<Frame>();
             for (int i = 0; i < tag.frames.length; i++) {
