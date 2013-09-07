@@ -49,6 +49,7 @@ namespace Id3Tag {
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "struct id3_frame", cprefix = "id3_frame_", ref_function = "", unref_function = "")]
+    [Compact]
     public class Frame {
         [CCode(cname = "id3_frame_new")]
         public Frame(string id);
@@ -59,6 +60,8 @@ namespace Id3Tag {
 
         [CCode(cheader_filename = "id3tag-extra.h")]
         public string? get_text();
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public Field? get_binary_field();
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "enum id3_field_textencoding", cprefix = "ID3_FIELD_TEXTENCODING_")]
@@ -122,6 +125,8 @@ namespace Id3Tag {
         public long number_value;
         [CCode (cname = "stringlist.strings", array_length_cname = "stringlist.nstrings", array_length_type = "int32")]
         public unowned  uint32*[] stringlist;
+        [CCode (cname = "binary.data", array_length_cname = "binary.length", array_length_type = "int32")]
+        public unowned  uint8[] binary_data;
 
         public FieldTextEncoding gettextencoding();
         public void settextencoding(FieldTextEncoding text_encoding);
