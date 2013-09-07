@@ -27,14 +27,16 @@ enum id3_picture_type {
         ID3_PICTURETYPE_PUBLISHERLOGO = 20 /* Publisher/Studio logotype */
 };
 
-struct id3_frame*   id3_tag_search_picture_frame   (struct id3_tag*       tag,
-                                                    enum id3_picture_type picture_type);
-struct id3_frame*   id3_tag_search_frame           (struct id3_tag*       tag,
-                                                    const char*           id);
-char*               id3_frame_get_text             (struct id3_frame*     frame);
-union id3_field*    id3_frame_get_binary_data      (struct id3_frame*     frame);
-unsigned char*      id3_frame_get_picture          (struct id3_frame*     frame,
-                                                    enum id3_picture_type picture_type,
-                                                    int*                  length);
+struct id3_frame*     id3_tag_search_picture_frame       (struct id3_tag*       tag,
+                                                          enum id3_picture_type picture_type);
+struct id3_frame*     id3_tag_search_frame               (struct id3_tag*       tag,
+                                                          const char*           id);
+char*                 id3_frame_get_text                 (struct id3_frame*     frame);
+union id3_field*      id3_frame_get_binary_data          (struct id3_frame*     frame);
+unsigned char*        id3_frame_get_picture              (struct id3_frame*     frame,
+                                                          enum id3_picture_type picture_type,
+                                                          int*                  length);
+enum id3_picture_type id3_frame_get_picture_type         (struct id3_frame*     frame);
+char*                 id3_frame_get_picture_description  (struct id3_frame*     frame);
 
 #endif /* _ID3TAG_EXTRA_H */

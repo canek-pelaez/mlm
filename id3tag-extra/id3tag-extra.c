@@ -66,6 +66,36 @@ id3_frame_get_binary_field(struct id3_frame* frame)
         return NULL;
 }
 
+enum id3_picture_type
+id3_frame_get_picture_type(struct id3_frame* frame)
+{
+        int j;
+        long pt = -1;
+        for (j = 0; j < frame->nfields; j++) {
+                union id3_field* field = id3_frame_field(frame, j);
+                if (field->type == ID3_FIELD_TYPE_INT8) {
+                        if (pt != -1)
+                                return -1;
+                        pt = field->number.value;
+                }
+        }
+        return pt;
+}
+
+char*
+id3_frame_get_picture_description(struct id3_frame* frame)
+{
+        int j;
+        long pt = -1;
+        for (j = 0; j < frame->nfields; j++) {
+                union id3_field* field = id3_frame_field(frame, j);
+                if (field->type == ID3_FIELD_TYPE_STRING) {
+                        return id3_ucs4_utf8duplicate(id3_field_getstring(field));
+                }
+        }
+        return NULL;
+}
+
 unsigned char*
 id3_frame_get_picture(struct id3_frame*     frame,
                       enum id3_picture_type picture_type,
