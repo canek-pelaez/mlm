@@ -33,11 +33,11 @@ namespace MLM {
         return modified;
     }
 
-    public static bool fix_cover_frame(Frame frame, string album) {
+    public static bool fix_front_cover_picture_frame(Frame frame, string album) {
         return fix_picture_frame(frame, PictureType.COVERFRONT, album + " cover");
     }
 
-    public static bool fix_artist_frame(Frame frame, string artist) {
+    public static bool fix_artist_picture_frame(Frame frame, string artist) {
         return fix_picture_frame(frame, PictureType.ARTIST, artist);
     }
 
@@ -65,10 +65,10 @@ namespace MLM {
         bool mod_artist = false;
         frame = tag.search_picture_frame(PictureType.COVERFRONT);
         if (frame != null)
-            mod_cover = fix_cover_frame(frame, album);
+            mod_cover = fix_front_cover_picture_frame(frame, album);
         frame = tag.search_picture_frame(PictureType.ARTIST);
         if (frame != null)
-            mod_artist = fix_cover_frame(frame, artist);
+            mod_artist = fix_artist_picture_frame(frame, artist);
         if (mod_cover || mod_artist) {
             stdout.printf("Updating %s...\n", filename);
             tag.options(TagOption.COMPRESSION, 0);
