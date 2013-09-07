@@ -4,8 +4,6 @@ extern void exit(int exit_code);
 
 namespace MLM {
 
-    public static HashMap<string, string> available_flags;
-
     public static void print_usage(int exit_status) {
         stderr.printf("Use: mlm-tags [options] mp3file1 [mp3file2 ...]\n\n");
         string usage = """Options:
@@ -54,7 +52,6 @@ Format for printing:
     }
 
     public static void print_standard_tags(string filename) {
-        stderr.printf("print_standard_tags\n");
         if (!FileUtils.test(filename, FileTest.EXISTS)) {
             stderr.printf("No such file: '%s'\n", filename);
             return;
@@ -92,30 +89,93 @@ Format for printing:
         if (file_tags.original_artist != null)
             stdout.printf("Original artist: %s\n", file_tags.original_artist);
         if (file_tags.front_cover_picture != null)
-            stdout.printf("Picture: Front cover\n");
+            stdout.printf("Front cover picture: %s\n", file_tags.front_cover_picture_description);
         if (file_tags.artist_picture != null)
-            stdout.printf("Picture: Artist\n");
+            stdout.printf("Artist picture: %s\n", file_tags.artist_picture_description);
     }
 
     public static void print_tags(string filename, string format) {
-        stderr.printf("print_tags\n");
+        if (!FileUtils.test(filename, FileTest.EXISTS)) {
+            stderr.printf("No such file: '%s'\n", filename);
+            return;
+        }
+        var ft = new FileTags(filename);
+        if (!ft.has_tags) {
+            stderr.printf("The file '%s' has no ID3 v2.4.0 tags.\n",
+                          filename);
+            return;
+        }
+
+        Genres[] g = Genres.all();
+        string f = format;
+
+        f = f.replace("\\n", "\n");
+        f = f.replace("\\t", "\t");
+        if (ft.artist != null);
+            f = f.replace("%a", ft.artist);
+        if (ft.title != null)
+            f = f.replace("%t", ft.title);
+        if (ft.album != null)
+            f = f.replace("%l", ft.album);
+        if (ft.year != -1)
+            f = f.replace("%y", "%d".printf(ft.year));
+        if (ft.track_number != -1) {
+            f = f.replace("%n", "%d".printf(ft.track_number));
+            f = f.replace("%N", "%02d".printf(ft.track_number));
+        }
+        if (ft.track_count != -1) {
+            f = f.replace("%#", "%d".printf(ft.track_count));
+            f = f.replace("%C", "%02d".printf(ft.track_count));
+        }
+        if (ft.disc_number != -1) {
+            f = f.replace("%d", "%d".printf(ft.disc_number));
+            f = f.replace("%D", "%02d".printf(ft.disc_number));
+        }
+        if (ft.genre != -1)
+            f = f.replace("%g", g[ft.genre].to_string());
+        if (ft.comment != null)
+            f = f.replace("%c", ft.comment);
+        if (ft.composer != null)
+            f = f.replace("%s", ft.composer);
+        if (ft.original_artist != null)
+            f = f.replace("%o", ft.original_artist);
+
+        stdout.printf(f);
     }
 
     public static void remove_tags(string filename) {
-        stderr.printf("remove_tags\n");
+        if (!FileUtils.test(filename, FileTest.EXISTS)) {
+            stderr.printf("No such file: '%s'\n", filename);
+            return;
+        }
     }
 
-    public static void save_front_cover(string filename, string image_filename) {
-        stderr.printf("save_front_cover\n");
+    public static void save_picture(string filename,
+                                    string image_filename,
+                                    bool   front_cover) {
+        if (!FileUtils.test(filename, FileTest.EXISTS)) {
+            stderr.printf("No such file: '%s'\n", filename);
+            return;
+        }
+        if (!image_filename.has_suffix(".jpg")) {
+            stderr.printf("The file '%s' doesn't have a '.jpg' extension.\n",
+                          image_filename);
+            return;
+        }
         var file_tags = new FileTags(filename);
         if (!file_tags.has_tags) {
             stderr.printf("The file '%s' has no ID3 v2.4.0 tags.\n",
                           filename);
             return;
         }
-        if (file_tags.front_cover_picture == null) {
-            stderr.printf("The file '%s' has no front cover picture.\n",
-                          filename);
+        unowned uint8[] data = file_tags.front_cover_picture;
+        string type = "front cover";
+        if (!front_cover) {
+            data = file_tags.artist_picture;
+            type = "artist";
+        }
+        if (data == null) {
+            stderr.printf("The file '%s' has no %s picture.\n", filename, type);
             return;
         }
         FileStream file = FileStream.open(image_filename, "w");
@@ -124,19 +184,18 @@ Format for printing:
                           image_filename);
             return;
         }
-        file.write(file_tags.front_cover_picture);
+        file.write(data);
     }
 
-    public static void save_artist(string filename, string image_filename) {
-        stderr.printf("save_artist\n");
-    }
-
-    public static void update_tags(string filename) {
-        stderr.printf("update_tags\n");
+    public static void update_tags(string filename, HashMap<string, string> flags) {
+        if (!FileUtils.test(filename, FileTest.EXISTS)) {
+            stderr.printf("No such file: '%s'\n", filename);
+            return;
+        }
     }
 
     public static int main(string[] args) {
-        available_flags = new HashMap<string, string>();
+        var available_flags = new HashMap<string, string>();
         available_flags["-h"] = "--help";
         available_flags["-a"] = "--artist";
         available_flags["-t"] = "--title";
@@ -162,10 +221,8 @@ Format for printing:
         for (int i = 1; i < args.length; i++) {
             string a = args[i];
             if (args[i].has_prefix("--")) {
-                if (a == "--help") {
-                    flags["-h"] = "";
-                } else if (a == "--remove") {
-                    flags["-r"] = "";
+                if (a == "--help" || a == "--remove") {
+                    flags[a] = "";
                 } else {
                     int idx = a.index_of("=");
                     if (idx == -1)
@@ -186,8 +243,8 @@ Format for printing:
         }
 
         /*foreach (var entry in flags.entries) {
-            stdout.printf("%s => %s\n", entry.key, entry.value);
-            }*/
+          stdout.printf("%s => %s\n", entry.key, entry.value);
+          }*/
 
         if (flags.has_key("--help"))
             print_usage(0);
@@ -214,24 +271,31 @@ Format for printing:
             exit(0);
         }
 
-        if (flags.has_key("--output-front-cover-image")) {
-            string fc = flags["--output-front-cover-image"];
-            if (filenames.size > 1 || fc == "")
-                print_usage(1);
-            save_front_cover(filenames[0], fc);
-            exit(0);
-        }
+        if (flags.has_key("--output-front-cover-image") ||
+            flags.has_key("--output-artist-image")) {
 
-        if (flags.has_key("--output-artist-image")) {
-            string art = flags["--output-artist-image"];
-            if (filenames.size > 1 || art == "")
+            if (filenames.size > 1)
                 print_usage(1);
-            save_artist(filenames[0], art);
+
+            if (flags.has_key("--output-front-cover-image")) {
+                string fc = flags["--output-front-cover-image"];
+                if (fc == "")
+                    print_usage(1);
+                save_picture(filenames[0], fc, true);
+            }
+
+            if (flags.has_key("--output-artist-image")) {
+                string art = flags["--output-artist-image"];
+                if (art == "")
+                    print_usage(1);
+                save_picture(filenames[0], art, false);
+            }
+
             exit(0);
         }
 
         foreach (var filename in filenames)
-            update_tags(filename);
+        update_tags(filename, flags);
 
         return 0;
     }
