@@ -69,6 +69,7 @@ namespace MLM {
         public string original_artist { get; set; }
         public uint8[] front_cover_picture { get; set; }
         public uint8[] artist_picture { get; set; }
+        public bool has_tags { get; private set; }
 
         private File file;
         private Tag tag;
@@ -77,6 +78,7 @@ namespace MLM {
             artist = title = album = comment = composer = original_artist = null;
             year = track_number = track_count = disc_number = genre = -1;
             front_cover_picture = artist_picture = null;
+            has_tags = false;
 
             file = new File(filename, FileMode.READWRITE);
             tag = file.tag();
@@ -84,6 +86,7 @@ namespace MLM {
                 return;
 
             var invalid_frames = new ArrayList<Frame>();
+            has_tags = tag.frames.length > 0;
             for (int i = 0; i < tag.frames.length; i++) {
                 Frame frame = tag.frames[i];
                 if (frame.id == TagId.ARTIST.to_string()) {
@@ -125,14 +128,13 @@ namespace MLM {
                     composer = frame.get_text();
                 } else if (frame.id == TagId.ORIGINAL_ARTIST.to_string()) {
                     original_artist = frame.get_text();
-                } else if (frame.id == TagId.FRONT_COVER_PICTURE.to_string()) {
-                    Field f = frame.get_binary_field();
-                    if (f != null)
-                        front_cover_picture = f.binary_data;
-                } else if (frame.id == TagId.ARTIST_PICTURE.to_string()) {
-                    Field f = frame.get_binary_field();
-                    if (f != null)
-                        artist_picture = f.binary_data;
+                } else if (frame.id == "APIC") {
+                    uint8[] fc_data = frame.get_picture(PictureType.COVERFRONT);
+                    if (fc_data != null)
+                        front_cover_picture = fc_data;
+                    uint8[] a_data = frame.get_picture(PictureType.ARTIST);
+                    if (a_data != null)
+                        artist_picture = a_data;
                 } else {
                     invalid_frames.add(frame);
                 }
