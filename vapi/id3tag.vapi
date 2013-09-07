@@ -66,6 +66,10 @@ namespace Id3Tag {
         public Field? get_binary_field();
         [CCode(cheader_filename = "id3tag-extra.h")]
         public unowned uint8[] get_picture(PictureType picture_type);
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public PictureType get_picture_type();
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public string get_picture_description();
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "enum id3_field_textencoding", cprefix = "ID3_FIELD_TEXTENCODING_")]
