@@ -33,12 +33,12 @@ namespace Id3Tag {
     public class Tag {
         [CCode(cname = "id3_tag_new")]
         public Tag();
-        uint32 version();
+        public uint32 version();
         public int32 options(int options, int b);
-        /*void setlength(long length);
-          void clearframes();
-          int attachframe(Frame frame);
-          int detachframe(Frame frame);*/
+        public void clearframes();
+        public int attachframe(Frame frame);
+        public int detachframe(Frame frame);
+        public void setlength(long length);
         public void delete();
         public Frame? findframe(string id, uint32 index);
         [CCode (array_length_cname = "nframes", array_length_type = "int32")]
@@ -57,6 +57,7 @@ namespace Id3Tag {
         public Frame(string id);
         public string id;
         public Field field(uint32 fid);
+        public void delete();
         [CCode (array_length_cname = "nfields", array_length_type = "int32")]
         public unowned Field[] fields;
 
