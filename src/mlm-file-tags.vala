@@ -6,7 +6,7 @@ namespace MLM {
     public class FileTags {
 
         private static const string ARTIST   = "TPE1";
-        private static const string TITLE    = "TIT1";
+        private static const string TITLE    = "TIT2";
         private static const string ALBUM    = "TALB";
         private static const string YEAR     = "TDRC";
         private static const string TRACK    = "TRCK";
@@ -34,10 +34,16 @@ namespace MLM {
         public string artist_picture_description { get; set; }
         public bool has_tags { get; private set; }
 
+        private string filename;
         private File file;
         private Tag tag;
 
         public FileTags(string filename) {
+            this.filename = filename;
+            read_tags();
+        }
+
+        private void read_tags() {
             artist = title = album = comment = composer = original_artist = null;
             year = track_number = track_count = disc_number = genre = -1;
             front_cover_picture = artist_picture = null;
@@ -104,16 +110,55 @@ namespace MLM {
                         artist_picture_description = frame.get_picture_description();
                     }
                 } else {
+                    stderr.printf("Invalid fram '%s' will be deleted.\n", frame.id);
                     invalid_frames.add(frame);
                 }
             }
         }
 
-        ~FileTags() {
-            if (file != null) {
-                file.close();
-                file = null;
+        /* libid3tag has no nice support for removing tags. We just
+         * remove the ID3v2.4 tag following
+         *
+         * http://id3lib.sourceforge.net/id3/id3v2.4.0-structure.txt */
+        public void remove_tags() {
+            file.close();
+            file = null;
+            tag = null;
+
+            uint8[] bytes;
+            try {
+                FileUtils.get_data(filename, out bytes);
+            } catch (FileError fe) {
+                stderr.printf("There was an error reading from '%s'.\n", filename);
+                return;
             }
+
+            // Unzynch the size of the tag.
+            uint a = bytes[6];
+            uint b = bytes[7];
+            uint c = bytes[8];
+            uint d = bytes[9];
+            uint size = ((a << 21) | (b << 14) | (c << 7) | d) + 10;
+
+            uint8[] new_bytes = new uint8[bytes.length - size];
+            for (int i = 0; i < new_bytes.length; i++)
+                new_bytes[i] = bytes[i + size];
+
+            FileStream file = FileStream.open(filename, "w");
+            size_t r = file.write(new_bytes);
+            if (r != new_bytes.length)
+                stderr.printf("There was an error when removing tags from '%s'.\n", filename);
+
+            read_tags();
+        }
+
+        public void update() {
+            file.update();
+        }
+
+        ~FileTags() {
+            if (file != null)
+                file.close();
         }
     }
 }
