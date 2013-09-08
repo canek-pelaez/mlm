@@ -15,9 +15,11 @@ config.*
 configure
 libtool
 m4
+src/mlm.h
 src/mlm-encoder
 src/mlm-fix-duplicated-pictures
 src/mlm-fix-pictures
 src/mlm-tags
 src/*.c
 stamp-h1
+vapi/mlm.vapi
