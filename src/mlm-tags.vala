@@ -4,7 +4,7 @@ extern void exit(int exit_code);
 
 namespace MLM {
 
-    namespace Flags {
+    namespace Flag {
         private static const string HELP     = "--help";
         private static const string ARTIST   = "--artist";
         private static const string TITLE    = "--title";
@@ -21,6 +21,7 @@ namespace MLM {
         private static const string ARTIST_P = "--artist-picture";
         private static const string REMOVE   = "--remove";
         private static const string PRINT    = "--print";
+        private static const string P_GENRES = "--print-genres";
         private static const string OUT_FCP  = "--output-front-cover-picture";
         private static const string OUT_AP   = "--output-artist-picture";
 
@@ -40,11 +41,14 @@ namespace MLM {
         private static const string S_ARTIST_P = "-u";
         private static const string S_REMOVE   = "-r";
         private static const string S_PRINT    = "-p";
+        private static const string S_P_GENRES = "-G";
         private static const string S_OUT_FCP  = "-F";
         private static const string S_OUT_AP   = "-A";
     }
 
     public class Tags {
+
+        private static int current_year;
 
         private static void print_usage(int exit_status) {
             stderr.printf("Use: mlm-tags [options] mp3file1 [mp3file2 ...]\n\n");
@@ -65,12 +69,13 @@ namespace MLM {
    -u, --artist-picture=file.jpg              Set the artist picture from file.
    -r, --remove                               Remove all tags.
    -p, --print=Format                         Print the tags with format.
+   -G, --print-genres                         Print supported genres.
    -F, --output-front-cover-picture=File name Save the front cover picture in file.
    -A, --output-artist-picure=File name       Save the artist picture in file.
 
-With no flags the standard tags are printed.  An empty string as
-parameter removes an individual tag.  You can only use the -F or -A
-flags with one MP3 file.
+With no flags the standard tags are printed. An empty string as parameter
+removes an individual tag. You can only use the -F or -A flags with one MP3
+file.
 
 Format for printing:
 
@@ -93,6 +98,14 @@ Format for printing:
             exit(exit_status);
         }
 
+        private static void print_genres() {
+            Genre[] genres = Genre.all();
+            stdout.printf("Supported genres:\n\n");
+            for (int i = 0; i < genres.length; i++)
+                stdout.printf("\t%03d %s\n", i, genres[i].to_string());
+            exit(0);
+        }
+
         private static void print_standard_tags(string filename) {
             if (!FileUtils.test(filename, FileTest.EXISTS)) {
                 stderr.printf("No such file: '%s'\n", filename);
@@ -105,7 +118,7 @@ Format for printing:
                 stderr.printf("The file has no ID3 v2.4.0 tags.\n");
                 return;
             }
-            Genres[] genres = Genres.all();
+            Genre[] genres = Genre.all();
             if (file_tags.artist != null)
                 stdout.printf("Artist: %s\n", file_tags.artist);
             if (file_tags.title != null)
@@ -115,10 +128,13 @@ Format for printing:
             if (file_tags.year != -1)
                 stdout.printf("Year: %d\n", file_tags.year);
             if (file_tags.track_number != -1) {
-                if (file_tags.track_count != -1)
+                if (file_tags.track_count != -1) {
                     stdout.printf("Track: %d of %d\n",
                                   file_tags.track_number,
                                   file_tags.track_count);
+                } else {
+                    stdout.printf("Track: %d\n", file_tags.track_number);
+                }
             }
             if (file_tags.disc_number != -1)
                 stdout.printf("Disc number: %d\n", file_tags.disc_number);
@@ -148,7 +164,7 @@ Format for printing:
                 return;
             }
 
-            Genres[] g = Genres.all();
+            Genre[] g = Genre.all();
             string f = format;
 
             f = f.replace("\\n", "\n");
@@ -243,39 +259,143 @@ Format for printing:
                 return;
             }
             var ft = new FileTags(filename);
-            if (flags.has_key(Flags.ARTIST))
-                ft.update_artist(flags[Flags.ARTIST]);
-            if (flags.has_key(Flags.TITLE))
-                ft.update_title(flags[Flags.TITLE]);
-            if (flags.has_key(Flags.ALBUM))
-                ft.update_album(flags[Flags.ALBUM]);
-            if (flags.has_key(Flags.COMMENT))
-                ft.update_comment(flags[Flags.COMMENT]);
-            if (flags.has_key(Flags.ORIGINAL))
-                ft.update_original_artist(flags[Flags.ORIGINAL]);
+            if (flags.has_key(Flag.ARTIST))
+                ft.update_artist(flags[Flag.ARTIST]);
+            if (flags.has_key(Flag.TITLE))
+                ft.update_title(flags[Flag.TITLE]);
+            if (flags.has_key(Flag.ALBUM))
+                ft.update_album(flags[Flag.ALBUM]);
+            if (flags.has_key(Flag.COMPOSER))
+                ft.update_composer(flags[Flag.COMPOSER]);
+            if (flags.has_key(Flag.ORIGINAL))
+                ft.update_original_artist(flags[Flag.ORIGINAL]);
+            if (flags.has_key(Flag.COMMENT))
+                ft.update_comment(flags[Flag.COMMENT]);
+            if (flags.has_key(Flag.YEAR)) {
+                if (flags[Flag.YEAR] == "") {
+                    ft.update_year(-1);
+                } else {
+                    int year = int.parse(flags[Flag.YEAR]);
+                    if (year >= 1900 && year <= current_year)
+                        ft.update_year(year);
+                    else
+                        stderr.printf("The year %d is invalid. Ignoring.\n", year);
+                }
+            }
+            if (flags.has_key(Flag.DISC_N)) {
+                if (flags[Flag.DISC_N] == "") {
+                    ft.update_disc_number(-1);
+                } else {
+                    int dn = int.parse(flags[Flag.DISC_N]);
+                    if (dn >= 1 && dn <= 99)
+                        ft.update_disc_number(dn);
+                    else
+                        stderr.printf("The disc number %d is invalid. Ignoring.\n", dn);
+                }
+            }
+            if (flags.has_key(Flag.TRACK_N) || flags.has_key(Flag.TRACK_C)) {
+                int tn = ft.track_number;
+                int tc = ft.track_count;
+                if (flags.has_key(Flag.TRACK_N) && flags[Flag.TRACK_N] == "")
+                    tn = -1;
+                else if (flags.has_key(Flag.TRACK_N))
+                    tn = int.parse(flags[Flag.TRACK_N]);
+                if (flags.has_key(Flag.TRACK_C) && flags[Flag.TRACK_C] == "")
+                    tc = -1;
+                else if (flags.has_key(Flag.TRACK_C))
+                    tc = int.parse(flags[Flag.TRACK_C]);
+                if ((tn == -1 && tc == -1)            ||
+                    (tn >= 1 && tn <= 99 && tc == -1) ||
+                    (tn >= 1 && tn <= 99 && tc >= 1 && tc <= 99)) {
+                    ft.update_track(tn, tc);
+                } else if (tc >= 1 && tc <= 99 && tn == -1) {
+                    stderr.printf("You cannot set the track count while the " +
+                                  "track number is unset. Ignoring tracks.\n");
+                } else {
+                    stderr.printf("Invalid combination of track number/track "+
+                                  "count. Ignoring tracks.\n");
+                }
+            }
+            if (flags.has_key(Flag.GENRE)) {
+                int new_genre = -1;
+                Genre[] genres = Genre.all();
+                string genre = flags[Flag.GENRE];
+                for (int i = 0; i < genres.length; i++)
+                    if (genre.ascii_casecmp(genres[i].to_string()) == 0)
+                        new_genre = i;
+                if (new_genre == -1) {
+                    int64 ng;
+                    if (int64.try_parse(genre, out ng)) {
+                        new_genre = (int)ng;
+                        if (new_genre < 0 || new_genre >= genres.length)
+                            new_genre = -1;
+                    } else {
+                        new_genre = -1;
+                    }
+                }
+                if (new_genre != -1)
+                    ft.update_genre(new_genre);
+                else
+                    stderr.printf("The genre '%s' is invalid. Ignoring.\n", genre);
+            }
+            if (flags.has_key(Flag.COVER_P)) {
+                if (flags[Flag.COVER_P] == "") {
+                    ft.update_front_cover_picture(null);
+                } else {
+                    uint8[] bytes = null;
+                    try {
+                        FileUtils.get_data(flags[Flag.COVER_P], out bytes);
+                    } catch (FileError fe) {
+                        stderr.printf("There was an error reading from '%s'. Ignoring.\n", filename);
+                        bytes = null;
+                    }
+                    if (bytes != null)
+                        ft.update_front_cover_picture(bytes);
+                }
+            }
+            if (flags.has_key(Flag.ARTIST_P)) {
+                if (flags[Flag.ARTIST_P] == "") {
+                    ft.update_artist_picture(null);
+                } else {
+                    uint8[] bytes = null;
+                    try {
+                        FileUtils.get_data(flags[Flag.ARTIST_P], out bytes);
+                    } catch (FileError fe) {
+                        stderr.printf("There was an error reading from '%s'. Ignoring.\n", filename);
+                        bytes = null;
+                    }
+                    if (bytes != null)
+                        ft.update_artist_picture(bytes);
+                }
+            }
+
             ft.update();
         }
 
         public static int main(string[] args) {
+            DateTime dt = new DateTime.now_local();
+            current_year = dt.get_year();
+
             var available_flags = new HashMap<string, string>();
-            available_flags[Flags.S_HELP] = Flags.HELP;
-            available_flags[Flags.S_ARTIST] = Flags.ARTIST;
-            available_flags[Flags.S_TITLE] = Flags.TITLE;
-            available_flags[Flags.S_ALBUM] = Flags.ALBUM;
-            available_flags[Flags.S_YEAR] = Flags.YEAR;
-            available_flags[Flags.S_TRACK_N] = Flags.TRACK_N;
-            available_flags[Flags.S_TRACK_C] = Flags.TRACK_C;
-            available_flags[Flags.S_DISC_N] = Flags.DISC_N;
-            available_flags[Flags.S_GENRE] = Flags.GENRE;
-            available_flags[Flags.S_COMMENT] = Flags.COMMENT;
-            available_flags[Flags.S_COMPOSER] = Flags.COMPOSER;
-            available_flags[Flags.S_ORIGINAL] = Flags.ORIGINAL;
-            available_flags[Flags.S_COVER_P] = Flags.COVER_P;
-            available_flags[Flags.S_ARTIST_P] = Flags.ARTIST_P;
-            available_flags[Flags.S_REMOVE] = Flags.REMOVE;
-            available_flags[Flags.S_PRINT] = Flags.PRINT;
-            available_flags[Flags.S_OUT_FCP] = Flags.OUT_FCP;
-            available_flags[Flags.S_OUT_AP] = Flags.OUT_AP;
+            available_flags[Flag.S_HELP] = Flag.HELP;
+            available_flags[Flag.S_ARTIST] = Flag.ARTIST;
+            available_flags[Flag.S_TITLE] = Flag.TITLE;
+            available_flags[Flag.S_ALBUM] = Flag.ALBUM;
+            available_flags[Flag.S_YEAR] = Flag.YEAR;
+            available_flags[Flag.S_TRACK_N] = Flag.TRACK_N;
+            available_flags[Flag.S_TRACK_C] = Flag.TRACK_C;
+            available_flags[Flag.S_DISC_N] = Flag.DISC_N;
+            available_flags[Flag.S_GENRE] = Flag.GENRE;
+            available_flags[Flag.S_COMMENT] = Flag.COMMENT;
+            available_flags[Flag.S_COMPOSER] = Flag.COMPOSER;
+            available_flags[Flag.S_ORIGINAL] = Flag.ORIGINAL;
+            available_flags[Flag.S_COVER_P] = Flag.COVER_P;
+            available_flags[Flag.S_ARTIST_P] = Flag.ARTIST_P;
+            available_flags[Flag.S_REMOVE] = Flag.REMOVE;
+            available_flags[Flag.S_PRINT] = Flag.PRINT;
+            available_flags[Flag.S_P_GENRES] = Flag.P_GENRES;
+            available_flags[Flag.S_OUT_FCP] = Flag.OUT_FCP;
+            available_flags[Flag.S_OUT_AP] = Flag.OUT_AP;
 
             var flags = new HashMap<string, string>();
             var filenames = new ArrayList<string>();
@@ -283,7 +403,7 @@ Format for printing:
             for (int i = 1; i < args.length; i++) {
                 string a = args[i];
                 if (args[i].has_prefix("--")) {
-                    if (a == Flags.HELP || a == Flags.REMOVE) {
+                    if (a == Flag.HELP || a == Flag.REMOVE || a == Flag.P_GENRES) {
                         flags[a] = "";
                     } else {
                         int idx = a.index_of("=");
@@ -295,10 +415,14 @@ Format for printing:
                         flags[t[0]] = t[1];
                     }
                 } else if (a.has_prefix("-")) {
-                    if (i+1 >= args.length || !available_flags.has_key(a))
+                    if (a == Flag.S_HELP || a == Flag.S_P_GENRES) {
+                        flags[available_flags[a]] = "";
+                    } else if (i+1 >= args.length || !available_flags.has_key(a)) {
                         print_usage(1);
-                    flags[available_flags[a]] = args[i+1];
-                    i++;
+                    } else {
+                        flags[available_flags[a]] = args[i+1];
+                        i++;
+                    }
                 } else {
                     filenames.add(a);
                 }
@@ -308,8 +432,11 @@ Format for printing:
               stdout.printf("%s => %s\n", entry.key, entry.value);
               }*/
 
-            if (flags.has_key(Flags.HELP))
+            if (flags.has_key(Flag.HELP))
                 print_usage(0);
+
+            if (flags.has_key(Flag.P_GENRES))
+                print_genres();
 
             if (filenames.size == 0)
                 print_usage(1);
@@ -321,32 +448,32 @@ Format for printing:
                 exit(0);
             }
 
-            if (flags.has_key(Flags.PRINT)) {
+            if (flags.has_key(Flag.PRINT)) {
                 foreach (var filename in filenames)
-                print_tags(filename, flags[Flags.PRINT]);
+                print_tags(filename, flags[Flag.PRINT]);
                 exit(0);
             }
 
-            if (flags.has_key(Flags.REMOVE)) {
+            if (flags.has_key(Flag.REMOVE)) {
                 foreach (var filename in filenames)
                 remove_tags(filename);
                 exit(0);
             }
 
-            if (flags.has_key(Flags.OUT_FCP) || flags.has_key(Flags.OUT_AP)) {
+            if (flags.has_key(Flag.OUT_FCP) || flags.has_key(Flag.OUT_AP)) {
 
                 if (filenames.size > 1)
                     print_usage(1);
 
-                if (flags.has_key(Flags.OUT_FCP)) {
-                    string fc = flags[Flags.OUT_FCP];
+                if (flags.has_key(Flag.OUT_FCP)) {
+                    string fc = flags[Flag.OUT_FCP];
                     if (fc == "")
                         print_usage(1);
                     save_picture(filenames[0], fc, true);
                 }
 
-                if (flags.has_key(Flags.OUT_AP)) {
-                    string art = flags[Flags.OUT_AP];
+                if (flags.has_key(Flag.OUT_AP)) {
+                    string art = flags[Flag.OUT_AP];
                     if (art == "")
                         print_usage(1);
                     save_picture(filenames[0], art, false);
