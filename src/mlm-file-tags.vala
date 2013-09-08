@@ -43,6 +43,106 @@ namespace MLM {
             read_tags();
         }
 
+        public void update_artist(string artist) {
+            if (artist == "" && this.artist == null)
+                return;
+            Frame artist_frame;
+            if (artist == "") {
+                artist_frame = tag.search_frame(ARTIST);
+                tag.detachframe(artist_frame);
+                this.artist = null;
+                return;
+            }
+            if (this.artist == null) {
+                artist_frame = tag.create_text_frame(ARTIST);
+                tag.attachframe(artist_frame);
+            } else {
+                artist_frame = tag.search_frame(ARTIST);
+            }
+            artist_frame.set_text(artist);
+            this.artist = artist;
+        }
+
+        public void update_title(string title) {
+            if (title == "" && this.title == null)
+                return;
+            Frame title_frame;
+            if (title == "") {
+                title_frame = tag.search_frame(TITLE);
+                tag.detachframe(title_frame);
+                this.title = null;
+                return;
+            }
+            if (this.title == null) {
+                title_frame = tag.create_text_frame(TITLE);
+                tag.attachframe(title_frame);
+            } else {
+                title_frame = tag.search_frame(TITLE);
+            }
+            title_frame.set_text(title);
+            this.title = title;
+        }
+
+        public void update_album(string album) {
+            if (album == "" && this.album == null)
+                return;
+            Frame album_frame;
+            if (album == "") {
+                album_frame = tag.search_frame(ALBUM);
+                tag.detachframe(album_frame);
+                this.album = null;
+                return;
+            }
+            if (this.album == null) {
+                album_frame = tag.create_text_frame(ALBUM);
+                tag.attachframe(album_frame);
+            } else {
+                album_frame = tag.search_frame(ALBUM);
+            }
+            album_frame.set_text(album);
+            this.album = album;
+        }
+
+        public void update_original_artist(string original_artist) {
+            if (original_artist == "" && this.original_artist == null)
+                return;
+            Frame original_artist_frame;
+            if (original_artist == "") {
+                original_artist_frame = tag.search_frame(ORIGINAL);
+                tag.detachframe(original_artist_frame);
+                this.original_artist = null;
+                return;
+            }
+            if (this.original_artist == null) {
+                original_artist_frame = tag.create_text_frame(ORIGINAL);
+                tag.attachframe(original_artist_frame);
+            } else {
+                original_artist_frame = tag.search_frame(ORIGINAL);
+            }
+            original_artist_frame.set_text(original_artist);
+            this.original_artist = original_artist;
+        }
+
+        public void update_comment(string comment) {
+            if (comment == "" && this.comment == null)
+                return;
+            Frame comment_frame;
+            if (comment == "") {
+                comment_frame = tag.search_frame(COMMENT);
+                tag.detachframe(comment_frame);
+                this.comment = null;
+                return;
+            }
+            if (this.comment == null) {
+                comment_frame = tag.create_comment_frame("eng");
+                tag.attachframe(comment_frame);
+            } else {
+                comment_frame = tag.search_frame(COMMENT);
+            }
+            comment_frame.set_comment_text(comment);
+            this.comment = comment;
+        }
+
         private void read_tags() {
             artist = title = album = comment = composer = original_artist = null;
             year = track_number = track_count = disc_number = genre = -1;
@@ -93,7 +193,7 @@ namespace MLM {
                     else
                         invalid_frames.add(frame);
                 } else if (frame.id == COMMENT) {
-                    comment = frame.get_text();
+                    comment = frame.get_comment_text();
                 } else if (frame.id == COMPOSER) {
                     composer = frame.get_text();
                 } else if (frame.id == ORIGINAL) {
@@ -153,7 +253,17 @@ namespace MLM {
         }
 
         public void update() {
-            file.update();
+            if (artist == null && title == null && album == null &&
+                comment == null && composer == null && original_artist == null &&
+                year == -1 && track_number == -1 && track_count == -1 &&
+                disc_number == -1 && genre == -1 &&
+                front_cover_picture == null && artist_picture == null &&
+                front_cover_picture_description == null &&
+                artist_picture_description == null) {
+                remove_tags();
+            } else {
+                file.update();
+            }
         }
 
         ~FileTags() {
