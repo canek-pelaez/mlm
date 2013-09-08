@@ -28,11 +28,13 @@ enum id3_picture_type {
 };
 
 struct id3_frame*     id3_tag_search_picture_frame       (struct id3_tag*       tag,
-                                                          enum id3_picture_type picture_type);
+                                                          enum id3_picture_type ptype);
 struct id3_frame*     id3_tag_search_frame               (struct id3_tag*       tag,
                                                           const char*           id);
 struct id3_frame*     id3_tag_create_text_frame          (struct id3_tag*       tag,
                                                           const char*           id);
+struct id3_frame*     id3_tag_create_picture_frame       (struct id3_tag*       tag,
+                                                          enum id3_picture_type ptype);
 char*                 id3_frame_get_text                 (struct id3_frame*     frame);
 void                  id3_frame_set_text                 (struct id3_frame*     frame,
                                                           const char*           text);
@@ -41,8 +43,11 @@ void                  id3_frame_set_comment_text         (struct id3_frame*     
                                                           const char*           text);
 union id3_field*      id3_frame_get_binary_data          (struct id3_frame*     frame);
 unsigned char*        id3_frame_get_picture              (struct id3_frame*     frame,
-                                                          enum id3_picture_type picture_type,
+                                                          enum id3_picture_type ptype,
                                                           int*                  length);
+void                  id3_frame_set_picture              (struct id3_frame*     frame,
+                                                          unsigned char*        bytes,
+                                                          unsigned int          length);
 enum id3_picture_type id3_frame_get_picture_type         (struct id3_frame*     frame);
 char*                 id3_frame_get_picture_description  (struct id3_frame*     frame);
 

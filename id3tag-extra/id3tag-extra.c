@@ -5,7 +5,7 @@
 
 struct id3_frame*
 id3_tag_search_picture_frame(struct id3_tag*       tag,
-                             enum id3_picture_type picture_type)
+                             enum id3_picture_type ptype)
 {
         int i, j;
         for (i = 0; i < tag->nframes; i++) {
@@ -16,7 +16,7 @@ id3_tag_search_picture_frame(struct id3_tag*       tag,
                         union id3_field* field = id3_frame_field(frame, j);
                         if (field->type != ID3_FIELD_TYPE_INT8)
                                 continue;
-                        if (field->number.value == picture_type)
+                        if (field->number.value == ptype)
                                 return frame;
                 }
         }
@@ -62,6 +62,29 @@ id3_tag_create_comment_frame(struct id3_tag* tag,
                         id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
                 if (field->type == ID3_FIELD_TYPE_LANGUAGE)
                         id3_field_setlanguage(field, lang);
+        }
+        return frame;
+}
+
+struct id3_frame*
+id3_tag_create_picture_frame(struct id3_tag*       tag,
+                             enum id3_picture_type ptype)
+{
+        int i;
+        struct id3_frame* frame = id3_frame_new("APIC");
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_TEXTENCODING)
+                        id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
+                if (field->type == ID3_FIELD_TYPE_LATIN1)
+                        id3_field_setlatin1(field, "image/jpeg");
+                if (field->type == ID3_FIELD_TYPE_INT8)
+                        field->number.value = ptype;
+                if (field->type == ID3_FIELD_TYPE_STRING) {
+                        id3_ucs4_t* s = id3_utf8_ucs4duplicate("");
+                        id3_field_setstring(field, s);
+                        //free(s);
+                }
         }
         return frame;
 }
@@ -173,14 +196,14 @@ id3_frame_get_picture_description(struct id3_frame* frame)
 
 unsigned char*
 id3_frame_get_picture(struct id3_frame*     frame,
-                      enum id3_picture_type picture_type,
+                      enum id3_picture_type ptype,
                       int*                  length)
 {
-        int j, l = -1;
+        int i, l = -1;
         long pt = -1;
         unsigned char* data = NULL;
-        for (j = 0; j < frame->nfields; j++) {
-                union id3_field* field = id3_frame_field(frame, j);
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
                 if (field->type == ID3_FIELD_TYPE_INT8) {
                         pt = field->number.value;
                 } else if (field->type == ID3_FIELD_TYPE_BINARYDATA) {
@@ -188,9 +211,22 @@ id3_frame_get_picture(struct id3_frame*     frame,
                         l = field->binary.length;
                 }
         }
-        if (pt == picture_type && data != NULL) {
+        if (pt == ptype && data != NULL) {
                 *length = l;
                 return data;
         }
         return NULL;
+}
+
+void
+id3_frame_set_picture(struct id3_frame*     frame,
+                      unsigned char*        bytes,
+                      unsigned int          length)
+{
+        int i;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_BINARYDATA)
+                        id3_field_setbinarydata(field, bytes, length);
+        }
 }
