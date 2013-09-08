@@ -1,8 +1,10 @@
-*.a
 *.o
+*.la
+*.lo
 *.stamp
 .deps
 .dirstamp
+.libs
 ChangeLog
 Makefile
 Makefile.in
@@ -11,6 +13,9 @@ autom4te.cache
 build-aux
 config.*
 configure
+libtool
+m4
+src/mlm-encoder
 src/mlm-fix-duplicated-pictures
 src/mlm-fix-pictures
 src/mlm-tags
