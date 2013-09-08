@@ -47,7 +47,8 @@ unsigned char*        id3_frame_get_picture              (struct id3_frame*     
                                                           int*                  length);
 void                  id3_frame_set_picture              (struct id3_frame*     frame,
                                                           unsigned char*        bytes,
-                                                          unsigned int          length);
+                                                          unsigned int          length,
+                                                          const char*           desc);
 enum id3_picture_type id3_frame_get_picture_type         (struct id3_frame*     frame);
 char*                 id3_frame_get_picture_description  (struct id3_frame*     frame);
 

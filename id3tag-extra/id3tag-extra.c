@@ -219,13 +219,19 @@ id3_frame_get_picture(struct id3_frame*     frame,
 }
 
 void
-id3_frame_set_picture(struct id3_frame*     frame,
-                      unsigned char*        bytes,
-                      unsigned int          length)
+id3_frame_set_picture(struct id3_frame* frame,
+                      unsigned char*    bytes,
+                      unsigned int      length,
+                      const char*       desc)
 {
         int i;
         for (i = 0; i < frame->nfields; i++) {
                 union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_STRING) {
+                        id3_ucs4_t* s = id3_utf8_ucs4duplicate(desc);
+                        id3_field_setstring(field, s);
+                        //free(s);
+                }
                 if (field->type == ID3_FIELD_TYPE_BINARYDATA)
                         id3_field_setbinarydata(field, bytes, length);
         }

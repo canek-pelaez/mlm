@@ -267,7 +267,7 @@ namespace MLM {
             } else {
                 fcp_frame = tag.search_picture_frame(PictureType.COVERFRONT);
             }
-            fcp_frame.set_picture(fcp);
+            fcp_frame.set_picture(fcp, album != null ? album + " cover" : "");
             front_cover_picture = fcp;
         }
 
@@ -287,7 +287,7 @@ namespace MLM {
             } else {
                 ap_frame = tag.search_picture_frame(PictureType.ARTIST);
             }
-            ap_frame.set_picture(ap);
+            ap_frame.set_picture(ap, artist != null ? artist : "");
             artist_picture = ap;
         }
 

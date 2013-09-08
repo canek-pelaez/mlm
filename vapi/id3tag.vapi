@@ -76,7 +76,7 @@ namespace Id3Tag {
         [CCode(cheader_filename = "id3tag-extra.h")]
         public string get_comment_text();
         [CCode(cheader_filename = "id3tag-extra.h")]
-        public void set_picture(uint8[] bytes);
+        public void set_picture(uint8[] bytes, string desc);
         [CCode(cheader_filename = "id3tag-extra.h")]
         public Field? get_binary_field();
         [CCode(cheader_filename = "id3tag-extra.h")]
