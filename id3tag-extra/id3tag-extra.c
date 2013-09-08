@@ -36,6 +36,36 @@ id3_tag_search_frame(struct id3_tag* tag,
         return NULL;
 }
 
+struct id3_frame*
+id3_tag_create_text_frame(struct id3_tag* tag,
+                          const char*     id)
+{
+        int i;
+        struct id3_frame* frame = id3_frame_new(id);
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_TEXTENCODING)
+                        id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
+        }
+        return frame;
+}
+
+struct id3_frame*
+id3_tag_create_comment_frame(struct id3_tag* tag,
+                             const char*     lang)
+{
+        int i;
+        struct id3_frame* frame = id3_frame_new("COMM");
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_TEXTENCODING)
+                        id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
+                if (field->type == ID3_FIELD_TYPE_LANGUAGE)
+                        id3_field_setlanguage(field, lang);
+        }
+        return frame;
+}
+
 char*
 id3_frame_get_text(struct id3_frame* frame)
 {
@@ -51,6 +81,51 @@ id3_frame_get_text(struct id3_frame* frame)
                 }
         }
         return NULL;
+}
+
+char*
+id3_frame_get_comment_text(struct id3_frame* frame)
+{
+        int i, j;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type != ID3_FIELD_TYPE_STRINGFULL)
+                        continue;
+                const id3_ucs4_t* s = id3_field_getfullstring(field);
+                id3_utf8_t* us = id3_ucs4_utf8duplicate(s);
+                return (char*)us;
+        }
+        return NULL;
+}
+
+void
+id3_frame_set_text(struct id3_frame* frame,
+                   const char*       text)
+{
+        int i;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type != ID3_FIELD_TYPE_STRINGLIST)
+                        continue;
+                id3_ucs4_t* ucs[] = { id3_utf8_ucs4duplicate(text) };
+                id3_field_setstrings(field, 1, ucs);
+                //free(ucs[0]);
+        }
+}
+
+void
+id3_frame_set_comment_text(struct id3_frame* frame,
+                           const char*       text)
+{
+        int i;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type != ID3_FIELD_TYPE_STRINGFULL)
+                        continue;
+                id3_ucs4_t* ucs = id3_utf8_ucs4duplicate(text);
+                id3_field_setfullstring(field, ucs);
+                //free(ucs);
+        }
 }
 
 union id3_field*
