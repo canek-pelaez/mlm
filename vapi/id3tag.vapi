@@ -48,6 +48,10 @@ namespace Id3Tag {
         public Frame? search_picture_frame(PictureType picture_type);
         [CCode(cheader_filename = "id3tag-extra.h")]
         public Frame? search_frame(string id);
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public Frame create_text_frame(string id);
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public Frame create_comment_frame(string lang);
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "struct id3_frame", cprefix = "id3_frame_", ref_function = "", unref_function = "")]
@@ -63,6 +67,12 @@ namespace Id3Tag {
 
         [CCode(cheader_filename = "id3tag-extra.h")]
         public string? get_text();
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public void set_text(string text);
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public void set_comment_text(string text);
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public string get_comment_text();
         [CCode(cheader_filename = "id3tag-extra.h")]
         public Field? get_binary_field();
         [CCode(cheader_filename = "id3tag-extra.h")]
