@@ -2,7 +2,7 @@ using Id3Tag;
 
 namespace MLM {
 
-    public enum Genres {
+    public enum Genre {
         BLUES = 0,
         CLASSIC_ROCK,
         COUNTRY,
@@ -152,7 +152,7 @@ namespace MLM {
         JPOP,
         SYNTHPOP;
 
-        public static Genres[] all() {
+        public static Genre[] all() {
             return { BLUES,
                     CLASSIC_ROCK,
                     COUNTRY,
