@@ -15,6 +15,7 @@ COMMON_VALAFLAGS =				\
 ID3TAG_EXTRA_CFLAGS = -I$(srcdir)/id3tag-extra
 ID3TAG_EXTRA_LIBS = id3tag-extra/libid3tag-extra.la
 
+LIBMLM_CFLAGS = -Isrc
 LIBMLM_LIBS = src/libmlm.la
 
 # libid3tag-extra.a
@@ -53,15 +54,15 @@ src_mlm_fix_duplicated_pictures_LDADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS)
 bin_PROGRAMS += src/mlm-tags
 src_mlm_tags_VALAFLAGS = $(COMMON_VALAFLAGS) --pkg mlm
 src_mlm_tags_SOURCES = src/mlm-tags.vala
-src_mlm_tags_CFLAGS = $(MLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
+src_mlm_tags_CFLAGS = $(MLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS) $(LIBMLM_CFLAGS)
 src_mlm_tags_LDADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS) $(LIBMLM_LIBS)
 
 # mlm-encoder
 bin_PROGRAMS += src/mlm-encoder
 src_mlm_encoder_SOURCES = src/mlm-encoder.vala
 src_mlm_encoder_VALAFLAGS = $(COMMON_VALAFLAGS) @GTK_PACKAGES@ --pkg mlm
-src_mlm_encoder_CFLAGS = $(MLM_CFLAGS) $(GTK_CFLAGS)
-src_mlm_encoder_LDADD = $(MLM_LIBS) $(GTK_LIBS)
+src_mlm_encoder_CFLAGS = $(MLM_CFLAGS) $(GTK_CFLAGS) $(LIBMLM_CFLAGS)
+src_mlm_encoder_LDADD = $(MLM_LIBS) $(GTK_LIBS) $(LIBMLM_LIBS)
 
 noinst_DATA = vapi/config.vapi vapi/id3tag.vapi
 
