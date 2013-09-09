@@ -83,7 +83,7 @@ id3_tag_create_picture_frame(struct id3_tag*       tag,
                 if (field->type == ID3_FIELD_TYPE_STRING) {
                         id3_ucs4_t* s = id3_utf8_ucs4duplicate("");
                         id3_field_setstring(field, s);
-                        //free(s);
+                        free(s);
                 }
         }
         return frame;
@@ -128,11 +128,13 @@ id3_frame_set_text(struct id3_frame* frame,
         int i;
         for (i = 0; i < frame->nfields; i++) {
                 union id3_field* field = id3_frame_field(frame, i);
-                if (field->type != ID3_FIELD_TYPE_STRINGLIST)
-                        continue;
-                id3_ucs4_t* ucs[] = { id3_utf8_ucs4duplicate(text) };
-                id3_field_setstrings(field, 1, ucs);
-                //free(ucs[0]);
+                if (field->type == ID3_FIELD_TYPE_TEXTENCODING)
+                        id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
+                if (field->type == ID3_FIELD_TYPE_STRINGLIST) {
+                        id3_ucs4_t* ucs[] = { id3_utf8_ucs4duplicate(text) };
+                        id3_field_setstrings(field, 1, ucs);
+                        free(ucs[0]);
+                }
         }
 }
 
@@ -147,7 +149,7 @@ id3_frame_set_comment_text(struct id3_frame* frame,
                         continue;
                 id3_ucs4_t* ucs = id3_utf8_ucs4duplicate(text);
                 id3_field_setfullstring(field, ucs);
-                //free(ucs);
+                free(ucs);
         }
 }
 
