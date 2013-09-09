@@ -35,8 +35,16 @@ namespace MLM {
         private static Gdk.Pixbuf no_cover;
         private static Gdk.Pixbuf no_artist;
 
+        private Dialog progress;
+        private ProgressBar progress_bar;
+        private Gst.Pipeline pipe;
+        private bool reencoding;
+
         private bool updating_tracks;
         private bool album_mode;
+
+        private string filename;
+        private string dest;
 
         public Encoder(ArrayList<string> files) {
             genres = Genre.all();
@@ -194,7 +202,7 @@ namespace MLM {
                 return;
             }
             iterator.next();
-            string filename = iterator.get();
+            filename = iterator.get();
             frame_label.set_markup("<b>" + Path.get_basename(filename) + "</b>");
             file_tags = new FileTags(filename);
             if (file_tags.artist != null)
@@ -303,7 +311,182 @@ namespace MLM {
             file_tags.update_artist_picture(null);
         }
 
+        private void create_progress_dialog() {
+            progress = new Dialog.with_buttons("Reencoding", window,
+                                                      DialogFlags.MODAL,
+                                                      Stock.CANCEL,
+                                                      ResponseType.CANCEL);
+            progress.border_width = 6;
+            Label label = new Label("Reencoding '%s'\ninto '%s'... ".printf
+                                    (Path.get_basename(filename),
+                                     Path.get_basename(dest)));
+            progress_bar = new ProgressBar();
+            Box vbox = new Box(Orientation.VERTICAL, 6);
+            vbox.pack_start(label);
+            vbox.pack_start(new Separator(Orientation.HORIZONTAL));
+            vbox.pack_start(progress_bar);
+            Image icon = new Image();
+            icon.set_from_stock(Stock.DIALOG_INFO, IconSize.DIALOG);
+            Box hbox = new Box(Orientation.HORIZONTAL, 6);
+            hbox.pack_start(icon);
+            hbox.pack_start(vbox);
+            Box content = progress.get_content_area();
+            content.set_spacing(6);
+            content.pack_start(hbox);
+        }
+
+        private bool upgrade_progressbar() {
+            double p = get_reencoding_percentage();
+            progress_bar.set_fraction(p);
+
+            if (p < 1.0)
+                return true;
+
+            uint8[] cp = file_tags.front_cover_picture;
+            uint8[] ap = file_tags.artist_picture;
+
+            file_tags = new FileTags(dest);
+            update_artist();
+            update_title();
+            update_album();
+            update_year();
+            update_track_number();
+            update_track_count();
+            update_disc();
+            update_genre();
+            update_comment();
+            update_composer();
+            update_original();
+            file_tags.update_front_cover_picture(cp);
+            file_tags.update_artist_picture(ap);
+            file_tags.update();
+
+            progress.response(ResponseType.OK);
+
+            return false;
+        }
+
+        private double get_reencoding_percentage() {
+            Gst.State state;
+            Gst.State pending;
+
+            pipe.get_state(out state, out pending, 100);
+
+            if (state != Gst.State.PLAYING)
+                return 1.0;
+
+            int64 duration = -1;
+            Gst.Format format = Gst.Format.TIME;
+            while (duration == -1)
+                if (!pipe.query_duration(format, out duration))
+                    duration = -1;
+            int64 pos = -1;
+            while (pos == -1)
+                if (!pipe.query_position(format, out pos))
+                    pos = -1;
+            return (double)pos/(double)duration;
+        }
+
+        private void start_pipeline() {
+            pipe = new Gst.Pipeline("pipe");
+            pipe.set_state(Gst.State.PAUSED);
+            var src = Gst.ElementFactory.make("filesrc", "source");
+            src.set_property("location", filename);
+            var mad = Gst.ElementFactory.make("mad", "mad");
+            var ac1 = Gst.ElementFactory.make("audioconvert", "ac1");
+            var rgl = Gst.ElementFactory.make("rglimiter", "rgl");
+            var ac2 = Gst.ElementFactory.make("audioconvert", "ac2");
+            var lame = Gst.ElementFactory.make("lamemp3enc", "lame");
+            lame.set_property("bitrate", 128);
+            lame.set_property("cbr", true);
+            var sink = Gst.ElementFactory.make("filesink", "sink");
+            sink.set_property("location", dest);
+            pipe.add(src);
+            pipe.add(mad);
+            pipe.add(ac1);
+            pipe.add(rgl);
+            pipe.add(ac2);
+            pipe.add(lame);
+            pipe.add(sink);
+            src.link_many(mad, ac1, rgl, ac2, lame, sink);
+
+            var bus = pipe.get_bus();
+            bus.add_signal_watch();
+            bus.message.connect((b,m) => { message_received(m); });
+        }
+
+        private bool change_pipeline_state(Gst.State new_state) {
+            pipe.set_state(new_state);
+            Gst.State state;
+            Gst.State pending;
+
+            Gst.StateChangeReturn r = pipe.get_state(out state, out pending, 100);
+
+            if (r == Gst.StateChangeReturn.FAILURE)
+                return false;
+
+            do {
+                Thread.usleep(100);
+                r = pipe.get_state(out state, out pending, 100);
+                if (r == Gst.StateChangeReturn.FAILURE)
+                    return false;
+            } while (state != new_state);
+
+            return true;
+        }
+
+        private void message_received(Gst.Message message) {
+            if (message.type == Gst.MessageType.EOS) {
+                if (change_pipeline_state(Gst.State.NULL)) {
+                    reencoding = false;
+                }
+            }
+        }
+
         private void reencode() {
+            dest = Path.get_dirname(filename) + Path.DIR_SEPARATOR_S;
+            if (album_mode && file_tags.track_number != -1)
+                dest += "%02d - ".printf(file_tags.track_number);
+            if (file_tags.artist != null)
+                dest += file_tags.artist;
+            dest += " - ";
+            if (file_tags.title != null)
+                dest += file_tags.title;
+            dest += ".mp3";
+            if (FileUtils.test(dest, FileTest.EXISTS)) {
+                MessageDialog dialog;
+                dialog = new MessageDialog(window,
+                                           DialogFlags.DESTROY_WITH_PARENT,
+                                           MessageType.QUESTION,
+                                           ButtonsType.YES_NO,
+                                           "The file '%s' already exists.\n" +
+                                           "Rewrite it?", Path.get_basename(dest));
+                int r = dialog.run();
+                dialog.destroy();
+                if (r != ResponseType.YES)
+                    return;
+            }
+            start_pipeline();
+            if (!change_pipeline_state(Gst.State.PLAYING)) {
+                MessageDialog dialog;
+                dialog = new MessageDialog(window,
+                                           DialogFlags.DESTROY_WITH_PARENT,
+                                           MessageType.INFO, ButtonsType.OK,
+                                           "There was an error while\n" +
+                                           "reencoding file '%s'.\n",
+                                           Path.get_basename(filename));
+                dialog.run();
+                dialog.destroy();
+                return;
+            }
+            create_progress_dialog();
+            progress.show_all();
+            Idle.add(upgrade_progressbar);
+            int r = progress.run();
+            progress.destroy();
+            if (r == ResponseType.OK) {
+                next_filename();
+            }
         }
 
         private void update_tags() {
@@ -320,6 +503,7 @@ namespace MLM {
             current_year = dt.get_year();
 
             Gtk.init(ref args);
+            Gst.init(ref args);
 
             var files = new ArrayList<string>();
 
