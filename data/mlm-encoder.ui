@@ -307,7 +307,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Genre:</property>
                         <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">comboboxtext_entry</property>
+                        <property name="mnemonic_widget">genre_entry</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -474,7 +474,7 @@
                           <item translatable="yes">Synthpop</item>
                         </items>
                         <child internal-child="entry">
-                          <object class="GtkEntry" id="comboboxtext_entry">
+                          <object class="GtkEntry" id="genre_entry">
                             <property name="can_focus">True</property>
                           </object>
                         </child>
@@ -648,7 +648,7 @@
                             <property name="pixbuf">nodisc.jpg</property>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
@@ -723,7 +723,7 @@
                             <property name="pixbuf">person.jpg</property>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
