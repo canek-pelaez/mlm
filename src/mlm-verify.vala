@@ -27,7 +27,7 @@ namespace MLM {
                 Field field = frame.field(i);
                 if (field.type == FieldType.TEXTENCODING &&
                     field.gettextencoding() != FieldTextEncoding.UTF_8)
-                    add_to_report("\tInvalid %s encoding.\n".printf(fid));
+                    add_to_report("\tThe %s encoding is not UTF-8.\n".printf(fid));
             }
         }
 
@@ -54,15 +54,28 @@ namespace MLM {
         }
 
         private void verify_genre_frame(Frame frame) {
-            verify_frame_textencoding(frame, "genre");
+
         }
 
         private void verify_comment_frame(Frame frame) {
-            verify_frame_textencoding(frame, "comment");
+            for (int i = 0; i < frame.fields.length; i++) {
+                Field field = frame.field(i);
+                if (field.type == FieldType.TEXTENCODING &&
+                    field.gettextencoding() != FieldTextEncoding.UTF_8)
+                    add_to_report("\tThe comment encoding is not UTF-8.\n");
+                if (field.type == FieldType.LANGUAGE &&
+                    (string)field.immediate_value != "eng")
+                    add_to_report("\tThe comment language is not \"eng\".\n");
+                if (field.type == FieldType.STRING &&
+                    (string)field.getstring() != "")
+                    add_to_report("\tThe small comment is not empty.\n");
+            }
+            if (frame.get_comment_text() == "")
+                add_to_report("\tThe comment is empty.\n");
         }
 
         private void verify_picture_frame(Frame frame) {
-            verify_frame_textencoding(frame, "comment");
+
         }
 
         private int verify_track_frame(Frame frame) {

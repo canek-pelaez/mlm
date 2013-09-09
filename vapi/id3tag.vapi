@@ -151,6 +151,8 @@ namespace Id3Tag {
         public unowned  uint32*[] stringlist;
         [CCode (cname = "binary.data", array_length_cname = "binary.length", array_length_type = "int32")]
         public unowned  uint8[] binary_data;
+        [CCode (cname = "immediate.value", array_length = "9", array_length_type = "int32")]
+        public unowned  char[] immediate_value;
 
         public FieldTextEncoding gettextencoding();
         public void settextencoding(FieldTextEncoding text_encoding);
