@@ -358,9 +358,12 @@ namespace MLM {
                         artist_picture_description = frame.get_picture_description();
                     }
                 } else {
-                    stderr.printf("Invalid fram '%s' will be deleted.\n", frame.id);
+                    stderr.printf("Invalid frame '%s' will be deleted.\n", frame.id);
                     invalid_frames.add(frame);
                 }
+            }
+            foreach (Frame frame in invalid_frames) {
+                tag.detachframe(frame);
             }
         }
 
