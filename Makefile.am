@@ -8,6 +8,8 @@ AM_CPPFLAGS =					\
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
 COMMON_VALAFLAGS =				\
+	--target-glib=2.32			\
+	--thread				\
 	--vapidir=$(srcdir)/vapi 		\
 	--pkg id3tag				\
 	@MLM_PACKAGES@

@@ -18,8 +18,8 @@ AC_PROG_CC_STDC
 AM_PROG_VALAC([0.20])
 AC_PROG_INSTALL
 
-GTK_PACKAGES="--pkg gtk+-3.0"
-PKG_CHECK_MODULES(GTK, [ gtk+-3.0 ])
+GTK_PACKAGES="--pkg gtk+-3.0 --pkg gstreamer-1.0"
+PKG_CHECK_MODULES(GTK, [ gtk+-3.0 gstreamer-1.0 ])
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
