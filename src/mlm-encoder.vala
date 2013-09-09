@@ -417,16 +417,12 @@ namespace MLM {
 
         private bool change_pipeline_state(Gst.State new_state) {
             pipe.set_state(new_state);
-            Gst.State state;
+            Gst.State state = Gst.State.NULL;
             Gst.State pending;
 
-            Gst.StateChangeReturn r = pipe.get_state(out state, out pending, 100);
-
-            if (r == Gst.StateChangeReturn.FAILURE)
-                return false;
+            Gst.StateChangeReturn r;
 
             do {
-                Thread.usleep(100);
                 r = pipe.get_state(out state, out pending, 100);
                 if (r == Gst.StateChangeReturn.FAILURE)
                     return false;
