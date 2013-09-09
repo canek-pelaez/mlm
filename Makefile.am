@@ -43,8 +43,8 @@ src_libmlm_la_LIBADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS)
 bin_PROGRAMS = src/mlm-verify
 src_mlm_verify_SOURCES = src/mlm-verify.vala
 src_mlm_verify_VALAFLAGS = $(COMMON_VALAFLAGS) $(LIBMLM_VALAFLAGS)
-src_mlm_verify_CFLAGS = $(MLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
-src_mlm_verify_LDADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS)
+src_mlm_verify_CFLAGS = $(MLM_CFLAGS) $(LIBMLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
+src_mlm_verify_LDADD = $(MLM_LIBS) $(LIBMLM_LIBS) $(ID3TAG_EXTRA_LIBS)
 
 # mlm-fix-pictures
 bin_PROGRAMS += src/mlm-fix-pictures
