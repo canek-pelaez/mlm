@@ -10,7 +10,7 @@ AM_CPPFLAGS =					\
 COMMON_VALAFLAGS =				\
 	--enable-experimental			\
 	--vapidir=$(srcdir)/vapi 		\
-	--pkg id3tag				\
+	--pkg config --pkg id3tag		\
 	@MLM_PACKAGES@
 
 ID3TAG_EXTRA_CFLAGS = -I$(srcdir)/id3tag-extra
