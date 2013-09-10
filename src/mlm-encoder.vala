@@ -5,9 +5,12 @@ namespace MLM {
 
     public class Encoder {
 
-        private static int current_year;
-        private static const string UI = "data/mlm-encoder.ui";
+        private static const string UI =
+            Config.PKGDATADIR +
+            Path.DIR_SEPARATOR_S +
+            "data/mlm-encoder.ui";
 
+        private int current_year;
         private Genre[] genres;
         private HashMap<string, int> genre_map;
         private ArrayList<string> files;
@@ -48,6 +51,8 @@ namespace MLM {
         private string dest;
 
         public Encoder(ArrayList<string> files) {
+            DateTime dt = new DateTime.now_local();
+            current_year = dt.get_year();
             genres = Genre.all();
             genre_map = new HashMap<string, int>();
             for (int i = 0; i < genres.length; i++)
@@ -538,8 +543,9 @@ namespace MLM {
         }
 
         public static int main(string[] args) {
-            DateTime dt = new DateTime.now_local();
-            current_year = dt.get_year();
+            Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
+            Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
+            Intl.textdomain(Config.GETTEXT_PACKAGE);
 
             Gtk.init(ref args);
             Gst.init(ref args);
