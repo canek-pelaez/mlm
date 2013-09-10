@@ -9,7 +9,7 @@ mkdir -p m4
 touch ChangeLog
 
 autoreconf -v --force --install
-#intltoolize -f -c
+intltoolize -f -c
 
 if [ -z "$NOCONFIGURE" ]; then
     "$srcdir"/configure $@
