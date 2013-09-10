@@ -1,0 +1,6 @@
+mlm-encoder.c
+mlm-file-tags.c
+mlm-frame-id.c
+mlm-genres.c
+mlm-tags.c
+mlm-verify.c
