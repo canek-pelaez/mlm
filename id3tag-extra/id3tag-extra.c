@@ -23,6 +23,19 @@
 #include "id3tag-extra.h"
 
 struct id3_frame*
+id3_tag_search_frame(struct id3_tag* tag,
+                     const char*     id)
+{
+        int i;
+        for (i = 0; i < tag->nframes; i++) {
+                struct id3_frame* frame = tag->frames[i];
+                if (!strcmp(frame->id, id))
+                        return frame;
+        }
+        return NULL;
+}
+
+struct id3_frame*
 id3_tag_search_picture_frame(struct id3_tag*       tag,
                              enum id3_picture_type ptype)
 {
@@ -38,19 +51,6 @@ id3_tag_search_picture_frame(struct id3_tag*       tag,
                         if (field->number.value == ptype)
                                 return frame;
                 }
-        }
-        return NULL;
-}
-
-struct id3_frame*
-id3_tag_search_frame(struct id3_tag* tag,
-                     const char*     id)
-{
-        int i;
-        for (i = 0; i < tag->nframes; i++) {
-                struct id3_frame* frame = tag->frames[i];
-                if (!strcmp(frame->id, id))
-                        return frame;
         }
         return NULL;
 }
@@ -125,21 +125,6 @@ id3_frame_get_text(struct id3_frame* frame)
         return NULL;
 }
 
-char*
-id3_frame_get_comment_text(struct id3_frame* frame)
-{
-        int i, j;
-        for (i = 0; i < frame->nfields; i++) {
-                union id3_field* field = id3_frame_field(frame, i);
-                if (field->type != ID3_FIELD_TYPE_STRINGFULL)
-                        continue;
-                const id3_ucs4_t* s = id3_field_getfullstring(field);
-                id3_utf8_t* us = id3_ucs4_utf8duplicate(s);
-                return (char*)us;
-        }
-        return NULL;
-}
-
 void
 id3_frame_set_text(struct id3_frame* frame,
                    const char*       text)
@@ -157,6 +142,21 @@ id3_frame_set_text(struct id3_frame* frame,
         }
 }
 
+char*
+id3_frame_get_comment_text(struct id3_frame* frame)
+{
+        int i;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type != ID3_FIELD_TYPE_STRINGFULL)
+                        continue;
+                const id3_ucs4_t* s = id3_field_getfullstring(field);
+                id3_utf8_t* us = id3_ucs4_utf8duplicate(s);
+                return (char*)us;
+        }
+        return NULL;
+}
+
 void
 id3_frame_set_comment_text(struct id3_frame* frame,
                            const char*       text)
@@ -170,49 +170,6 @@ id3_frame_set_comment_text(struct id3_frame* frame,
                 id3_field_setfullstring(field, ucs);
                 free(ucs);
         }
-}
-
-union id3_field*
-id3_frame_get_binary_field(struct id3_frame* frame)
-{
-        int i;
-        for (i = 0; i < frame->nfields; i++) {
-                union id3_field* field = id3_frame_field(frame, i);
-                if (field->type != ID3_FIELD_TYPE_BINARYDATA)
-                        continue;
-                return field;
-        }
-        return NULL;
-}
-
-enum id3_picture_type
-id3_frame_get_picture_type(struct id3_frame* frame)
-{
-        int j;
-        long pt = -1;
-        for (j = 0; j < frame->nfields; j++) {
-                union id3_field* field = id3_frame_field(frame, j);
-                if (field->type == ID3_FIELD_TYPE_INT8) {
-                        if (pt != -1)
-                                return -1;
-                        pt = field->number.value;
-                }
-        }
-        return pt;
-}
-
-char*
-id3_frame_get_picture_description(struct id3_frame* frame)
-{
-        int j;
-        long pt = -1;
-        for (j = 0; j < frame->nfields; j++) {
-                union id3_field* field = id3_frame_field(frame, j);
-                if (field->type == ID3_FIELD_TYPE_STRING) {
-                        return id3_ucs4_utf8duplicate(id3_field_getstring(field));
-                }
-        }
-        return NULL;
 }
 
 unsigned char*
@@ -258,6 +215,20 @@ id3_frame_set_picture(struct id3_frame* frame,
         }
 }
 
+char*
+id3_frame_get_picture_description(struct id3_frame* frame)
+{
+        int i;
+        long pt = -1;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_STRING) {
+                        return id3_ucs4_utf8duplicate(id3_field_getstring(field));
+                }
+        }
+        return NULL;
+}
+
 void
 id3_frame_set_picture_description(struct id3_frame* frame,
                                   const char*       desc)
@@ -271,4 +242,33 @@ id3_frame_set_picture_description(struct id3_frame* frame,
                         free(s);
                 }
         }
+}
+
+union id3_field*
+id3_frame_get_binary_field(struct id3_frame* frame)
+{
+        int i;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type != ID3_FIELD_TYPE_BINARYDATA)
+                        continue;
+                return field;
+        }
+        return NULL;
+}
+
+enum id3_picture_type
+id3_frame_get_picture_type(struct id3_frame* frame)
+{
+        int i;
+        long pt = -1;
+        for (i = 0; i < frame->nfields; i++) {
+                union id3_field* field = id3_frame_field(frame, i);
+                if (field->type == ID3_FIELD_TYPE_INT8) {
+                        if (pt != -1)
+                                return -1;
+                        pt = field->number.value;
+                }
+        }
+        return pt;
 }
