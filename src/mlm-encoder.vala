@@ -8,7 +8,7 @@ namespace MLM {
         private static const string UI =
             Config.PKGDATADIR +
             Path.DIR_SEPARATOR_S +
-            "data/mlm-encoder.ui";
+            "mlm-encoder.ui";
 
         private int current_year;
         private Genre[] genres;
