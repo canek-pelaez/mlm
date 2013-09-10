@@ -51,5 +51,7 @@ void                  id3_frame_set_picture              (struct id3_frame*     
                                                           const char*           desc);
 enum id3_picture_type id3_frame_get_picture_type         (struct id3_frame*     frame);
 char*                 id3_frame_get_picture_description  (struct id3_frame*     frame);
+void                  id3_frame_set_picture_description  (struct id3_frame*     frame,
+                                                          const char*           desc);
 
 #endif /* _ID3TAG_EXTRA_H */
