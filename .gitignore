@@ -22,4 +22,6 @@ src/mlm-encoder
 src/mlm-tags
 src/mlm-verify
 stamp-h1
+stamp-it
 vapi/mlm.vapi
+po/POTFILES
