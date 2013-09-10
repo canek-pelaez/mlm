@@ -28,13 +28,17 @@ namespace MLM {
         private string report;
         private bool anomalies;
         private bool fixit;
+        private bool missing_pictures;
+        private bool small_pictures;
         private int current_year;
 
-        public Verify(string filename, bool fixit = false) {
+        public Verify(string filename, bool fixit, bool missing_pictures, bool small_pictures) {
             this.filename = filename;
             report = "";
             anomalies = false;
             this.fixit = fixit;
+            this.missing_pictures = missing_pictures;
+            this.small_pictures = small_pictures;
             DateTime dt = new DateTime.now_local();
             current_year = dt.get_year();
         }
@@ -277,6 +281,10 @@ namespace MLM {
                 add_to_report("\tFile has more than one front cover picture.\n");
             if (ap > 1)
                 add_to_report("\tFile has more than one artist picture.\n");
+            if (missing_pictures && fcp < 1)
+                add_to_report("\tFile has no front cover picture.\n");
+            if (missing_pictures && ap < 1)
+                add_to_report("\tFile has no artist picture.\n");
             if (comments > 1)
                 add_to_report("\tFile has more than one comment.\n");
             if (anomalies && fixit) {
@@ -309,12 +317,20 @@ namespace MLM {
 
         public static int main(string[] args) {
             bool fixit = false;
+            bool missing_pictures = false;
+            bool small_pictures = false;
             for (int i = 1; i < args.length; i++) {
                 if (args[i] == "--fix") {
                     fixit = true;
                     continue;
+                } else if (args[i] == "--missing-pictures") {
+                    missing_pictures = true;
+                    continue;
+                } else if (args[i] == "--small-pictures") {
+                    small_pictures = true;
+                    continue;
                 }
-                Verify v = new Verify(args[i], fixit);
+                Verify v = new Verify(args[i], fixit, missing_pictures, small_pictures);
                 v.verify();
             }
 
