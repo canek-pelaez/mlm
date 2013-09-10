@@ -360,12 +360,12 @@ namespace MLM {
         }
 
         private void create_progress_dialog() {
-            progress = new Dialog.with_buttons("Reencoding", window,
-                                                      DialogFlags.MODAL,
-                                                      Stock.CANCEL,
-                                                      ResponseType.CANCEL);
+            progress = new Dialog.with_buttons(_("Reencoding"), window,
+                                               DialogFlags.MODAL,
+                                               Stock.CANCEL,
+                                               ResponseType.CANCEL);
             progress.border_width = 6;
-            Label label = new Label("Reencoding '%s'\ninto '%s'... ".printf
+            Label label = new Label(_("Reencoding '%s'\ninto '%s'... ").printf
                                     (Path.get_basename(filename),
                                      Path.get_basename(dest)));
             progress_bar = new ProgressBar();
@@ -503,8 +503,8 @@ namespace MLM {
                                            DialogFlags.DESTROY_WITH_PARENT,
                                            MessageType.QUESTION,
                                            ButtonsType.YES_NO,
-                                           "The file '%s' already exists.\n" +
-                                           "Rewrite it?", Path.get_basename(dest));
+                                           _("The file '%s' already exists.\nRewrite it?"),
+                                           Path.get_basename(dest));
                 int r = dialog.run();
                 dialog.destroy();
                 if (r != ResponseType.YES)
@@ -516,8 +516,7 @@ namespace MLM {
                 dialog = new MessageDialog(window,
                                            DialogFlags.DESTROY_WITH_PARENT,
                                            MessageType.INFO, ButtonsType.OK,
-                                           "There was an error while\n" +
-                                           "reencoding file '%s'.\n",
+                                           _("There was an error while\nreencoding file '%s'.\n"),
                                            Path.get_basename(filename));
                 dialog.run();
                 dialog.destroy();
