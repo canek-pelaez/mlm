@@ -17,7 +17,7 @@ ID3TAG_EXTRA_CFLAGS = -I$(srcdir)/id3tag-extra
 ID3TAG_EXTRA_LIBS = id3tag-extra/libid3tag-extra.la
 
 LIBMLM_VALAFLAGS = --pkg mlm
-LIBMLM_CFLAGS = -Isrc
+LIBMLM_CFLAGS = -I$(srcdir)/src
 LIBMLM_LIBS = src/libmlm.la
 
 # libid3tag-extra.a
@@ -33,8 +33,8 @@ src_libmlm_la_SOURCES =				\
 	src/mlm-frame-id.vala			\
 	src/mlm-file-tags.vala
 src_libmlm_la_VALAFLAGS =			\
-	--vapi=$(srcdir)/vapi/mlm.vapi		\
-	-H $(srcdir)/src/mlm.h			\
+	--vapi=vapi/mlm.vapi			\
+	-H src/mlm.h				\
 	$(COMMON_VALAFLAGS)
 src_libmlm_la_CFLAGS = $(MLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
 src_libmlm_la_LIBADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS)
@@ -60,12 +60,16 @@ src_mlm_encoder_VALAFLAGS = $(COMMON_VALAFLAGS) $(LIBMLM_VALAFLAGS) @GTK_PACKAGE
 src_mlm_encoder_CFLAGS = $(MLM_CFLAGS) $(GTK_CFLAGS) $(LIBMLM_CFLAGS)
 src_mlm_encoder_LDADD = $(MLM_LIBS) $(GTK_LIBS) $(LIBMLM_LIBS)
 
-noinst_DATA = vapi/config.vapi vapi/id3tag.vapi
+uidir = $(pkgdatadir)
+ui_DATA = data/mlm-encoder.ui data/nodisc.jpg data/person.jpg
 
-EXTRA_DIST = $(noinst_DATA)
+noinst_DATA = vapi/config.vapi vapi/id3tag.vapi vapi/mlm.vapi
+
+EXTRA_DIST = $(noinst_DATA) $(ui_DATA) src/mlm.h
+
 DISTCLEANFILES = src/mlm.h vapi/mlm.vapi
 
-#SUBDIRS = po
+SUBDIRS = po
 
 dist-hook:
 	cd ${top_srcdir} && git log --no-color --stat --name-only --date=short --abbrev-commit > ${srcdir}/ChangeLog
