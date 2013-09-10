@@ -40,6 +40,7 @@ namespace MLM {
         private Gst.Pipeline pipe;
         private bool reencoding;
 
+        private bool transitioning;
         private bool updating_tracks;
         private bool album_mode;
 
@@ -51,6 +52,7 @@ namespace MLM {
             genre_map = new HashMap<string, int>();
             for (int i = 0; i < genres.length; i++)
                 genre_map[genres[i].to_string()] = i;
+            transitioning = false;
             updating_tracks = false;
             album_mode = false;
             this.files = files;
@@ -130,22 +132,32 @@ namespace MLM {
         }
 
         private void update_artist() {
+            if (transitioning)
+                return;
             file_tags.update_artist(artist_entry.get_text());
         }
 
         private void update_title() {
+            if (transitioning)
+                return;
             file_tags.update_title(title_entry.get_text());
         }
 
         private void update_album() {
+            if (transitioning)
+                return;
             file_tags.update_album(album_entry.get_text());
         }
 
         private void update_year() {
+            if (transitioning)
+                return;
             file_tags.update_year((int)year_spin.get_value());
         }
 
         private void update_track_number() {
+            if (transitioning)
+                return;
             if (updating_tracks)
                 return;
             updating_tracks = true;
@@ -160,6 +172,8 @@ namespace MLM {
         }
 
         private void update_track_count() {
+            if (transitioning)
+                return;
             if (updating_tracks)
                 return;
             updating_tracks = true;
@@ -174,10 +188,14 @@ namespace MLM {
         }
 
         private void update_disc() {
+            if (transitioning)
+                return;
             file_tags.update_disc_number((int)disc_spin.get_value());
         }
 
         private void update_genre() {
+            if (transitioning)
+                return;
             string g = genre_entry.get_text();
             if (!genre_map.has_key(g))
                 return;
@@ -185,15 +203,39 @@ namespace MLM {
         }
 
         private void update_comment() {
+            if (transitioning)
+                return;
             file_tags.update_comment(comment_entry.get_text());
         }
 
         private void update_composer() {
+            if (transitioning)
+                return;
             file_tags.update_composer(composer_entry.get_text());
         }
 
         private void update_original() {
+            if (transitioning)
+                return;
             file_tags.update_original_artist(original_entry.get_text());
+        }
+
+        private void clear_slate() {
+            transitioning = true;
+            artist_entry.set_text("");
+            title_entry.set_text("");
+            album_entry.set_text("");
+            year_spin.set_value(current_year);
+            track_number_spin.set_value(1);
+            track_count_spin.set_value(1);
+            disc_spin.set_value(1);
+            genre_entry.set_text("");
+            comment_entry.set_text("");
+            composer_entry.set_text("");
+            original_entry.set_text("");
+            cover_image.set_from_pixbuf(no_cover);
+            artist_image.set_from_pixbuf(no_artist);
+            transitioning = false;
         }
 
         private void next_filename() {
@@ -202,6 +244,7 @@ namespace MLM {
                 return;
             }
             iterator.next();
+            clear_slate();
             filename = iterator.get();
             frame_label.set_markup("<b>" + Path.get_basename(filename) + "</b>");
             file_tags = new FileTags(filename);

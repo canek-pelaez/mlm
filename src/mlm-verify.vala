@@ -4,6 +4,7 @@ namespace MLM {
 
     public class Verify {
 
+        private Tag tag;
         private string filename;
         private string report;
         private bool anomalies;
@@ -53,11 +54,12 @@ namespace MLM {
                 add_to_report("\tThe year %d is out of range.\n".printf(year));
         }
 
-        private void verify_disc_frame(Frame frame) {
+        private int verify_disc_frame(Frame frame) {
             verify_frame_textencoding(frame, "disc");
             int disc = int.parse(frame.get_text());
             if (disc < 1 || disc > 99)
                 add_to_report("\tThe disc %d is out of range.\n".printf(disc));
+            return disc;
         }
 
         private void verify_genre_frame(Frame frame) {
@@ -122,6 +124,7 @@ namespace MLM {
         }
 
         private void verify_picture_frame(Frame frame) {
+            bool detach = false;
             for (int i = 0; i < frame.fields.length; i++) {
                 Field field = frame.field(i);
                 if (field.type == FieldType.TEXTENCODING &&
@@ -132,8 +135,16 @@ namespace MLM {
                     add_to_report("\tThe picture mime type is not 'image/jpeg'.\n");
                 if (field.type == FieldType.INT8 &&
                     field.getint() != PictureType.COVERFRONT &&
-                    field.getint() != PictureType.ARTIST)
+                    field.getint() != PictureType.ARTIST) {
                     add_to_report("\tThe picture type is neither cover front nor artist.\n");
+                    if (fixit)
+                        detach = true;
+                }
+            }
+            if (detach) {
+                tag.detachframe(frame);
+                add_to_report("\t\t...fixed.\n");
+                return;
             }
             string desc = frame.get_picture_description();
             if (desc == "") {
@@ -164,7 +175,7 @@ namespace MLM {
                 if (tn < 1 || tn > 99)
                     add_to_report("\tThe track number %d is out of range.\n".printf(tn));
                 if (tc < 1 || tc > 99)
-                    add_to_report("\tThe track count %d is out of range.\n".printf(tn));
+                    add_to_report("\tThe track count %d is out of range.\n".printf(tc));
                 if (tc < tn)
                     add_to_report("\tThe track count %d is less than the track number.\n".printf(tn));
             }
@@ -181,7 +192,7 @@ namespace MLM {
                 stderr.printf("%s: Could not link to file.\n", filename);
                 return;
             }
-            Tag tag = file.tag();
+            tag = file.tag();
             if (tag == null) {
                 stderr.printf("%s: Could not extract tags from file.\n", filename);
                 return;
@@ -193,9 +204,12 @@ namespace MLM {
             int ap = 0;
             int comments = 0;
             int tn = -1;
-            string track = "";
+            int d = -1;
             string artist = "";
             string title = "";
+            string album = "";
+            string track = "";
+            string disc = "";
             for (int i = 0; i < tag.frames.length; i++) {
                 Frame frame = tag.frames[i];
                 if (frame.id == FrameId.ARTIST) {
@@ -206,6 +220,7 @@ namespace MLM {
                     title = frame.get_text();
                 } else if (frame.id == FrameId.ALBUM) {
                     verify_text_frame(frame, "album", true);
+                    album = frame.get_text();
                 } else if (frame.id == FrameId.COMPOSER) {
                     verify_text_frame(frame, "composer", false);
                 } else if (frame.id == FrameId.ORIGINAL) {
@@ -213,7 +228,8 @@ namespace MLM {
                 } else if (frame.id == FrameId.YEAR) {
                     verify_year_frame(frame);
                 } else if (frame.id == FrameId.DISC) {
-                    verify_disc_frame(frame);
+                    d = verify_disc_frame(frame);
+                    disc = "Disc %d".printf(d);
                 } else if (frame.id == FrameId.TRACK) {
                     tn = verify_track_frame(frame);
                     track = "%02d".printf(tn);
@@ -232,7 +248,7 @@ namespace MLM {
                         ap++;
                 }
             }
-            if (tn == -1)
+            if (tn == -1 && album != "(No Disc)")
                 add_to_report("\tThe file has no track defined.\n");
             if (artist == "")
                 add_to_report("\tThe file has no artist defined.\n");
@@ -249,12 +265,24 @@ namespace MLM {
                 file.update();
             }
             file.close();
+            string dn = Path.get_dirname(filename);
             string bn = Path.get_basename(filename);
-            if (bn != track + " - " + artist + " - " + title + ".mp3" &&
-                bn != artist + " - " + title + ".mp3") {
-                add_to_report("\tFile it's not called '%s' nor '%s'.\n".printf
-                              (track + " - " + artist + " - " + title + ".mp3",
-                               artist + " - " + title + ".mp3"));
+            artist = artist.replace("/", "_");
+            title = title.replace("/", "_");
+            string cn1 = track + " - " + artist + " - " + title + ".mp3";
+            string cn2 = artist + " - " + title + ".mp3";
+            string cn3 = disc + " - " + track + " - " + artist + " - " + title + ".mp3";
+            if (bn != cn1 && bn != cn2 && bn != cn3) {
+                add_to_report("\tFile it's not called '%s' nor '%s' nor '%s'.\n".printf(cn1, cn2, cn3));
+                if (fixit) {
+                    if (bn.data[0] >= (int)'0' && bn.data[0] <= (int)'9')
+                        FileUtils.rename(filename, dn + Path.DIR_SEPARATOR_S + cn1);
+                    else if (bn.has_prefix("Disc"))
+                        FileUtils.rename(filename, dn + Path.DIR_SEPARATOR_S + cn3);
+                    else
+                        FileUtils.rename(filename, dn + Path.DIR_SEPARATOR_S + cn2);
+                    add_to_report("\t\t...fixed.\n");
+                }
             }
             if (anomalies)
                 stdout.printf(report);
