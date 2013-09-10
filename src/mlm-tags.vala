@@ -125,50 +125,117 @@ Format for printing:
             exit(0);
         }
 
+        private static string boxed_output(ArrayList<string> lines, int max_len) {
+            string output = "┌";
+            for (int i = 0; i < max_len; i++)
+                output += "─";
+            output += "┐\n";
+
+            int c = 0;
+            foreach (var line in lines) {
+                output += "│" + line;
+                for (int i = 0; i < max_len - line.char_count(); i++)
+                    output += " ";
+                output += "│\n";
+                if (c++ == 0) {
+                    output += "├";
+                    for (int i = 0; i < max_len; i++)
+                        output += "─";
+                    output += "┤\n";
+                }
+            }
+
+            output += "└";
+            for (int i = 0; i < max_len; i++)
+                output += "─";
+            output += "┘\n";
+
+            return output;
+        }
+
         private static void print_standard_tags(string filename) {
             if (!FileUtils.test(filename, FileTest.EXISTS)) {
                 stderr.printf("No such file: '%s'\n", filename);
                 return;
             }
-            stdout.printf("=============== %s\n",
-                          Filename.display_basename(filename));
             var file_tags = new FileTags(filename);
             if (!file_tags.has_tags) {
-                stderr.printf("The file has no ID3 v2.4.0 tags.\n");
+                stderr.printf("The file '%s' has no ID3 v2.4.0 tags.\n", filename);
                 return;
             }
+            var lines = new ArrayList<string>();
+            string line = Filename.display_basename(filename);
+            int max_len = line.char_count();
+            lines.add(line);
             Genre[] genres = Genre.all();
-            if (file_tags.artist != null)
-                stdout.printf("Artist: %s\n", file_tags.artist);
-            if (file_tags.title != null)
-                stdout.printf("Title: %s\n", file_tags.title);
-            if (file_tags.album != null)
-                stdout.printf("Album: %s\n", file_tags.album);
-            if (file_tags.year != -1)
-                stdout.printf("Year: %d\n", file_tags.year);
+            if (file_tags.artist != null) {
+                line = "Artist: %s".printf(file_tags.artist);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.title != null) {
+                line = "Title: %s".printf(file_tags.title);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.album != null) {
+                line = "Album: %s".printf(file_tags.album);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.year != -1) {
+                line = "Year: %d".printf(file_tags.year);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
             if (file_tags.track_number != -1) {
                 if (file_tags.track_count != -1) {
-                    stdout.printf("Track: %d of %d\n",
-                                  file_tags.track_number,
-                                  file_tags.track_count);
+                    line = "Track: %d of %d".printf(file_tags.track_number,
+                                                      file_tags.track_count);
+                    max_len = int.max(line.char_count(), max_len);
+                    lines.add(line);
                 } else {
-                    stdout.printf("Track: %d\n", file_tags.track_number);
+                    line = "Track: %d".printf(file_tags.track_number);
+                    max_len = int.max(line.char_count(), max_len);
+                    lines.add(line);
                 }
             }
-            if (file_tags.disc_number != -1)
-                stdout.printf("Disc number: %d\n", file_tags.disc_number);
-            if (file_tags.genre != -1)
-                stdout.printf("Genre: %s\n", genres[file_tags.genre].to_string());
-            if (file_tags.comment != null)
-                stdout.printf("Comment: %s\n", file_tags.comment);
-            if (file_tags.composer != null)
-                stdout.printf("Composer: %s\n", file_tags.composer);
-            if (file_tags.original_artist != null)
-                stdout.printf("Original artist: %s\n", file_tags.original_artist);
-            if (file_tags.front_cover_picture != null)
-                stdout.printf("Front cover picture: %s\n", file_tags.front_cover_picture_description);
-            if (file_tags.artist_picture != null)
-                stdout.printf("Artist picture: %s\n", file_tags.artist_picture_description);
+            if (file_tags.disc_number != -1) {
+                line = "Disc number: %d".printf(file_tags.disc_number);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.genre != -1) {
+                line = "Genre: %s".printf(genres[file_tags.genre].to_string());
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.comment != null) {
+                line = "Comment: %s".printf(file_tags.comment);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.composer != null) {
+                line = "Composer: %s".printf(file_tags.composer);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.original_artist != null) {
+                line = "Original artist: %s".printf(file_tags.original_artist);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.front_cover_picture != null) {
+                line = "Front cover picture: %s".printf(file_tags.front_cover_picture_description);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            if (file_tags.artist_picture != null) {
+                line = "Artist picture: %s".printf(file_tags.artist_picture_description);
+                max_len = int.max(line.char_count(), max_len);
+                lines.add(line);
+            }
+            stdout.printf("%s", boxed_output(lines, max_len));
         }
 
         private static void print_tags(string filename, string format) {
