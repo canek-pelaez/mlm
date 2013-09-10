@@ -85,6 +85,8 @@ namespace Id3Tag {
         public PictureType get_picture_type();
         [CCode(cheader_filename = "id3tag-extra.h")]
         public string get_picture_description();
+        [CCode(cheader_filename = "id3tag-extra.h")]
+        public void set_picture_description(string desc);
     }
 
     [CCode(cheader_filename = "id3tag.h", cname = "enum id3_field_textencoding", cprefix = "ID3_FIELD_TEXTENCODING_")]
@@ -158,6 +160,7 @@ namespace Id3Tag {
         public void settextencoding(FieldTextEncoding text_encoding);
         public unowned string getlatin1();
         public void setlatin1(string latin1);
+        public void setlanguage(string lang);
         public long getint();
         public void setint(long n);
         public unowned uint32* getstring();
