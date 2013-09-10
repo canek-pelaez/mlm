@@ -46,20 +46,6 @@ src_mlm_verify_VALAFLAGS = $(COMMON_VALAFLAGS) $(LIBMLM_VALAFLAGS)
 src_mlm_verify_CFLAGS = $(MLM_CFLAGS) $(LIBMLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
 src_mlm_verify_LDADD = $(MLM_LIBS) $(LIBMLM_LIBS) $(ID3TAG_EXTRA_LIBS)
 
-# mlm-fix-pictures
-bin_PROGRAMS += src/mlm-fix-pictures
-src_mlm_fix_pictures_SOURCES = src/mlm-fix-pictures.vala
-src_mlm_fix_pictures_VALAFLAGS = $(COMMON_VALAFLAGS)
-src_mlm_fix_pictures_CFLAGS = $(MLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
-src_mlm_fix_pictures_LDADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS)
-
-# mlm-fix-duplicated-pictures
-bin_PROGRAMS += src/mlm-fix-duplicated-pictures
-src_mlm_fix_duplicated_pictures_SOURCES = src/mlm-fix-duplicated-pictures.vala
-src_mlm_fix_duplicated_pictures_VALAFLAGS = $(COMMON_VALAFLAGS)
-src_mlm_fix_duplicated_pictures_CFLAGS = $(MLM_CFLAGS) $(ID3TAG_EXTRA_CFLAGS)
-src_mlm_fix_duplicated_pictures_LDADD = $(MLM_LIBS) $(ID3TAG_EXTRA_LIBS)
-
 # mlm-tags
 bin_PROGRAMS += src/mlm-tags
 src_mlm_tags_VALAFLAGS = $(COMMON_VALAFLAGS) $(LIBMLM_VALAFLAGS)
