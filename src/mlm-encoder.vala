@@ -65,6 +65,7 @@ namespace MLM {
         private bool transitioning;
         private bool updating_tracks;
         private bool album_mode;
+        private bool encoding_cancelled;
 
         private string filename;
         private string dest;
@@ -293,7 +294,7 @@ namespace MLM {
             if (file_tags.disc_number != -1)
                 disc_spin.set_value(file_tags.disc_number);
             else
-                disc_spin.set_value(1900);
+                disc_spin.set_value(1);
             if (file_tags.genre != -1)
                 genre_entry.set_text(genres[file_tags.genre].to_string());
             else
@@ -409,6 +410,12 @@ namespace MLM {
             if (p < 1.0)
                 return true;
 
+            if (encoding_cancelled) {
+                encoding_cancelled = false;
+                FileUtils.remove(dest);
+                return false;
+            }
+
             uint8[] cp = file_tags.front_cover_picture;
             uint8[] ap = file_tags.artist_picture;
 
@@ -455,27 +462,24 @@ namespace MLM {
         }
 
         private void start_pipeline() {
-            pipe = new Gst.Pipeline("pipe");
-            pipe.set_state(Gst.State.PAUSED);
-            var src = Gst.ElementFactory.make("filesrc", "source");
+            try {
+                pipe = (Gst.Pipeline)
+                Gst.parse_launch(
+                    "filesrc name=src                ! " +
+                    "decodebin                       ! " +
+                    "audioconvert                    ! " +
+                    "rglimiter                       ! " +
+                    "audioconvert                    ! " +
+                    "lamemp3enc bitrate=128 cbr=true ! " +
+                    "filesink name=sink");
+            } catch(Error e) {
+                print("%s\n", e.message);
+            }
+
+            var src = pipe.get_by_name("src");
             src.set_property("location", filename);
-            var mad = Gst.ElementFactory.make("mad", "mad");
-            var ac1 = Gst.ElementFactory.make("audioconvert", "ac1");
-            var rgl = Gst.ElementFactory.make("rglimiter", "rgl");
-            var ac2 = Gst.ElementFactory.make("audioconvert", "ac2");
-            var lame = Gst.ElementFactory.make("lamemp3enc", "lame");
-            lame.set_property("bitrate", 128);
-            lame.set_property("cbr", true);
-            var sink = Gst.ElementFactory.make("filesink", "sink");
+            var sink = pipe.get_by_name("sink");
             sink.set_property("location", dest);
-            pipe.add(src);
-            pipe.add(mad);
-            pipe.add(ac1);
-            pipe.add(rgl);
-            pipe.add(ac2);
-            pipe.add(lame);
-            pipe.add(sink);
-            src.link_many(mad, ac1, rgl, ac2, lame, sink);
 
             var bus = pipe.get_bus();
             bus.add_signal_watch();
@@ -545,6 +549,10 @@ namespace MLM {
             progress.show_all();
             Idle.add(upgrade_progressbar);
             int r = progress.run();
+            if (r != ResponseType.OK) {
+                change_pipeline_state(Gst.State.NULL);
+                encoding_cancelled = true;
+            }
             progress.destroy();
             if (r == ResponseType.OK) {
                 next_filename();
