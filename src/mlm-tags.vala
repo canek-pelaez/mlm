@@ -68,6 +68,7 @@ namespace MLM {
     public class Tags {
 
         private static int current_year;
+        private static int output_width = 60;
 
         private static void print_usage(int exit_status) {
             stderr.printf("Use: mlm-tags [options] mp3file1 [mp3file2 ...]\n\n");
@@ -125,28 +126,47 @@ Format for printing:
             exit(0);
         }
 
-        private static string boxed_output(ArrayList<string> lines, int max_len) {
+        private static ArrayList<string> split_line(string line) {
+            var ll = new ArrayList<string>();
+            string[] words = line.split(" ");
+            string l = words[0];
+            for (int i = 1; i < words.length; i++) {
+                if (l.char_count() + 1 + words[i].char_count() < output_width - 2) {
+                    l += " " + words[i];
+                } else {
+                    ll.add(l);
+                    l = "    " + words[i];
+                }
+            }
+            ll.add(l);
+            return ll;
+        }
+
+        private static string boxed_output(ArrayList<string> lines) {
             string output = "┌";
-            for (int i = 0; i < max_len; i++)
+            for (int i = 0; i < output_width - 2; i++)
                 output += "─";
             output += "┐\n";
 
             int c = 0;
             foreach (var line in lines) {
-                output += "│" + line;
-                for (int i = 0; i < max_len - line.char_count(); i++)
-                    output += " ";
-                output += "│\n";
+                var ll = split_line(line);
+                foreach (var l in ll) {
+                    output += "│" + l;
+                    for (int i = 0; i < output_width - l.char_count() - 2; i++)
+                        output += " ";
+                    output += "│\n";
+                }
                 if (c++ == 0) {
                     output += "├";
-                    for (int i = 0; i < max_len; i++)
+                    for (int i = 0; i < output_width - 2; i++)
                         output += "─";
                     output += "┤\n";
                 }
             }
 
             output += "└";
-            for (int i = 0; i < max_len; i++)
+            for (int i = 0; i < output_width - 2; i++)
                 output += "─";
             output += "┘\n";
 
@@ -165,77 +185,38 @@ Format for printing:
             }
             var lines = new ArrayList<string>();
             string line = Filename.display_basename(filename);
-            int max_len = line.char_count();
             lines.add(line);
             Genre[] genres = Genre.all();
-            if (file_tags.artist != null) {
-                line = "Artist: %s".printf(file_tags.artist);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.title != null) {
-                line = "Title: %s".printf(file_tags.title);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.album != null) {
-                line = "Album: %s".printf(file_tags.album);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.year != -1) {
-                line = "Year: %d".printf(file_tags.year);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
+            if (file_tags.artist != null)
+                lines.add("Artist: %s".printf(file_tags.artist));
+            if (file_tags.title != null)
+                lines.add("Title: %s".printf(file_tags.title));
+            if (file_tags.album != null)
+                lines.add("Album: %s".printf(file_tags.album));
+            if (file_tags.year != -1)
+                lines.add("Year: %d".printf(file_tags.year));
             if (file_tags.track_number != -1) {
-                if (file_tags.track_count != -1) {
-                    line = "Track: %d of %d".printf(file_tags.track_number,
-                                                      file_tags.track_count);
-                    max_len = int.max(line.char_count(), max_len);
-                    lines.add(line);
-                } else {
-                    line = "Track: %d".printf(file_tags.track_number);
-                    max_len = int.max(line.char_count(), max_len);
-                    lines.add(line);
-                }
+                if (file_tags.track_count != -1)
+                    lines.add("Track: %d of %d".printf(file_tags.track_number,
+                                                       file_tags.track_count));
+                else
+                    lines.add("Track: %d".printf(file_tags.track_number));
             }
-            if (file_tags.disc_number != -1) {
-                line = "Disc number: %d".printf(file_tags.disc_number);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.genre != -1) {
-                line = "Genre: %s".printf(genres[file_tags.genre].to_string());
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.comment != null) {
-                line = "Comment: %s".printf(file_tags.comment);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.composer != null) {
-                line = "Composer: %s".printf(file_tags.composer);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.original_artist != null) {
-                line = "Original artist: %s".printf(file_tags.original_artist);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.front_cover_picture != null) {
-                line = "Front cover picture: %s".printf(file_tags.front_cover_picture_description);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            if (file_tags.artist_picture != null) {
-                line = "Artist picture: %s".printf(file_tags.artist_picture_description);
-                max_len = int.max(line.char_count(), max_len);
-                lines.add(line);
-            }
-            stdout.printf("%s", boxed_output(lines, max_len));
+            if (file_tags.disc_number != -1)
+                lines.add("Disc number: %d".printf(file_tags.disc_number));
+            if (file_tags.genre != -1)
+                lines.add("Genre: %s".printf(genres[file_tags.genre].to_string()));
+            if (file_tags.comment != null)
+                lines.add("Comment: %s".printf(file_tags.comment));
+            if (file_tags.composer != null)
+                lines.add("Composer: %s".printf(file_tags.composer));
+            if (file_tags.original_artist != null)
+                lines.add("Original artist: %s".printf(file_tags.original_artist));
+            if (file_tags.front_cover_picture != null)
+                lines.add("Front cover picture: %s".printf(file_tags.front_cover_picture_description));
+            if (file_tags.artist_picture != null)
+                lines.add("Artist picture: %s".printf(file_tags.artist_picture_description));
+            stdout.printf("%s", boxed_output(lines));
         }
 
         private static void print_tags(string filename, string format) {
