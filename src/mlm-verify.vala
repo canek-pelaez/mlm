@@ -48,6 +48,27 @@ namespace MLM {
             report += s;
         }
 
+        private string to_title(string str) {
+            string t = "";
+            bool up = true;
+            unichar uc;
+            int i = 0;
+            while (str.get_next_char(ref i, out uc)) {
+                if (up) {
+                    uc = uc.toupper();
+                    up = false;
+                } else {
+                    uc = uc.tolower();
+                }
+                char[] u = new char[7];
+                uc.to_utf8((string)u);
+                if ((string)u == " ")
+                    up = true;
+                t += (string)u;
+            }
+            return t;
+        }
+
         private void verify_frame_textencoding(Frame frame, string fid) {
             for (int i = 0; i < frame.fields.length; i++) {
                 Field field = frame.field(i);
@@ -254,6 +275,15 @@ namespace MLM {
                 } else if (frame.id == FrameId.TITLE) {
                     verify_text_frame(frame, "title", true);
                     title = frame.get_text();
+                    string tt = to_title(title);
+                    if (tt != title) {
+                        add_to_report("\tThe title %s is not in title format.\n".printf(title));
+                        if (fixit) {
+                            title = tt;
+                            frame.set_text(title);
+                            add_to_report("\t\t...fixed.\n");
+                        }
+                    }
                 } else if (frame.id == FrameId.ALBUM) {
                     verify_text_frame(frame, "album", true);
                     album = frame.get_text();
