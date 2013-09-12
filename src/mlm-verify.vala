@@ -148,6 +148,7 @@ namespace MLM {
 
         private void verify_picture_frame(Frame frame) {
             bool detach = false;
+            PictureType pt = PictureType.OTHER;
             for (int i = 0; i < frame.fields.length; i++) {
                 Field field = frame.field(i);
                 if (field.type == FieldType.TEXTENCODING &&
@@ -156,12 +157,13 @@ namespace MLM {
                 if (field.type == FieldType.LATIN1 &&
                     (string)field.getlatin1() != "image/jpeg")
                     add_to_report("\tThe picture mime type is not 'image/jpeg'.\n");
-                if (field.type == FieldType.INT8 &&
-                    field.getint() != PictureType.COVERFRONT &&
-                    field.getint() != PictureType.ARTIST) {
-                    add_to_report("\tThe picture type is neither cover front nor artist.\n");
-                    if (fixit)
-                        detach = true;
+                if (field.type == FieldType.INT8) {
+                    pt = (PictureType)field.getint();
+                    if (pt != PictureType.COVERFRONT && pt != PictureType.ARTIST) {
+                        add_to_report("\tThe picture type is neither cover front nor artist.\n");
+                        if (fixit)
+                            detach = true;
+                    }
                 }
             }
             if (detach) {
@@ -179,6 +181,15 @@ namespace MLM {
                     frame.set_picture_description("(No Disc)");
                     add_to_report("\t\t...fixed.\n");
                 }
+            }
+            Frame album_frame = tag.search_frame(FrameId.ALBUM);
+            if (album_frame == null)
+                return;
+            string album = album_frame.get_text();
+            if (pt == PictureType.COVERFRONT && desc != album + " cover") {
+                add_to_report("\tThe front cover description is not correct.\n");
+                if (fixit)
+                    frame.set_picture_description(album + " cover");
             }
         }
 
