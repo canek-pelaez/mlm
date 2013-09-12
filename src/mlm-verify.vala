@@ -54,13 +54,17 @@ namespace MLM {
             unichar uc;
             int i = 0;
             while (str.get_next_char(ref i, out uc)) {
-                if (up) {
-                    uc = uc.toupper();
-                    up = false;
-                } else {
-                    uc = uc.tolower();
-                }
                 char[] u = new char[7];
+                if (uc.isalpha()) {
+                    if (up) {
+                        uc = uc.toupper();
+                        up = false;
+                    }
+                } else {
+                    uc.to_utf8((string)u);
+                    if (!uc.isdigit() && ((string)u) != "'")
+                        up = true;
+                }
                 uc.to_utf8((string)u);
                 if ((string)u == " ")
                     up = true;
@@ -203,6 +207,8 @@ namespace MLM {
                     add_to_report("\t\t...fixed.\n");
                 }
             }
+            if (desc == "(No Disc)")
+                return;
             Frame album_frame = tag.search_frame(FrameId.ALBUM);
             if (album_frame == null)
                 return;
