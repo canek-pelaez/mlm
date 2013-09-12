@@ -188,8 +188,10 @@ namespace MLM {
             string album = album_frame.get_text();
             if (pt == PictureType.COVERFRONT && desc != album + " cover") {
                 add_to_report("\tThe front cover description is not correct.\n");
-                if (fixit)
+                if (fixit) {
                     frame.set_picture_description(album + " cover");
+                    add_to_report("\t\t...fixed.\n");
+                }
             }
         }
 
