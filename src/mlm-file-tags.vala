@@ -68,6 +68,11 @@ namespace MLM {
             }
             artist_frame.set_text(artist);
             this.artist = artist;
+            if (artist_picture != null) {
+                Frame ap_frame;
+                ap_frame = tag.search_picture_frame(PictureType.ARTIST);
+                ap_frame.set_picture_description(artist);
+            }
         }
 
         public void update_title(string title) {
@@ -108,6 +113,11 @@ namespace MLM {
             }
             album_frame.set_text(album);
             this.album = album;
+            if (front_cover_picture != null) {
+                Frame fcp_frame;
+                fcp_frame = tag.search_picture_frame(PictureType.COVERFRONT);
+                fcp_frame.set_picture_description(album + " cover");
+            }
         }
 
         public void update_composer(string composer) {
