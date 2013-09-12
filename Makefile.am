@@ -63,9 +63,15 @@ src_mlm_encoder_LDADD = $(MLM_LIBS) $(GTK_LIBS) $(LIBMLM_LIBS)
 uidir = $(pkgdatadir)
 ui_DATA = data/mlm-encoder.ui data/nodisc.jpg data/person.jpg
 
+data_desktopdir = $(datadir)/applications
+data_desktop_DATA = data/mlm-encoder.desktop
+
+data_iconsdir = $(datadir)/icons/hicolor/scalable/apps
+data_icons_DATA = data/mlm-encoder.svg
+
 noinst_DATA = vapi/config.vapi vapi/id3tag.vapi vapi/mlm.vapi
 
-EXTRA_DIST = $(noinst_DATA) $(ui_DATA) src/mlm.h
+EXTRA_DIST = $(noinst_DATA) $(ui_DATA) $(data_desktop_DATA) $(data_icons_DATA) src/mlm.h
 
 DISTCLEANFILES = src/mlm.h vapi/mlm.vapi
 
