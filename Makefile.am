@@ -60,12 +60,15 @@ src_mlm_encoder_VALAFLAGS = $(COMMON_VALAFLAGS) $(LIBMLM_VALAFLAGS) @GTK_PACKAGE
 src_mlm_encoder_CFLAGS = $(MLM_CFLAGS) $(GTK_CFLAGS) $(LIBMLM_CFLAGS)
 src_mlm_encoder_LDADD = $(MLM_LIBS) $(GTK_LIBS) $(LIBMLM_LIBS)
 
+# glade files
 uidir = $(pkgdatadir)
 ui_DATA = data/mlm-encoder.ui data/nodisc.jpg data/person.jpg
 
+# destop file
 data_desktopdir = $(datadir)/applications
 data_desktop_DATA = data/mlm-encoder.desktop
 
+# icon
 data_iconsdir = $(datadir)/icons/hicolor/scalable/apps
 data_icons_DATA = data/mlm-encoder.svg
 
