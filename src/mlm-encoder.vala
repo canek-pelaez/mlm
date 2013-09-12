@@ -212,6 +212,12 @@ namespace MLM {
             updating_tracks = false;
         }
 
+        private void update_track() {
+            int tn = (int)track_number_spin.get_value();
+            int tc = (int)track_count_spin.get_value();
+            file_tags.update_track(tn, tc);
+        }
+
         private void update_disc() {
             if (transitioning)
                 return;
@@ -424,8 +430,7 @@ namespace MLM {
             update_title();
             update_album();
             update_year();
-            update_track_number();
-            update_track_count();
+            update_track();
             update_disc();
             update_genre();
             update_comment();
