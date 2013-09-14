@@ -73,14 +73,19 @@ namespace MLM {
             return t;
         }
 
-        private void verify_frame_textencoding(Frame frame, string fid) {
+        private void verify_frame_textencoding(Frame frame,
+                                               string fid,
+                                               FieldTextEncoding te = FieldTextEncoding.UTF_8) {
+            string tedesc = "UTF-8";
+            if (te == FieldTextEncoding.ISO_8859_1)
+                tedesc = "ISO-8859-1";
             for (int i = 0; i < frame.fields.length; i++) {
                 Field field = frame.field(i);
                 if (field.type == FieldType.TEXTENCODING &&
-                    field.gettextencoding() != FieldTextEncoding.UTF_8) {
-                    add_to_report("\tThe %s encoding is not UTF-8.\n".printf(fid));
+                    field.gettextencoding() != te) {
+                    add_to_report("\tThe %s encoding is not %s.\n".printf(fid, tedesc));
                     if (fixit) {
-                        field.settextencoding(FieldTextEncoding.UTF_8);
+                        field.settextencoding(te);
                         add_to_report("\t\t...fixed.\n");
                     }
                 }
