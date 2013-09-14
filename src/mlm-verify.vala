@@ -273,6 +273,7 @@ namespace MLM {
             string album = "";
             string track = "";
             string disc = "";
+            var invalid = new Gee.ArrayList<Frame>();
             for (int i = 0; i < tag.frames.length; i++) {
                 Frame frame = tag.frames[i];
                 if (frame.id == FrameId.ARTIST) {
@@ -318,6 +319,15 @@ namespace MLM {
                         fcp++;
                     if (frame.get_picture_type() == PictureType.ARTIST)
                         ap++;
+                } else {
+                    invalid.add(frame);
+                }
+            }
+            foreach (var frame in invalid) {
+                add_to_report("\tThe frame '%s' is invalid.\n".printf(frame.id));
+                if (fixit) {
+                    tag.detachframe(frame);
+                    add_to_report("\t\t...fixed.\n");
                 }
             }
             if (tn == -1 && album != "(No Disc)")
