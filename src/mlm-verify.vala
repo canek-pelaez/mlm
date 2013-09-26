@@ -21,6 +21,12 @@ using Id3Tag;
 
 namespace MLM {
 
+    public enum Options {
+        FIXIT            = 1,
+        MISSING_PICTURES = 1 << 1,
+        SMALL_PICTURES   = 1 << 2
+    }
+
     public class Verify {
 
         private Tag tag;
@@ -32,13 +38,17 @@ namespace MLM {
         private bool small_pictures;
         private int current_year;
 
-        public Verify(string filename, bool fixit, bool missing_pictures, bool small_pictures) {
+        public Verify(string filename, int options) {
             this.filename = filename;
             report = "";
             anomalies = false;
-            this.fixit = fixit;
-            this.missing_pictures = missing_pictures;
-            this.small_pictures = small_pictures;
+
+            if ((options & Options.FIXIT) != 0)
+                fixit = true;
+            if ((options & Options.MISSING_PICTURES) != 0)
+                missing_pictures = true;
+            if ((options & Options.SMALL_PICTURES) != 0)
+                small_pictures = true;
             DateTime dt = new DateTime.now_local();
             current_year = dt.get_year();
         }
@@ -380,21 +390,26 @@ namespace MLM {
         }
 
         public static int main(string[] args) {
-            bool fixit = false;
-            bool missing_pictures = false;
-            bool small_pictures = false;
+            int options = 0;
+            var files = new Gee.ArrayList<string>();
+
             for (int i = 1; i < args.length; i++) {
                 if (args[i] == "--fix") {
-                    fixit = true;
+                    options |= Options.FIXIT;
                     continue;
                 } else if (args[i] == "--missing-pictures") {
-                    missing_pictures = true;
+                    options |= Options.MISSING_PICTURES;
                     continue;
                 } else if (args[i] == "--small-pictures") {
-                    small_pictures = true;
+                    options |= Options.SMALL_PICTURES;
                     continue;
+                } else {
+                    files.add(args[i]);
                 }
-                Verify v = new Verify(args[i], fixit, missing_pictures, small_pictures);
+            }
+
+            foreach (string file in files) {
+                Verify v = new Verify(file, options);
                 v.verify();
             }
 
