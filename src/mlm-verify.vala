@@ -19,6 +19,8 @@
 
 using Id3Tag;
 
+extern void exit(int exit_code);
+
 namespace MLM {
 
     public enum Options {
@@ -389,23 +391,40 @@ namespace MLM {
                 stdout.printf(report);
         }
 
+        private static void use() {
+            stdout.printf(
+"""Use: mlm-verify [OPTIONS] FILE ...
+
+OPTIONS:
+    --help              Print this help.
+    --fix               Automatically fix what is fixable.
+    --missing-pictures  Warn about missing pictures.
+    --small-pictures    Warn about small pictures.
+""");
+            exit(1);
+        }
+
         public static int main(string[] args) {
             int options = 0;
             var files = new Gee.ArrayList<string>();
 
+            if (args.length < 2)
+                use();
+
             for (int i = 1; i < args.length; i++) {
-                if (args[i] == "--fix") {
-                    options |= Options.FIXIT;
+                if (args[i].has_prefix("--")) {
+                    if (args[i] == "--fix") {
+                        options |= Options.FIXIT;
+                    } else if (args[i] == "--missing-pictures") {
+                        options |= Options.MISSING_PICTURES;
+                    } else if (args[i] == "--small-pictures") {
+                        options |= Options.SMALL_PICTURES;
+                    } else {
+                        use();
+                    }
                     continue;
-                } else if (args[i] == "--missing-pictures") {
-                    options |= Options.MISSING_PICTURES;
-                    continue;
-                } else if (args[i] == "--small-pictures") {
-                    options |= Options.SMALL_PICTURES;
-                    continue;
-                } else {
-                    files.add(args[i]);
                 }
+                files.add(args[i]);
             }
 
             foreach (string file in files) {
