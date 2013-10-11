@@ -25,7 +25,7 @@ AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_PACKAGES)
 
-MLM_PACKAGES="--pkg gee-1.0 --pkg id3tag "
+MLM_PACKAGES="--pkg gee-0.8 --pkg id3tag "
 PKG_CHECK_MODULES(MLM, [ gee-0.8 id3tag ])
 
 AC_SUBST(MLM_CFLAGS)
