@@ -143,32 +143,32 @@ Format for printing:
         }
 
         private static string boxed_output(ArrayList<string> lines) {
-            string output = "┌";
+            string output = "┏";
             for (int i = 0; i < output_width - 2; i++)
-                output += "─";
-            output += "┐\n";
+                output += "━";
+            output += "┓\n";
 
             int c = 0;
             foreach (var line in lines) {
                 var ll = split_line(line);
                 foreach (var l in ll) {
-                    output += "│" + l;
+                    output += "┃" + l;
                     for (int i = 0; i < output_width - l.char_count() - 2; i++)
                         output += " ";
-                    output += "│\n";
+                    output += "┃\n";
                 }
                 if (c++ == 0) {
-                    output += "├";
+                    output += "┠";
                     for (int i = 0; i < output_width - 2; i++)
                         output += "─";
-                    output += "┤\n";
+                    output += "┨\n";
                 }
             }
 
-            output += "└";
+            output += "┗";
             for (int i = 0; i < output_width - 2; i++)
-                output += "─";
-            output += "┘\n";
+                output += "━";
+            output += "┛\n";
 
             return output;
         }
