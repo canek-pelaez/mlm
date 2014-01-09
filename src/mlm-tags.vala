@@ -68,7 +68,7 @@ namespace MLM {
     public class Tags {
 
         private static int current_year;
-        private static int output_width = 60;
+        private static int output_width = 80;
 
         private static void print_usage(int exit_status) {
             stderr.printf("Use: mlm-tags [options] mp3file1 [mp3file2 ...]\n\n");
