@@ -25,9 +25,7 @@ namespace MLM {
     public class Encoder {
 
         private static const string UI =
-            Config.PKGDATADIR +
-            Path.DIR_SEPARATOR_S +
-            "mlm-encoder.ui";
+            Config.PKGDATADIR + Path.DIR_SEPARATOR_S + "mlm-encoder.ui";
 
         private int current_year;
         private Genre[] genres;
@@ -340,8 +338,8 @@ namespace MLM {
             FileChooserDialog dialog;
             dialog = new FileChooserDialog("Select image file",
                                            window, FileChooserAction.OPEN,
-                                           Stock.CANCEL, ResponseType.CANCEL,
-                                           Stock.OPEN, ResponseType.ACCEPT);
+                                           _("_Cancel"), ResponseType.CANCEL,
+                                           _("_Open"), ResponseType.ACCEPT);
             int r = dialog.run();
             if (r != ResponseType.ACCEPT) {
                 dialog.destroy();
@@ -388,7 +386,7 @@ namespace MLM {
         private void create_progress_dialog() {
             progress = new Dialog.with_buttons(_("Reencoding"), window,
                                                DialogFlags.MODAL,
-                                               Stock.CANCEL,
+                                               _("_Cancel"),
                                                ResponseType.CANCEL);
             progress.border_width = 6;
             Label label = new Label(_("Reencoding '%s'\ninto '%s'... ").printf
@@ -399,8 +397,8 @@ namespace MLM {
             vbox.pack_start(label);
             vbox.pack_start(new Separator(Orientation.HORIZONTAL));
             vbox.pack_start(progress_bar);
-            Image icon = new Image();
-            icon.set_from_stock(Stock.DIALOG_INFO, IconSize.DIALOG);
+            Image icon = new Image.from_icon_name("dialog-information",
+                                                  IconSize.DIALOG);
             Box hbox = new Box(Orientation.HORIZONTAL, 6);
             hbox.pack_start(icon);
             hbox.pack_start(vbox);
@@ -508,11 +506,9 @@ namespace MLM {
         }
 
         private void message_received(Gst.Message message) {
-            if (message.type == Gst.MessageType.EOS) {
-                if (change_pipeline_state(Gst.State.NULL)) {
+            if (message.type == Gst.MessageType.EOS)
+                if (change_pipeline_state(Gst.State.NULL))
                     reencoding = false;
-                }
-            }
         }
 
         private void reencode() {
