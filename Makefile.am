@@ -9,7 +9,7 @@ AM_CPPFLAGS =					\
 
 COMMON_VALAFLAGS =				\
 	--enable-experimental			\
-	--vapidir=$(srcdir)/vapi 		\
+	--vapidir $(srcdir)/vapi 		\
 	--pkg config --pkg id3tag		\
 	@MLM_PACKAGES@
 
