@@ -482,7 +482,7 @@ Format for printing:
                         flags[t[0]] = t[1];
                     }
                 } else if (a.has_prefix("-")) {
-                    if (a == Flag.S_HELP || a == Flag.S_P_GENRES) {
+                    if (a == Flag.S_HELP || a == Flag.S_REMOVE || a == Flag.S_P_GENRES) {
                         flags[available_flags[a]] = "";
                     } else if (i+1 >= args.length || !available_flags.has_key(a)) {
                         print_usage(1);
@@ -494,10 +494,6 @@ Format for printing:
                     filenames.add(a);
                 }
             }
-
-            /*foreach (var entry in flags.entries) {
-              stdout.printf("%s => %s\n", entry.key, entry.value);
-              }*/
 
             if (flags.has_key(Flag.HELP))
                 print_usage(0);
@@ -516,14 +512,16 @@ Format for printing:
             }
 
             if (flags.has_key(Flag.PRINT)) {
-                foreach (var filename in filenames)
-                print_tags(filename, flags[Flag.PRINT]);
+                foreach (var filename in filenames) {
+                    print_tags(filename, flags[Flag.PRINT]);
+                }
                 exit(0);
             }
 
             if (flags.has_key(Flag.REMOVE)) {
-                foreach (var filename in filenames)
-                remove_tags(filename);
+                foreach (var filename in filenames) {
+                    remove_tags(filename);
+                }
                 exit(0);
             }
 
