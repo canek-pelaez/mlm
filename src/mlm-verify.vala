@@ -24,6 +24,7 @@ extern void exit(int exit_code);
 namespace MLM {
 
     public enum Options {
+        NONE             = 0,
         FIXIT            = 1,
         MISSING_PICTURES = 1 << 1,
         SMALL_PICTURES   = 1 << 2
@@ -405,7 +406,7 @@ OPTIONS:
         }
 
         public static int main(string[] args) {
-            int options = 0;
+            int options = Options.NONE;
             var files = new Gee.ArrayList<string>();
 
             if (args.length < 2)
