@@ -40,7 +40,7 @@ src_mlm_verify_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/src -I$(srcdir)/id3tag-extra
 src_mlm_verify_LDADD = $(MLM_LIBS) src/libmlm.la id3tag-extra/libid3tag-extra.la
 
 # mlm-analyze
-bin_PROGRAMS = src/mlm-analyze
+bin_PROGRAMS += src/mlm-analyze
 src_mlm_analyze_SOURCES = src/mlm-analyze.vala vapi/mlm.vapi
 src_mlm_analyze_VALAFLAGS = $(COMMON_VALAFLAGS)
 src_mlm_analyze_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/src -I$(srcdir)/id3tag-extra
