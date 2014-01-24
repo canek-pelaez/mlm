@@ -32,6 +32,91 @@ namespace MLM {
             this.filename = filename;
         }
 
+        private void analyze_text_encoding(Field field) {
+            string test_encoding = "";
+            switch (field.gettextencoding()) {
+            case FieldTextEncoding.ISO_8859_1:
+                test_encoding = "ISO-8859-1";
+                break;
+            case FieldTextEncoding.UTF_16:
+                test_encoding = "UTF-16";
+                break;
+            case FieldTextEncoding.UTF_16BE:
+                test_encoding = "UTF-16BE";
+                break;
+            case FieldTextEncoding.UTF_8:
+                test_encoding = "UTF-8";
+                break;
+            default:
+                test_encoding = "UNKNOWN";
+                break;
+            }
+            stdout.printf("\tTextencoding: %s\n", test_encoding);
+        }
+
+        private void analyze_field(Field field) {
+            switch (field.type) {
+            case FieldType.TEXTENCODING:
+                analyze_text_encoding(field);
+                break;
+            case FieldType.LATIN1:
+                stdout.printf("\tLatin1\n");
+                break;
+            case FieldType.LATIN1FULL:
+                stdout.printf("\tLatin1 full\n");
+                break;
+            case FieldType.LATIN1LIST:
+                stdout.printf("\tLatin1 list\n");
+                break;
+            case FieldType.STRING:
+                string s = UCS4.utf8duplicate(field.getstring());
+                stdout.printf("\tString: \"%s\"\n", s);
+                break;
+            case FieldType.STRINGFULL:
+                stdout.printf("\tString full\n");
+                break;
+            case FieldType.STRINGLIST:
+                stdout.printf("\tString list\n");
+                break;
+            case FieldType.LANGUAGE:
+                stdout.printf("\tLanguaje\n");
+                break;
+            case FieldType.FRAMEID:
+                stdout.printf("\tFrame id\n");
+                break;
+            case FieldType.DATE:
+                stdout.printf("\tDate\n");
+                break;
+            case FieldType.INT8:
+                stdout.printf("\tInt8\n");
+                break;
+            case FieldType.INT16:
+                stdout.printf("\tInt16\n");
+                break;
+            case FieldType.INT24:
+                stdout.printf("\tInt24\n");
+                break;
+            case FieldType.INT32:
+                stdout.printf("\tInt32\n");
+                break;
+            case FieldType.INT32PLUS:
+                stdout.printf("\tInt32 plus\n");
+                break;
+            case FieldType.BINARYDATA:
+                stdout.printf("\tBinary data\n");
+                break;
+            default:
+                break;
+            }
+        }
+
+        private void analyze_frame(Frame frame) {
+            stdout.printf("Frame %s: %d\n", frame.id, frame.fields.length);
+            for (int i = 0; i < frame.fields.length; i++) {
+                analyze_field(frame.field(i));
+            }
+        }
+
         public void analyze() {
             if (!FileUtils.test(filename, FileTest.EXISTS)) {
                 stderr.printf("%s: No such file.\n", filename);
@@ -50,7 +135,7 @@ namespace MLM {
             if (tag.frames.length == 0)
                 stderr.printf("%s: File has no frames.\n", filename);
             for (int i = 0; i < tag.frames.length; i++) {
-                stdout.printf("Frame: %s\n", tag.frames[i].id);
+                analyze_frame(tag.frames[i]);
             }
             file.close();
         }
