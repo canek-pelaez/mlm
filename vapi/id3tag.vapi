@@ -154,6 +154,7 @@ namespace Id3Tag {
         [CCode(cname = "id3_frame_new")]
         public Frame(string id);
         public string id;
+        public string description;
         public Field field(uint32 fid);
         public void delete();
         [CCode (array_length_cname = "nfields", array_length_type = "int32")]
