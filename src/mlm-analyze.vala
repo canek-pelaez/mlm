@@ -23,12 +23,12 @@ extern void exit(int exit_code);
 
 namespace MLM {
 
-    public class Analyze {
+    public class Analyzer {
 
         private Tag tag;
         private string filename;
 
-        public Analyze(string filename) {
+        public Analyzer(string filename) {
             this.filename = filename;
         }
 
@@ -288,7 +288,7 @@ OPTIONS:
             }
 
             foreach (string file in files) {
-                Analyze a = new Analyze(file);
+                Analyzer a = new Analyzer(file);
                 a.analyze();
             }
 

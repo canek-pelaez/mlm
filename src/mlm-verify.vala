@@ -30,7 +30,7 @@ namespace MLM {
         SMALL_PICTURES   = 1 << 2
     }
 
-    public class Verify {
+    public class Verifier {
 
         private Tag tag;
         private string filename;
@@ -41,7 +41,7 @@ namespace MLM {
         private bool small_pictures;
         private int current_year;
 
-        public Verify(string filename, int options) {
+        public Verifier(string filename, int options) {
             this.filename = filename;
             report = "";
             anomalies = false;
@@ -429,7 +429,7 @@ OPTIONS:
             }
 
             foreach (string file in files) {
-                Verify v = new Verify(file, options);
+                Verifier v = new Verifier(file, options);
                 v.verify();
             }
 
