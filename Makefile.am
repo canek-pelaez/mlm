@@ -24,7 +24,8 @@ noinst_LTLIBRARIES += src/libmlm.la
 src_libmlm_la_SOURCES =				\
 	src/mlm-genres.vala			\
 	src/mlm-frame-id.vala			\
-	src/mlm-file-tags.vala
+	src/mlm-file-tags.vala			\
+	src/mlm-console-tools.vala
 src_libmlm_la_VALAFLAGS =			\
 	--vapi vapi/mlm.vapi			\
 	--header src/mlm.h			\

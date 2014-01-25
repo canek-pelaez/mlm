@@ -194,6 +194,7 @@ namespace Id3Tag {
         public unowned string getlatin1();
         public long getint();
         public unowned uint32* getstring();
+        public unowned uint32* getfullstring();
         public unowned uint32* getstrings(int i);
         public void settextencoding(FieldTextEncoding text_encoding);
         public void setlatin1(string latin1);

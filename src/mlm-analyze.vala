@@ -51,16 +51,106 @@ namespace MLM {
                 test_encoding = "UNKNOWN";
                 break;
             }
-            stdout.printf("\tTextencoding: %s\n", test_encoding);
+            stdout.printf("\t%s: %s\n",
+                          ConsoleTools.blue("Textencoding"),
+                          ConsoleTools.yellow(test_encoding));
         }
 
-        private void analyze_field(Field field) {
+        private void analyze_stringlist(Field field) {
+            for (int i = 0; i < field.stringlist.length; i++) {
+                string s = UCS4.utf8duplicate(field.getstrings(i));
+                stdout.printf("\t\t%s %s: \"%s\"\n",
+                              ConsoleTools.blue("String"),
+                              ConsoleTools.cyan("%d".printf(i)),
+                              ConsoleTools.yellow(s));
+            }
+        }
+
+        private void analyze_picture_type(Field field) {
+            string ptype = "";
+            switch (field.number_value) {
+            case PictureType.OTHER:
+                ptype = "Other";
+                break;
+            case PictureType.PNG32ICON:
+                ptype = " 32x32 pixels 'file icon' (PNG only)";
+                break;
+            case PictureType.OTHERICON:
+                ptype = "Other file icon";
+                break;
+            case PictureType.COVERFRONT:
+                ptype = "Cover (front)";
+                break;
+            case PictureType.COVERBACK:
+                ptype = "Cover (back)";
+                break;
+            case PictureType.LEAFLETPAGE:
+                ptype = "Leaflet page";
+                break;
+            case PictureType.MEDIA:
+                ptype = "Media (e.g. lable side of CD)";
+                break;
+            case PictureType.LEADARTIST:
+                ptype = "Lead artist/lead performer/soloist";
+                break;
+            case PictureType.ARTIST:
+                ptype = "Artist/performer";
+                break;
+            case PictureType.CONDUCTOR:
+                ptype = "Conductor";
+                break;
+            case PictureType.BAND:
+                ptype = "Band/Orchestra";
+                break;
+            case PictureType.COMPOSER:
+                ptype = "Composer";
+                break;
+            case PictureType.LYRICIST:
+                ptype = "Lyricist/text writer";
+                break;
+            case PictureType.REC_LOCATION:
+                ptype = "Recording Location";
+                break;
+            case PictureType.RECORDING:
+                ptype = "During recording";
+                break;
+            case PictureType.PERFORMANCE:
+                ptype = "During performance";
+                break;
+            case PictureType.VIDEO:
+                ptype = "Movie/video screen capture";
+                break;
+            case PictureType.FISH:
+                ptype = "A bright coloured fish";
+                break;
+            case PictureType.ILLUSTRATION:
+                ptype = "Illustration";
+                break;
+            case PictureType.ARTISTLOGO:
+                ptype = "Band/artist logotype";
+                break;
+            case PictureType.PUBLISHERLOGO:
+                ptype = "Publisher/Studio logotype";
+                break;
+            default:
+                ptype = "UNKNONW";
+                break;
+            }
+            stdout.printf("\t%s: \"%s\"\n",
+                          ConsoleTools.blue("Picture type"),
+                          ConsoleTools.yellow(ptype));
+        }
+
+        private void analyze_field(Frame frame, Field field) {
+            string s;
             switch (field.type) {
             case FieldType.TEXTENCODING:
                 analyze_text_encoding(field);
                 break;
             case FieldType.LATIN1:
-                stdout.printf("\tLatin1\n");
+                stdout.printf("\t%s: %s\n",
+                              ConsoleTools.blue("Latin1"),
+                              ConsoleTools.yellow(field.getlatin1()));
                 break;
             case FieldType.LATIN1FULL:
                 stdout.printf("\tLatin1 full\n");
@@ -69,17 +159,25 @@ namespace MLM {
                 stdout.printf("\tLatin1 list\n");
                 break;
             case FieldType.STRING:
-                string s = UCS4.utf8duplicate(field.getstring());
-                stdout.printf("\tString: \"%s\"\n", s);
+                s = UCS4.utf8duplicate(field.getstring());
+                stdout.printf("\t%s: \"%s\"\n",
+                              ConsoleTools.blue("String"),
+                              ConsoleTools.yellow(s));
                 break;
             case FieldType.STRINGFULL:
-                stdout.printf("\tString full\n");
+                s = UCS4.utf8duplicate(field.getfullstring());
+                stdout.printf("\t%s: \"%s\"\n",
+                              ConsoleTools.blue("String full"),
+                              ConsoleTools.yellow(s));
                 break;
             case FieldType.STRINGLIST:
-                stdout.printf("\tString list\n");
+                stdout.printf("\t%s\n", ConsoleTools.blue("String list"));
+                analyze_stringlist(field);
                 break;
             case FieldType.LANGUAGE:
-                stdout.printf("\tLanguaje\n");
+                stdout.printf("\t%s: %s\n",
+                              ConsoleTools.blue("Languaje"),
+                              ConsoleTools.yellow((string)field.immediate_value));
                 break;
             case FieldType.FRAMEID:
                 stdout.printf("\tFrame id\n");
@@ -88,7 +186,10 @@ namespace MLM {
                 stdout.printf("\tDate\n");
                 break;
             case FieldType.INT8:
-                stdout.printf("\tInt8\n");
+                if (frame.id == FrameId.PICTURE)
+                    analyze_picture_type(field);
+                else
+                    stdout.printf("\tUnknown int8\n");
                 break;
             case FieldType.INT16:
                 stdout.printf("\tInt16\n");
@@ -103,7 +204,9 @@ namespace MLM {
                 stdout.printf("\tInt32 plus\n");
                 break;
             case FieldType.BINARYDATA:
-                stdout.printf("\tBinary data\n");
+                stdout.printf("\t%s: %s bytes\n",
+                              ConsoleTools.blue("Binary data"),
+                              ConsoleTools.yellow("%d".printf(field.binary_data.length)));
                 break;
             default:
                 break;
@@ -111,9 +214,12 @@ namespace MLM {
         }
 
         private void analyze_frame(Frame frame) {
-            stdout.printf("Frame %s: %d\n", frame.id, frame.fields.length);
+            stdout.printf("%s %s: (%s)\n",
+                          ConsoleTools.blue("Frame"),
+                          ConsoleTools.yellow(frame.id),
+                          ConsoleTools.cyan(frame.description));
             for (int i = 0; i < frame.fields.length; i++) {
-                analyze_field(frame.field(i));
+                analyze_field(frame, frame.field(i));
             }
         }
 
