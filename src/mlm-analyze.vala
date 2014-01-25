@@ -142,6 +142,7 @@ namespace MLM {
         }
 
         private void analyze_field(Frame frame, Field field) {
+            int v;
             string s;
             switch (field.type) {
             case FieldType.TEXTENCODING:
@@ -186,10 +187,19 @@ namespace MLM {
                 stdout.printf("\tDate\n");
                 break;
             case FieldType.INT8:
-                if (frame.id == FrameId.PICTURE)
+                v = (int)field.number_value;
+                if (frame.id == FrameId.PICTURE) {
                     analyze_picture_type(field);
-                else
-                    stdout.printf("\tUnknown int8\n");
+                } else if (frame.id == FrameId.POPULARIMETER) {
+                    double r = v / 2.55;
+                    stdout.printf("\t%s: %s\n",
+                                  ConsoleTools.blue("Rating"),
+                                  ConsoleTools.yellow("%g%%".printf(r)));
+                } else {
+                    stdout.printf("\t%s: %s\n",
+                                  ConsoleTools.blue("UNKNOWN int8"),
+                                  ConsoleTools.yellow("%d".printf(v)));
+                }
                 break;
             case FieldType.INT16:
                 stdout.printf("\tInt16\n");
@@ -201,7 +211,16 @@ namespace MLM {
                 stdout.printf("\tInt32\n");
                 break;
             case FieldType.INT32PLUS:
-                stdout.printf("\tInt32 plus\n");
+                v = (int)field.number_value;
+                if (frame.id == FrameId.POPULARIMETER) {
+                    stdout.printf("\t%s: %s\n",
+                                  ConsoleTools.blue("Counter"),
+                                  ConsoleTools.yellow("%d".printf(v)));
+                } else {
+                    stdout.printf("\t%s: %s\n",
+                                  ConsoleTools.blue("UNKNOWN int32 plus"),
+                                  ConsoleTools.yellow("%d".printf(v)));
+                }
                 break;
             case FieldType.BINARYDATA:
                 stdout.printf("\t%s: %s bytes\n",

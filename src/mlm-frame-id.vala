@@ -31,5 +31,8 @@ namespace MLM {
         public static const string COMPOSER = "TCOM";
         public static const string ORIGINAL = "TOPE";
         public static const string PICTURE  = "APIC";
+        /* The following are added for completeness, but are not
+         * really used by the suite. */
+        public static const string POPULARIMETER  = "POPM";
     }
 }
