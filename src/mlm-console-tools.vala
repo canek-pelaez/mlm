@@ -24,23 +24,33 @@ namespace MLM {
         public static string gray(string s) {
             return "\033[1m\033[90m%s\033[0m".printf(s);
         }
+
         public static string red(string s) {
             return "\033[1m\033[91m%s\033[0m".printf(s);
         }
+
         public static string green(string s) {
             return "\033[1m\033[92m%s\033[0m".printf(s);
         }
+
         public static string yellow(string s) {
             return "\033[1m\033[93m%s\033[0m".printf(s);
         }
+
         public static string blue(string s) {
             return "\033[1m\033[94m%s\033[0m".printf(s);
         }
+
         public static string purple(string s) {
             return "\033[1m\033[95m%s\033[0m".printf(s);
         }
+
         public static string cyan(string s) {
             return "\033[1m\033[96m%s\033[0m".printf(s);
+        }
+
+        public static string key_value(string key, string value) {
+            return "%s: %s".printf(blue(key), yellow(value));
         }
     }
 }

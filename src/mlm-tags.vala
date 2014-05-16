@@ -120,9 +120,11 @@ Format for printing:
 
         private static void print_genres() {
             Genre[] genres = Genre.all();
-            stdout.printf("Supported genres:\n\n");
+            stdout.printf("Supported genres:\n");
             for (int i = 0; i < genres.length; i++)
-                stdout.printf("\t%03d %s\n", i, genres[i].to_string());
+                stdout.printf("   %s %s\n",
+                              ConsoleTools.blue("%03d".printf(i)),
+                              ConsoleTools.yellow(genres[i].to_string()));
             exit(0);
         }
 
@@ -146,29 +148,45 @@ Format for printing:
             string output = "┏";
             for (int i = 0; i < output_width - 2; i++)
                 output += "━";
-            output += "┓\n";
+            output += "┓";
+            output = ConsoleTools.red(output) + "\n";
 
             int c = 0;
             foreach (var line in lines) {
+                int cc = 0;
                 var ll = split_line(line);
                 foreach (var l in ll) {
-                    output += "┃" + l;
-                    for (int i = 0; i < output_width - l.char_count() - 2; i++)
+                    int ac = (cc == 0 && c > 0) ? 26 : 13;
+                    if (ll.size > 1 && cc > 0)
+                        ac = 7;
+                    output += ConsoleTools.red("┃");
+                    if (ll.size > 1) {
+                        output += ConsoleTools.yellow(l);
+                        if (cc++ == 0)
+                            ac = 22;
+                        else
+                            ac = 4;
+                    } else {
+                        output += l;
+                    }
+                    for (int i = 0; i < output_width - l.char_count() - 2 + ac; i++)
                         output += " ";
-                    output += "┃\n";
+                    output += ConsoleTools.red("┃") + "\n";
                 }
                 if (c++ == 0) {
-                    output += "┠";
+                    output += ConsoleTools.red("┠");
                     for (int i = 0; i < output_width - 2; i++)
-                        output += "─";
-                    output += "┨\n";
+                        output += ConsoleTools.red("─");
+                    output += ConsoleTools.red("┨") + "\n";
                 }
             }
 
-            output += "┗";
+            string last_line = "┗";
             for (int i = 0; i < output_width - 2; i++)
-                output += "━";
-            output += "┛\n";
+                last_line += "━";
+            last_line += "┛";
+
+            output += ConsoleTools.red(last_line) + "\n";
 
             return output;
         }
@@ -184,38 +202,51 @@ Format for printing:
                 return;
             }
             var lines = new ArrayList<string>();
-            string line = Filename.display_basename(filename);
+            string line = ConsoleTools.cyan(Filename.display_basename(filename));
             lines.add(line);
             Genre[] genres = Genre.all();
             if (file_tags.artist != null)
-                lines.add("Artist: %s".printf(file_tags.artist));
+                lines.add(ConsoleTools.key_value("Artist", file_tags.artist));
             if (file_tags.title != null)
-                lines.add("Title: %s".printf(file_tags.title));
+                lines.add(ConsoleTools.key_value("Title", file_tags.title));
             if (file_tags.album != null)
-                lines.add("Album: %s".printf(file_tags.album));
+                lines.add(ConsoleTools.key_value("Album", file_tags.album));
             if (file_tags.year != -1)
-                lines.add("Year: %d".printf(file_tags.year));
+                lines.add(ConsoleTools.key_value("Year", "%d".printf(file_tags.year)));
             if (file_tags.track_number != -1) {
                 if (file_tags.track_count != -1)
-                    lines.add("Track: %d of %d".printf(file_tags.track_number,
-                                                       file_tags.track_count));
+                    lines.add(
+                        ConsoleTools.key_value(
+                            "Track",
+                            "%d of %d".printf(file_tags.track_number,
+                                              file_tags.track_count)));
                 else
-                    lines.add("Track: %d".printf(file_tags.track_number));
+                    lines.add(
+                        ConsoleTools.key_value(
+                            "Track",
+                            "%d".printf(file_tags.track_number)));
             }
             if (file_tags.disc_number != -1)
-                lines.add("Disc number: %d".printf(file_tags.disc_number));
+                lines.add(ConsoleTools.key_value("Disc number",
+                                                 "%d".printf(file_tags.disc_number)));
             if (file_tags.genre != -1)
-                lines.add("Genre: %s".printf(genres[file_tags.genre].to_string()));
+                lines.add(ConsoleTools.key_value("Genre",
+                                                 genres[file_tags.genre].to_string()));
             if (file_tags.comment != null)
-                lines.add("Comment: %s".printf(file_tags.comment));
+                lines.add(ConsoleTools.key_value("Comment",
+                                                 file_tags.comment));
             if (file_tags.composer != null)
-                lines.add("Composer: %s".printf(file_tags.composer));
+                lines.add(ConsoleTools.key_value("Composer",
+                                                 file_tags.composer));
             if (file_tags.original_artist != null)
-                lines.add("Original artist: %s".printf(file_tags.original_artist));
+                lines.add(ConsoleTools.key_value("Original artist",
+                                                 file_tags.original_artist));
             if (file_tags.front_cover_picture != null)
-                lines.add("Front cover picture: %s".printf(file_tags.front_cover_picture_description));
+                lines.add(ConsoleTools.key_value("Front cover picture",
+                                                 file_tags.front_cover_picture_description));
             if (file_tags.artist_picture != null)
-                lines.add("Artist picture: %s".printf(file_tags.artist_picture_description));
+                lines.add(ConsoleTools.key_value("Artist picture",
+                                                 file_tags.artist_picture_description));
             stdout.printf("%s", boxed_output(lines));
         }
 

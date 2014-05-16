@@ -51,9 +51,7 @@ namespace MLM {
                 test_encoding = "UNKNOWN";
                 break;
             }
-            stdout.printf("\t%s: %s\n",
-                          ConsoleTools.blue("Textencoding"),
-                          ConsoleTools.yellow(test_encoding));
+            stdout.printf(ConsoleTools.key_value("Textencoding", test_encoding));
         }
 
         private void analyze_stringlist(Field field) {
