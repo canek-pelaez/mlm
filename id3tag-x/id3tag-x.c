@@ -20,7 +20,7 @@
 #include <id3tag.h>
 #include <stdlib.h>
 #include <string.h>
-#include "id3tag-extra.h"
+#include "id3tag-x.h"
 
 struct id3_frame*
 id3_tag_search_frame(struct id3_tag* tag,

@@ -71,7 +71,7 @@ namespace Id3Tag {
         BINARYDATA
     }
 
-    [CCode(cheader_filename = "id3tag-extra.h",
+    [CCode(cheader_filename = "id3tag-x.h",
            cname            = "enum id3_picture_type",
            cprefix          = "ID3_PICTURETYPE_")]
     public enum PictureType {
@@ -131,16 +131,16 @@ namespace Id3Tag {
         public Frame? findframe(string id, uint32 index);
         [CCode (array_length_cname = "nframes", array_length_type = "int32")]
         public unowned Frame[] frames;
-        /* Extra API added with id3tag-extra */
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        /* Extra API added with id3tag-x */
+        [CCode(cheader_filename = "id3tag-x.h")]
         public Frame? search_picture_frame(PictureType picture_type);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public Frame? search_frame(string id);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public Frame create_text_frame(string id);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public Frame create_comment_frame(string lang);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public Frame create_picture_frame(PictureType picture_type);
     }
 
@@ -159,26 +159,26 @@ namespace Id3Tag {
         public void delete();
         [CCode (array_length_cname = "nfields", array_length_type = "int32")]
         public unowned Field[] fields;
-        /* Extra API added with id3tag-extra */
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        /* Extra API added with id3tag-x */
+        [CCode(cheader_filename = "id3tag-x.h")]
         public string? get_text();
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public void set_text(string text);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public void set_comment_text(string text);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public string get_comment_text();
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public void set_picture(uint8[] bytes, string desc);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public Field? get_binary_field();
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public unowned uint8[] get_picture(PictureType picture_type);
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public PictureType get_picture_type();
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public string get_picture_description();
-        [CCode(cheader_filename = "id3tag-extra.h")]
+        [CCode(cheader_filename = "id3tag-x.h")]
         public void set_picture_description(string desc);
     }
 

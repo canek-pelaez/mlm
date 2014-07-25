@@ -3,7 +3,7 @@ AC_INIT([mlm],
         [https://github.com/canek-pelaez/mlm/issues],
         [mlm],
         [https://github.com/canek-pelaez/mlm])
-AC_CONFIG_SRCDIR([src/mlm-tags.vala])
+AC_CONFIG_SRCDIR([src/tags.vala])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
@@ -19,19 +19,33 @@ AC_PROG_CC_STDC
 AM_PROG_VALAC([0.22])
 AC_PROG_INSTALL
 
-GTK_PACKAGES="--pkg gtk+-3.0 --pkg gstreamer-1.0"
-PKG_CHECK_MODULES(GTK, [ gtk+-3.0 gstreamer-1.0 ])
+GEE_PACKAGES="--pkg gee-1.0"
+PKG_CHECK_MODULES(GEE, [ gee-1.0 ])
+
+AC_SUBST(GEE_CFLAGS)
+AC_SUBST(GEE_LIBS)
+AC_SUBST(GEE_PACKAGES)
+
+GSTREAMER_PACKAGES="--pkg gstreamer-1.0"
+PKG_CHECK_MODULES(GSTREAMER, [ gstreamer-1.0 ])
+
+AC_SUBST(GSTREAMER_CFLAGS)
+AC_SUBST(GSTREAMER_LIBS)
+AC_SUBST(GSTREAMER_PACKAGES)
+
+GTK_PACKAGES="--pkg gtk+-3.0"
+PKG_CHECK_MODULES(GTK, [ gtk+-3.0 ])
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_PACKAGES)
 
-MLM_PACKAGES="--pkg gee-0.8 --pkg id3tag "
-PKG_CHECK_MODULES(MLM, [ gee-0.8 id3tag ])
+ID3TAG_PACKAGES="--pkg id3tag"
+PKG_CHECK_MODULES(ID3TAG, [ id3tag ])
 
-AC_SUBST(MLM_CFLAGS)
-AC_SUBST(MLM_LIBS)
-AC_SUBST(MLM_PACKAGES)
+AC_SUBST(ID3TAG_CFLAGS)
+AC_SUBST(ID3TAG_LIBS)
+AC_SUBST(ID3TAG_PACKAGES)
 
 IT_PROG_INTLTOOL([0.40])
 

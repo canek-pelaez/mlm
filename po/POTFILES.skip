@@ -1,6 +1,6 @@
-src/mlm-encoder.c
-src/mlm-file-tags.c
-src/mlm-frame-id.c
-src/mlm-genres.c
-src/mlm-tags.c
-src/mlm-verify.c
+src/encoder.c
+src/file-tags.c
+src/frame-id.c
+src/genres.c
+src/tags.c
+src/verify.c
