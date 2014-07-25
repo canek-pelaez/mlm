@@ -10,12 +10,13 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz])
+AM_SILENT_RULES([yes])
 LT_INIT
 
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CC_STDC
-AM_PROG_VALAC([0.20])
+AM_PROG_VALAC([0.22])
 AC_PROG_INSTALL
 
 GTK_PACKAGES="--pkg gtk+-3.0 --pkg gstreamer-1.0"

@@ -9,77 +9,182 @@ AM_CPPFLAGS =					\
 
 COMMON_VALAFLAGS =				\
 	--enable-experimental			\
+	--target-glib=2.38			\
 	--vapidir $(srcdir)/vapi 		\
-	--pkg config --pkg id3tag		\
 	@MLM_PACKAGES@
 
-# libid3tag-extra.a
+# ====== libid3tag-extra
+
 noinst_LTLIBRARIES = id3tag-extra/libid3tag-extra.la
 id3tag_extra_libid3tag_extra_la_SOURCES =	\
 	id3tag-extra/id3tag-extra.c		\
 	id3tag-extra/id3tag-extra.h
 
-# libmlm.la
+# ====== libmlm
+
 noinst_LTLIBRARIES += src/libmlm.la
+
 src_libmlm_la_SOURCES =				\
 	src/mlm-genres.vala			\
 	src/mlm-frame-id.vala			\
 	src/mlm-file-tags.vala			\
-	src/mlm-console-tools.vala
+	src/mlm-console-tools.vala		\
+	$(NULL)
+
 src_libmlm_la_VALAFLAGS =			\
+	$(COMMON_VALAFLAGS)			\
 	--vapi vapi/mlm.vapi			\
 	--header src/mlm.h			\
-	$(COMMON_VALAFLAGS)
-src_libmlm_la_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/id3tag-extra
-src_libmlm_la_LIBADD = $(MLM_LIBS) id3tag-extra/libid3tag-extra.la
+	$(NULL)
 
-# mlm-verify
+src_libmlm_la_CFLAGS =				\
+	@MLM_CFLAGS@				\
+	-I$(srcdir)/id3tag-extra		\
+	-w					\
+	$(NULL)
+
+src_libmlm_la_LIBADD =				\
+	@MLM_LIBS@				\
+	id3tag-extra/libid3tag-extra.la		\
+	$(NULL)
+
+# ====== mlm-verify
+
 bin_PROGRAMS = src/mlm-verify
-src_mlm_verify_SOURCES = src/mlm-verify.vala vapi/mlm.vapi
-src_mlm_verify_VALAFLAGS = $(COMMON_VALAFLAGS)
-src_mlm_verify_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/src -I$(srcdir)/id3tag-extra
-src_mlm_verify_LDADD = $(MLM_LIBS) src/libmlm.la id3tag-extra/libid3tag-extra.la
 
-# mlm-analyze
+src_mlm_verify_SOURCES =			\
+	src/mlm-verify.vala			\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+src_mlm_verify_VALAFLAGS =			\
+	$(COMMON_VALAFLAGS)			\
+	$(NULL)
+
+src_mlm_verify_CFLAGS =				\
+	@MLM_CFLAGS@				\
+	-I$(srcdir)/id3tag-extra		\
+	-I$(srcdir)/src				\
+	-w					\
+	$(NULL)
+
+src_mlm_verify_LDADD =				\
+	@MLM_LIBS@				\
+	id3tag-extra/libid3tag-extra.la		\
+	src/libmlm.la				\
+	$(NULL)
+
+# ====== mlm-analyze
+
 bin_PROGRAMS += src/mlm-analyze
-src_mlm_analyze_SOURCES = src/mlm-analyze.vala vapi/mlm.vapi
-src_mlm_analyze_VALAFLAGS = $(COMMON_VALAFLAGS)
-src_mlm_analyze_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/src -I$(srcdir)/id3tag-extra
-src_mlm_analyze_LDADD = $(MLM_LIBS) src/libmlm.la id3tag-extra/libid3tag-extra.la
 
-# mlm-tags
+src_mlm_analyze_SOURCES =			\
+	src/mlm-analyze.vala			\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+src_mlm_analyze_VALAFLAGS =			\
+	$(COMMON_VALAFLAGS)			\
+	$(NULL)
+
+src_mlm_analyze_CFLAGS =			\
+	@MLM_CFLAGS@				\
+	-I$(srcdir)/src				\
+	-I$(srcdir)/id3tag-extra		\
+	-w					\
+	$(NULL)
+
+src_mlm_analyze_LDADD =				\
+	@MLM_LIBS@				\
+	id3tag-extra/libid3tag-extra.la		\
+	src/libmlm.la				\
+	$(NULL)
+
+# ====== mlm-tags
+
 bin_PROGRAMS += src/mlm-tags
-src_mlm_tags_VALAFLAGS = $(COMMON_VALAFLAGS)
-src_mlm_tags_SOURCES = src/mlm-tags.vala vapi/mlm.vapi
-src_mlm_tags_CFLAGS = $(MLM_CFLAGS) -I$(srcdir)/id3tag-extra -I$(srcdir)/src
-src_mlm_tags_LDADD = $(MLM_LIBS) id3tag-extra/libid3tag-extra.la src/libmlm.la
 
-# mlm-encoder
+src_mlm_tags_VALAFLAGS =			\
+	$(COMMON_VALAFLAGS)			\
+	$(NULL)
+
+src_mlm_tags_SOURCES =				\
+	src/mlm-tags.vala			\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+src_mlm_tags_CFLAGS =				\
+	@MLM_CFLAGS@				\
+	-I$(srcdir)/id3tag-extra		\
+	-I$(srcdir)/src				\
+	-w					\
+	$(NULL)
+
+src_mlm_tags_LDADD =				\
+	@MLM_LIBS@				\
+	id3tag-extra/libid3tag-extra.la		\
+	src/libmlm.la				\
+	$(NULL)
+
+# ====== mlm-encoder
 bin_PROGRAMS += src/mlm-encoder
-src_mlm_encoder_SOURCES = src/mlm-encoder.vala vapi/mlm.vapi
-src_mlm_encoder_VALAFLAGS = $(COMMON_VALAFLAGS) @GTK_PACKAGES@
-src_mlm_encoder_CFLAGS = $(MLM_CFLAGS) $(GTK_CFLAGS) -I$(srcdir)/src
-src_mlm_encoder_LDADD = $(MLM_LIBS) $(GTK_LIBS) src/libmlm.la
 
-# glade files
+src_mlm_encoder_SOURCES =			\
+	src/mlm-encoder.vala			\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+src_mlm_encoder_VALAFLAGS =			\
+	$(COMMON_VALAFLAGS)			\
+	@GTK_PACKAGES@				\
+	$(NULL)
+
+src_mlm_encoder_CFLAGS =			\
+	@MLM_CFLAGS@				\
+	@GTK_CFLAGS@				\
+	-I$(srcdir)/src				\
+	-w					\
+	$(NULL)
+
+src_mlm_encoder_LDADD =				\
+	@MLM_LIBS@				\
+	@GTK_LIBS@				\
+	src/libmlm.la				\
+	$(NULL)
+
+# ====== UI files
+
 uidir = $(pkgdatadir)
-ui_DATA = data/mlm-encoder.ui data/nodisc.jpg data/person.jpg
+ui_DATA =					\
+	data/mlm-encoder.ui			\
+	data/nodisc.jpg				\
+	data/person.jpg				\
+	$(NULL)
 
-# destop file
 data_desktopdir = $(datadir)/applications
 data_desktop_DATA = data/mlm-encoder.desktop
 
-# icon
 data_iconsdir = $(datadir)/icons/hicolor/scalable/apps
 data_icons_DATA = data/mlm-encoder.svg
 
-noinst_DATA = vapi/config.vapi vapi/id3tag.vapi vapi/mlm.vapi
+noinst_DATA =					\
+	vapi/config.vapi			\
+	vapi/id3tag.vapi			\
+	vapi/mlm.vapi
+	$(NULL)
 
-EXTRA_DIST = $(noinst_DATA) $(ui_DATA) $(data_desktop_DATA) $(data_icons_DATA) src/mlm.h
+EXTRA_DIST =					\
+	$(noinst_DATA)				\
+	$(ui_DATA)				\
+	$(data_desktop_DATA)			\
+	$(data_icons_DATA)
 
 DISTCLEANFILES = src/mlm.h vapi/mlm.vapi
 
 SUBDIRS = po
 
 dist-hook:
-	cd ${top_srcdir} && git log --no-color --stat --name-only --date=short --abbrev-commit > ${srcdir}/ChangeLog
+	cd ${top_srcdir} &&			\
+	git log --no-color --stat --name-only	\
+		--date=short --abbrev-commit	\
+		> ${srcdir}/ChangeLog
