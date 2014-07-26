@@ -1,2 +1,2 @@
-src/mlm-encoder.vala
+src/encoder.vala
 [type: gettext/glade]data/mlm-encoder.ui

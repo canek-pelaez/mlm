@@ -197,9 +197,13 @@ EXTRA_DIST =					\
 	$(noinst_DATA)				\
 	$(ui_DATA)				\
 	$(data_desktop_DATA)			\
-	$(data_icons_DATA)
+	$(data_icons_DATA)			\
+	$(NULL)
 
-DISTCLEANFILES = src/mlm.h vapi/mlm.vapi
+DISTCLEANFILES =				\
+	src/mlm.h				\
+	vapi/mlm.vapi				\
+	$(NULL)
 
 SUBDIRS = po
 
