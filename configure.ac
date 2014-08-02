@@ -3,7 +3,7 @@ AC_INIT([mlm],
         [https://github.com/canek-pelaez/mlm/issues],
         [mlm],
         [https://github.com/canek-pelaez/mlm])
-AC_CONFIG_SRCDIR([src/tags.vala])
+AC_CONFIG_SRCDIR([encoder/encoder.vala])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
@@ -51,7 +51,7 @@ IT_PROG_INTLTOOL([0.40])
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[The name of the gettext domain])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The name of the gettext domain])
 
 AC_CONFIG_FILES([
 	Makefile

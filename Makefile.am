@@ -23,31 +23,31 @@ id3tag_x_libid3tag_x_la_SOURCES =		\
 
 # ====== libmlm
 
-noinst_LTLIBRARIES += src/libmlm.la
+noinst_LTLIBRARIES += mlm/libmlm.la
 
-src_libmlm_la_SOURCES =				\
-	src/genres.vala				\
-	src/frame-id.vala			\
-	src/file-tags.vala			\
-	src/console-tools.vala			\
+mlm_libmlm_la_SOURCES =				\
+	mlm/genres.vala				\
+	mlm/frame-id.vala			\
+	mlm/file-tags.vala			\
+	mlm/console-tools.vala			\
 	$(NULL)
 
-src_libmlm_la_VALAFLAGS =			\
+mlm_libmlm_la_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	--vapi vapi/mlm.vapi			\
-	--header src/mlm.h			\
+	--header mlm/mlm.h			\
 	@GEE_PACKAGES@				\
 	@ID3TAG_PACKAGES@			\
 	$(NULL)
 
-src_libmlm_la_CFLAGS =				\
+mlm_libmlm_la_CFLAGS =				\
 	@GEE_CFLAGS@				\
 	@ID3TAG_CFLAGS@				\
 	-I$(srcdir)/id3tag-x			\
 	-w					\
 	$(NULL)
 
-src_libmlm_la_LIBADD =				\
+mlm_libmlm_la_LIBADD =				\
 	@GEE_LIBS@				\
 	@ID3TAG_LIBS@				\
 	id3tag-x/libid3tag-x.la			\
@@ -55,101 +55,101 @@ src_libmlm_la_LIBADD =				\
 
 # ====== mlm-verify
 
-bin_PROGRAMS = src/mlm-verify
+bin_PROGRAMS = verify/mlm-verify
 
-src_mlm_verify_SOURCES =			\
-	src/verify.vala				\
+verify_mlm_verify_SOURCES =			\
+	verify/verify.vala			\
 	vapi/mlm.vapi				\
 	$(NULL)
 
-src_mlm_verify_VALAFLAGS =			\
+verify_mlm_verify_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	@ID3TAG_PACKAGES@			\
 	@GEE_PACKAGES@				\
 	$(NULL)
 
-src_mlm_verify_CFLAGS =				\
+verify_mlm_verify_CFLAGS =			\
 	@ID3TAG_CFLAGS@				\
 	@GEE_CFLAGS@				\
 	-I$(srcdir)/id3tag-x			\
-	-I$(srcdir)/src				\
+	-I$(srcdir)/mlm				\
 	-w					\
 	$(NULL)
 
-src_mlm_verify_LDADD =				\
+verify_mlm_verify_LDADD =			\
 	@ID3TAG_LIBS@				\
 	@GEE_LIBS@				\
 	id3tag-x/libid3tag-x.la			\
-	src/libmlm.la				\
+	mlm/libmlm.la				\
 	$(NULL)
 
 # ====== mlm-analyze
 
-bin_PROGRAMS += src/mlm-analyze
+bin_PROGRAMS += analyze/mlm-analyze
 
-src_mlm_analyze_SOURCES =			\
-	src/analyze.vala			\
+analyze_mlm_analyze_SOURCES =			\
+	analyze/analyze.vala			\
 	vapi/mlm.vapi				\
 	$(NULL)
 
-src_mlm_analyze_VALAFLAGS =			\
+analyze_mlm_analyze_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	@ID3TAG_PACKAGES@			\
 	@GEE_PACKAGES@				\
 	$(NULL)
 
-src_mlm_analyze_CFLAGS =			\
+analyze_mlm_analyze_CFLAGS =			\
 	@ID3TAG_CFLAGS@				\
 	@GEE_CFLAGS@				\
-	-I$(srcdir)/src				\
 	-I$(srcdir)/id3tag-x			\
+	-I$(srcdir)/mlm			\
 	-w					\
 	$(NULL)
 
-src_mlm_analyze_LDADD =				\
+analyze_mlm_analyze_LDADD =			\
 	@ID3TAG_LIBS@				\
 	@GEE_LIBS@				\
 	id3tag-x/libid3tag-x.la			\
-	src/libmlm.la				\
+	mlm/libmlm.la				\
 	$(NULL)
 
 # ====== mlm-tags
 
-bin_PROGRAMS += src/mlm-tags
+bin_PROGRAMS += tags/mlm-tags
 
-src_mlm_tags_SOURCES =				\
-	src/tags.vala				\
+tags_mlm_tags_SOURCES =				\
+	tags/tags.vala				\
 	vapi/mlm.vapi				\
 	$(NULL)
 
-src_mlm_tags_VALAFLAGS =			\
+tags_mlm_tags_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	@GEE_PACKAGES@				\
 	$(NULL)
 
-src_mlm_tags_CFLAGS =				\
+tags_mlm_tags_CFLAGS =				\
 	@GEE_CFLAGS@				\
 	-I$(srcdir)/id3tag-x			\
-	-I$(srcdir)/src				\
+	-I$(srcdir)/mlm				\
 	-w					\
 	$(NULL)
 
-src_mlm_tags_LDADD =				\
+tags_mlm_tags_LDADD =				\
 	@GEE_LIBS@				\
 	id3tag-x/libid3tag-x.la			\
-	src/libmlm.la				\
+	mlm/libmlm.la				\
 	$(NULL)
 
 # ====== mlm-encoder
 
-bin_PROGRAMS += src/mlm-encoder
+bin_PROGRAMS += encoder/mlm-encoder
 
-src_mlm_encoder_SOURCES =			\
-	src/encoder.vala			\
+encoder_mlm_encoder_SOURCES =			\
+	encoder/encoder.vala			\
 	vapi/mlm.vapi				\
 	$(NULL)
 
-src_mlm_encoder_VALAFLAGS =			\
+encoder_mlm_encoder_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	@GEE_PACKAGES@				\
 	@GSTREAMER_PACKAGES@			\
@@ -157,19 +157,19 @@ src_mlm_encoder_VALAFLAGS =			\
 	--pkg config				\
 	$(NULL)
 
-src_mlm_encoder_CFLAGS =			\
+encoder_mlm_encoder_CFLAGS =			\
 	@GEE_CFLAGS@				\
 	@GSTREAMER_CFLAGS@			\
 	@GTK_CFLAGS@				\
-	-I$(srcdir)/src				\
+	-I$(srcdir)/mlm				\
 	-w					\
 	$(NULL)
 
-src_mlm_encoder_LDADD =				\
+encoder_mlm_encoder_LDADD =			\
 	@GEE_LIBS@				\
 	@GSTREAMER_LIBS@			\
 	@GTK_LIBS@				\
-	src/libmlm.la				\
+	mlm/libmlm.la				\
 	$(NULL)
 
 # ====== UI files
