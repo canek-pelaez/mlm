@@ -128,12 +128,22 @@ Format for printing:
             exit(0);
         }
 
+        private static uint char_count(string s) {
+            string t = s.replace("\033[1m\033", "");
+            t = t.replace("\033[0m", "");
+            for (int i = 90; i <= 96; i++) {
+                string r = "[%dm".printf(i);
+                t = t.replace(r, "");
+            }
+            return t.char_count();
+        }
+
         private static ArrayList<string> split_line(string line) {
             var ll = new ArrayList<string>();
             string[] words = line.split(" ");
             string l = words[0];
             for (int i = 1; i < words.length; i++) {
-                if (l.char_count() + 1 + words[i].char_count() < output_width - 2) {
+                if (char_count(l) + 1 + char_count(words[i]) < output_width - 2) {
                     l += " " + words[i];
                 } else {
                     ll.add(l);
