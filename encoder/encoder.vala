@@ -468,12 +468,12 @@ namespace MLM {
             try {
                 pipe = (Gst.Pipeline)
                 Gst.parse_launch(
-                    "filesrc name=src                ! " +
-                    "decodebin                       ! " +
-                    "audioconvert                    ! " +
-                    "rglimiter                       ! " +
-                    "audioconvert                    ! " +
-                    "lamemp3enc bitrate=128 cbr=true ! " +
+                    "filesrc name=src                         ! " +
+                    "decodebin                                ! " +
+                    "audioconvert                             ! " +
+                    "rglimiter                                ! " +
+                    "audioconvert                             ! " +
+                    "lamemp3enc target=1 bitrate=128 cbr=true ! " +
                     "filesink name=sink");
             } catch(Error e) {
                 print("%s\n", e.message);
