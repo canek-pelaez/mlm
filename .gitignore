@@ -18,6 +18,9 @@ m4
 analyze/*.c
 analyze/*.h
 analyze/mlm-analyze
+copy-tags/*.c
+copy-tags/*.h
+copy-tags/mlm-copy-tags
 encoder/*.c
 encoder/*.h
 encoder/mlm-encoder
