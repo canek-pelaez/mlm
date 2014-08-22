@@ -320,9 +320,9 @@ namespace MLM {
         }
 
         private void set_image_from_data(Image image, uint8[] data) {
-            MemoryInputStream mis = new MemoryInputStream.from_data(data, null);
+            var mis = new MemoryInputStream.from_data(data, null);
             try {
-                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_stream(mis);
+                var pixbuf = new Gdk.Pixbuf.from_stream(mis);
                 double scale = 150.0 / double.max(pixbuf.width, pixbuf.height);
                 pixbuf = pixbuf.scale_simple((int)(pixbuf.width*scale),
                                              (int)(pixbuf.height*scale),
@@ -516,10 +516,10 @@ namespace MLM {
             if (album_mode && file_tags.track_number != -1)
                 dest += "%02d - ".printf(file_tags.track_number);
             if (file_tags.artist != null)
-                dest += file_tags.artist;
+                dest += file_tags.artist.replace("/", "_");
             dest += " - ";
             if (file_tags.title != null)
-                dest += file_tags.title;
+                dest += file_tags.title.replace("/", "_");
             dest += ".mp3";
             if (FileUtils.test(dest, FileTest.EXISTS)) {
                 MessageDialog dialog;
@@ -549,6 +549,7 @@ namespace MLM {
             create_progress_dialog();
             progress.show_all();
             Idle.add(upgrade_progressbar);
+            reencoding = true;
             int r = progress.run();
             if (r != ResponseType.OK) {
                 change_pipeline_state(Gst.State.NULL);
@@ -565,8 +566,19 @@ namespace MLM {
             next_filename();
         }
 
-        public void start() {
+        private bool automatic_reencode() {
+            if (reencoding)
+                return true;
+
+            reencode();
+
+            return true;
+        }
+
+        public void start(bool automatic) {
             window.show_all();
+            if (automatic)
+                Idle.add(automatic_reencode);
         }
 
         public static int main(string[] args) {
@@ -578,16 +590,19 @@ namespace MLM {
             Gst.init(ref args);
 
             var files = new ArrayList<string>();
+            var automatic = false;
 
             for (int i = 1; i < args.length; i++) {
-                if (FileUtils.test(args[i], FileTest.EXISTS))
+                if (args[i] == "--automatic")
+                    automatic = true;
+                else if (FileUtils.test(args[i], FileTest.EXISTS))
                     files.add(args[i]);
                 else
                     stderr.printf("The file '%s' does not exists. Ignoring.\n", args[i]);
             }
 
             var encoder = new Encoder(files);
-            encoder.start();
+            encoder.start(automatic);
 
             Gtk.main();
 
