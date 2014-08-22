@@ -25,9 +25,9 @@ encoder/*.c
 encoder/*.h
 encoder/mlm-encoder
 id3tag-x/libid3tag-x.la
-mlm/*.c
-mlm/*.h
-mlm/libmlm.la
+libmlm/*.c
+libmlm/*.h
+libmlm/libmlm.la
 src/*.c
 src/*.h
 src/mlm-encoder
