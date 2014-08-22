@@ -21,13 +21,13 @@ analyze/mlm-analyze
 copy-tags/*.c
 copy-tags/*.h
 copy-tags/mlm-copy-tags
-encoder/*.c
-encoder/*.h
-encoder/mlm-encoder
 id3tag-x/libid3tag-x.la
 libmlm/*.c
 libmlm/*.h
 libmlm/libmlm.la
+mlm/*.c
+mlm/*.h
+mlm/mlm
 src/*.c
 src/*.h
 src/mlm-encoder

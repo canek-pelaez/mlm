@@ -34,7 +34,7 @@ libmlm_libmlm_la_SOURCES =			\
 
 libmlm_libmlm_la_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
-	--vapi vapi/libmlm.vapi			\
+	--vapi vapi/mlm.vapi			\
 	--header libmlm/mlm.h			\
 	@GEE_PACKAGES@				\
 	@ID3TAG_PACKAGES@			\
@@ -59,7 +59,7 @@ bin_PROGRAMS = verify/mlm-verify
 
 verify_mlm_verify_SOURCES =			\
 	verify/verify.vala			\
-	vapi/libmlm.vapi			\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 verify_mlm_verify_VALAFLAGS =			\
@@ -89,7 +89,7 @@ bin_PROGRAMS += copy-tags/mlm-copy-tags
 
 copy_tags_mlm_copy_tags_SOURCES =		\
 	copy-tags/copy-tags.vala		\
-	vapi/libmlm.vapi			\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 copy_tags_mlm_copy_tags_VALAFLAGS =		\
@@ -119,7 +119,7 @@ bin_PROGRAMS += analyze/mlm-analyze
 
 analyze_mlm_analyze_SOURCES =			\
 	analyze/analyze.vala			\
-	vapi/libmlm.vapi			\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 analyze_mlm_analyze_VALAFLAGS =			\
@@ -149,7 +149,7 @@ bin_PROGRAMS += tags/mlm-tags
 
 tags_mlm_tags_SOURCES =				\
 	tags/tags.vala				\
-	vapi/libmlm.vapi			\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 tags_mlm_tags_VALAFLAGS =			\
@@ -175,8 +175,8 @@ tags_mlm_tags_LDADD =				\
 bin_PROGRAMS += mlm/mlm
 
 mlm_mlm_SOURCES =				\
-	mlm/mlm.vala				\
-	vapi/libmlm.vapi			\
+	mlm/main.vala				\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 mlm_mlm_VALAFLAGS =				\
@@ -220,7 +220,7 @@ data_icons_DATA = data/mlm-encoder.svg
 noinst_DATA =					\
 	vapi/config.vapi			\
 	vapi/id3tag.vapi			\
-	vapi/libmlm.vapi			\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 EXTRA_DIST =					\
@@ -232,7 +232,7 @@ EXTRA_DIST =					\
 
 DISTCLEANFILES =				\
 	src/mlm.h				\
-	vapi/libmlm.vapi			\
+	vapi/mlm.vapi				\
 	$(NULL)
 
 SUBDIRS = po
