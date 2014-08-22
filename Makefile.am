@@ -176,6 +176,7 @@ bin_PROGRAMS += mlm/mlm
 
 mlm_mlm_SOURCES =				\
 	mlm/main.vala				\
+	mlm/encoder.vala			\
 	vapi/mlm.vapi				\
 	$(NULL)
 
@@ -206,16 +207,16 @@ mlm_mlm_LDADD =					\
 
 uidir = $(pkgdatadir)
 ui_DATA =					\
-	data/mlm-encoder.ui			\
+	data/mlm.ui				\
 	data/nodisc.jpg				\
 	data/person.jpg				\
 	$(NULL)
 
 data_desktopdir = $(datadir)/applications
-data_desktop_DATA = data/mlm-encoder.desktop
+data_desktop_DATA = data/mlm.desktop
 
 data_iconsdir = $(datadir)/icons/hicolor/scalable/apps
-data_icons_DATA = data/mlm-encoder.svg
+data_icons_DATA = data/mlm.svg
 
 noinst_DATA =					\
 	vapi/config.vapi			\

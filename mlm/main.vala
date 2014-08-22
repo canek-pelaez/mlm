@@ -22,7 +22,7 @@ using Gtk;
 
 namespace MLM {
 
-    public class Encoder {
+    public class Main {
 
         private static const string UI =
             Config.PKGDATADIR + Path.DIR_SEPARATOR_S + "mlm-encoder.ui";
@@ -57,18 +57,17 @@ namespace MLM {
 
         private Dialog progress;
         private ProgressBar progress_bar;
-        private Gst.Pipeline pipe;
-        private bool reencoding;
+        private Encoder encoder;
+        private bool encoding_cancelled;
 
         private bool transitioning;
         private bool updating_tracks;
         private bool album_mode;
-        private bool encoding_cancelled;
 
         private string filename;
         private string dest;
 
-        public Encoder(ArrayList<string> files) {
+        public Main(ArrayList<string> files) {
             DateTime dt = new DateTime.now_local();
             current_year = dt.get_year();
             genres = Genre.all();
@@ -384,10 +383,9 @@ namespace MLM {
         }
 
         private void create_progress_dialog() {
-            progress = new Dialog.with_buttons(_("Reencoding"), window,
-                                               DialogFlags.MODAL,
-                                               _("_Cancel"),
-                                               ResponseType.CANCEL);
+            progress = new Dialog.with_buttons(
+                _("Reencoding"), window, DialogFlags.MODAL,
+                _("_Cancel"), ResponseType.CANCEL);
             progress.border_width = 6;
             Label label = new Label(_("Reencoding '%s'\ninto '%s'... ").printf
                                     (Path.get_basename(filename),
@@ -408,7 +406,7 @@ namespace MLM {
         }
 
         private bool upgrade_progressbar() {
-            double p = get_reencoding_percentage();
+            double p = encoder.get_completion_percentage();
             progress_bar.set_fraction(p);
 
             if (p < 1.0)
@@ -443,74 +441,6 @@ namespace MLM {
             return false;
         }
 
-        private double get_reencoding_percentage() {
-            Gst.State state;
-            Gst.State pending;
-
-            pipe.get_state(out state, out pending, 100);
-
-            if (state != Gst.State.PLAYING)
-                return 1.0;
-
-            int64 duration = -1;
-            Gst.Format format = Gst.Format.TIME;
-            while (duration == -1)
-                if (!pipe.query_duration(format, out duration))
-                    duration = -1;
-            int64 pos = -1;
-            while (pos == -1)
-                if (!pipe.query_position(format, out pos))
-                    pos = -1;
-            return (double)pos/(double)duration;
-        }
-
-        private void start_pipeline() {
-            try {
-                pipe = (Gst.Pipeline)
-                Gst.parse_launch(
-                    "filesrc name=src                         ! " +
-                    "decodebin                                ! " +
-                    "audioconvert                             ! " +
-                    "rglimiter                                ! " +
-                    "audioconvert                             ! " +
-                    "lamemp3enc target=1 bitrate=128 cbr=true ! " +
-                    "filesink name=sink");
-            } catch(Error e) {
-                print("%s\n", e.message);
-            }
-
-            var src = pipe.get_by_name("src");
-            src.set_property("location", filename);
-            var sink = pipe.get_by_name("sink");
-            sink.set_property("location", dest);
-
-            var bus = pipe.get_bus();
-            bus.add_signal_watch();
-            bus.message.connect((b,m) => { message_received(m); });
-        }
-
-        private bool change_pipeline_state(Gst.State new_state) {
-            pipe.set_state(new_state);
-            Gst.State state = Gst.State.NULL;
-            Gst.State pending;
-
-            Gst.StateChangeReturn r;
-
-            do {
-                r = pipe.get_state(out state, out pending, 100);
-                if (r == Gst.StateChangeReturn.FAILURE)
-                    return false;
-            } while (state != new_state);
-
-            return true;
-        }
-
-        private void message_received(Gst.Message message) {
-            if (message.type == Gst.MessageType.EOS)
-                if (change_pipeline_state(Gst.State.NULL))
-                    reencoding = false;
-        }
-
         private void reencode() {
             dest = Path.get_dirname(filename) + Path.DIR_SEPARATOR_S;
             if (album_mode && file_tags.track_number != -1)
@@ -523,25 +453,24 @@ namespace MLM {
             dest += ".mp3";
             if (FileUtils.test(dest, FileTest.EXISTS)) {
                 MessageDialog dialog;
-                dialog = new MessageDialog(window,
-                                           DialogFlags.DESTROY_WITH_PARENT,
-                                           MessageType.QUESTION,
-                                           ButtonsType.YES_NO,
-                                           _("The file '%s' already exists.\nRewrite it?"),
-                                           Path.get_basename(dest));
+                dialog = new MessageDialog(
+                    window, DialogFlags.DESTROY_WITH_PARENT,
+                    MessageType.QUESTION, ButtonsType.YES_NO,
+                    _("The file '%s' already exists.\nRewrite it?"),
+                    Path.get_basename(dest));
                 int r = dialog.run();
                 dialog.destroy();
                 if (r != ResponseType.YES)
                     return;
             }
-            start_pipeline();
-            if (!change_pipeline_state(Gst.State.PLAYING)) {
+            encoder = new Encoder(filename, dest);
+            if (!encoder.encode()) {
                 MessageDialog dialog;
-                dialog = new MessageDialog(window,
-                                           DialogFlags.DESTROY_WITH_PARENT,
-                                           MessageType.INFO, ButtonsType.OK,
-                                           _("There was an error while\nreencoding file '%s'.\n"),
-                                           Path.get_basename(filename));
+                dialog = new MessageDialog(
+                    window, DialogFlags.DESTROY_WITH_PARENT,
+                    MessageType.INFO, ButtonsType.OK,
+                    _("There was an error while\nreencoding file '%s'.\n"),
+                    Path.get_basename(filename));
                 dialog.run();
                 dialog.destroy();
                 return;
@@ -549,10 +478,9 @@ namespace MLM {
             create_progress_dialog();
             progress.show_all();
             Idle.add(upgrade_progressbar);
-            reencoding = true;
             int r = progress.run();
             if (r != ResponseType.OK) {
-                change_pipeline_state(Gst.State.NULL);
+                encoder.cancel();
                 encoding_cancelled = true;
             }
             progress.destroy();
@@ -566,19 +494,8 @@ namespace MLM {
             next_filename();
         }
 
-        private bool automatic_reencode() {
-            if (reencoding)
-                return true;
-
-            reencode();
-
-            return true;
-        }
-
-        public void start(bool automatic) {
+        public void start() {
             window.show_all();
-            if (automatic)
-                Idle.add(automatic_reencode);
         }
 
         public static int main(string[] args) {
@@ -590,19 +507,16 @@ namespace MLM {
             Gst.init(ref args);
 
             var files = new ArrayList<string>();
-            var automatic = false;
 
             for (int i = 1; i < args.length; i++) {
-                if (args[i] == "--automatic")
-                    automatic = true;
-                else if (FileUtils.test(args[i], FileTest.EXISTS))
+                if (FileUtils.test(args[i], FileTest.EXISTS))
                     files.add(args[i]);
                 else
                     stderr.printf("The file '%s' does not exists. Ignoring.\n", args[i]);
             }
 
-            var encoder = new Encoder(files);
-            encoder.start(automatic);
+            var encoder = new Main(files);
+            encoder.start();
 
             Gtk.main();
 

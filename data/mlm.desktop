@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=MLM
+GenericName=Music Library Maintainer
+Comment=Edit, Normalize and Encode MP3 so the music library is consistent
+Exec=mlm %F
+Terminal=false
+Type=Application
+Icon=mlm
+Categories=GNOME;GTK;AudioVideo;
+MimeType=audio/x-mp3;audio/x-mpeg;audio/mpeg;
