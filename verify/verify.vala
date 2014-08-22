@@ -362,6 +362,15 @@ namespace MLM {
                 add_to_report("\tFile has no front cover picture.\n");
             if (missing_pictures && ap < 1)
                 add_to_report("\tFile has no artist picture.\n");
+            // if (small_pictures && file.front_cover_picture != null) {
+            //     var mis = new MemoryInputStream.from_data(data, null);
+            //     int width = -1, height = -1;
+            //     try {
+            //         var pixbuf = new Gdk.Pixbuf.from_stream(mis);
+            //     } catch (Error e) {
+            //         stderr.printf("Could not set pixbuf from data.\n");
+            //     }
+            // }
             if (comments > 1)
                 add_to_report("\tFile has more than one comment.\n");
             if (anomalies && fixit) {
