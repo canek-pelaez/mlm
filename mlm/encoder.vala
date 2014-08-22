@@ -22,14 +22,14 @@ namespace MLM {
     public class Encoder {
 
         private string source;
-        private string dest;
+        private string target;
         private Gst.Pipeline pipe;
 
         public bool encoding { get; private set; }
 
-        public Encoder(string source, string dest) {
+        public Encoder(string source, string target) {
             this.source = source;
-            this.dest = dest;
+            this.target = target;
 
             try {
                 pipe = (Gst.Pipeline)
@@ -48,7 +48,7 @@ namespace MLM {
             var src = pipe.get_by_name("src");
             src.set_property("location", source);
             var sink = pipe.get_by_name("sink");
-            sink.set_property("location", dest);
+            sink.set_property("location", target);
 
             var bus = pipe.get_bus();
             bus.add_signal_watch();
