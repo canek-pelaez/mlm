@@ -83,6 +83,36 @@ verify_mlm_verify_LDADD =			\
 	mlm/libmlm.la				\
 	$(NULL)
 
+# ====== mlm-copy-tags
+
+bin_PROGRAMS += copy-tags/mlm-copy-tags
+
+copy_tags_mlm_copy_tags_SOURCES =		\
+	copy-tags/copy-tags.vala		\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+copy_tags_mlm_copy_tags_VALAFLAGS =		\
+	$(COMMON_VALAFLAGS)			\
+	@GLIB_PACKAGES@				\
+	@ID3TAG_PACKAGES@			\
+	$(NULL)
+
+copy_tags_mlm_copy_tags_CFLAGS =		\
+	@GLIB_CFLAGS@				\
+	@ID3TAG_CFLAGS@				\
+	-I$(srcdir)/id3tag-x			\
+	-I$(srcdir)/mlm				\
+	-w					\
+	$(NULL)
+
+copy_tags_mlm_copy_tags_LDADD =			\
+	@GLIB_LIBS@				\
+	@ID3TAG_LIBS@				\
+	id3tag-x/libid3tag-x.la			\
+	mlm/libmlm.la				\
+	$(NULL)
+
 # ====== mlm-analyze
 
 bin_PROGRAMS += analyze/mlm-analyze
