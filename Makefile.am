@@ -66,11 +66,15 @@ verify_mlm_verify_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	@ID3TAG_PACKAGES@			\
 	@GEE_PACKAGES@				\
+	@GIO_PACKAGES@				\
+	@GDK_PIXBUF_PACKAGES@			\
 	$(NULL)
 
 verify_mlm_verify_CFLAGS =			\
 	@ID3TAG_CFLAGS@				\
 	@GEE_CFLAGS@				\
+	@GIO_CFLAGS@				\
+	@GDK_PIXBUF_CFLAGS@			\
 	-I$(srcdir)/id3tag-x			\
 	-I$(srcdir)/libmlm			\
 	-w					\
@@ -79,6 +83,8 @@ verify_mlm_verify_CFLAGS =			\
 verify_mlm_verify_LDADD =			\
 	@ID3TAG_LIBS@				\
 	@GEE_LIBS@				\
+	@GIO_LIBS@				\
+	@GDK_PIXBUF_LIBS@			\
 	id3tag-x/libid3tag-x.la			\
 	libmlm/libmlm.la			\
 	$(NULL)
