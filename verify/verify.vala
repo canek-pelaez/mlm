@@ -58,7 +58,7 @@ namespace MLM {
 
         private void add_to_report(string s) {
             anomalies = true;
-            report += s;
+            report += ConsoleTools.red(s);
         }
 
         private string to_title(string str) {
@@ -214,6 +214,25 @@ namespace MLM {
                 add_to_report("\t\t...fixed.\n");
                 return;
             }
+            if (small_pictures) {
+                uint8[] data = frame.get_picture(pt);
+                string ptype = "front cover";
+                if (pt == PictureType.ARTIST)
+                    ptype = "artist";
+                var mis = new MemoryInputStream.from_data(data, null);
+                Gdk.Pixbuf pixbuf = null;
+                try {
+                    pixbuf = new Gdk.Pixbuf.from_stream(mis);
+                } catch (Error e) {
+                    stderr.printf("Could not set pixbuf from data.\n");
+                }
+                if (pixbuf != null) {
+                    int max = int.max(pixbuf.width, pixbuf.height);
+                    if (max < 500)
+                        add_to_report("\tThe %s longest side is ".printf(ptype) +
+                                      "less than 500 pixels (%d).\n".printf(max));
+                }
+            }
             string desc = frame.get_picture_description();
             if (desc == "") {
                 add_to_report("\tThe picture description is empty.\n");
@@ -268,7 +287,7 @@ namespace MLM {
                 stderr.printf("%s: No such file.\n", filename);
                 return;
             }
-            File file = new File(filename, FileMode.READWRITE);
+            var file = new Id3Tag.File(filename, FileMode.READWRITE);
             if (file == null) {
                 stderr.printf("%s: Could not link to file.\n", filename);
                 return;
@@ -278,7 +297,7 @@ namespace MLM {
                 stderr.printf("%s: Could not extract tags from file.\n", filename);
                 return;
             }
-            report = "%s:\n".printf(filename);
+            report = "%s:\n".printf(ConsoleTools.cyan(filename));
             if (tag.frames.length == 0)
                 add_to_report("\tFile has no frames.\n");
             int fcp = 0;
@@ -362,15 +381,6 @@ namespace MLM {
                 add_to_report("\tFile has no front cover picture.\n");
             if (missing_pictures && ap < 1)
                 add_to_report("\tFile has no artist picture.\n");
-            // if (small_pictures && file.front_cover_picture != null) {
-            //     var mis = new MemoryInputStream.from_data(data, null);
-            //     int width = -1, height = -1;
-            //     try {
-            //         var pixbuf = new Gdk.Pixbuf.from_stream(mis);
-            //     } catch (Error e) {
-            //         stderr.printf("Could not set pixbuf from data.\n");
-            //     }
-            // }
             if (comments > 1)
                 add_to_report("\tFile has more than one comment.\n");
             if (anomalies && fixit) {
