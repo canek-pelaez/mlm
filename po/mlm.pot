@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-26 13:59-0500\n"
+"POT-Creation-Date: 2014-08-23 12:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,707 +17,707 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/encoder.vala:341 ../src/encoder.vala:389
+#: ../mlm/main.vala:340 ../mlm/main.vala:388
 msgid "_Cancel"
 msgstr ""
 
-#: ../src/encoder.vala:342
+#: ../mlm/main.vala:341
 msgid "_Open"
 msgstr ""
 
-#: ../src/encoder.vala:387
+#: ../mlm/main.vala:387
 msgid "Reencoding"
 msgstr ""
 
-#: ../src/encoder.vala:392
+#: ../mlm/main.vala:390
 #, c-format
 msgid ""
 "Reencoding '%s'\n"
 "into '%s'... "
 msgstr ""
 
-#: ../src/encoder.vala:530
+#: ../mlm/main.vala:459
 #, c-format
 msgid ""
 "The file '%s' already exists.\n"
 "Rewrite it?"
 msgstr ""
 
-#: ../src/encoder.vala:543
+#: ../mlm/main.vala:472
 #, c-format
 msgid ""
 "There was an error while\n"
 "reencoding file '%s'.\n"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:1
+#: ../data/mlm.ui.h:1
 msgid "MLM Encoder"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:2
+#: ../data/mlm.ui.h:2
 msgid "_Artist:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:3
+#: ../data/mlm.ui.h:3
 msgid "_Title:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:4
+#: ../data/mlm.ui.h:4
 msgid "A_lbum:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:5
+#: ../data/mlm.ui.h:5
 msgid "_Year:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:6
+#: ../data/mlm.ui.h:6
 msgid "T_rack:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:7
+#: ../data/mlm.ui.h:7
 msgid "/"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:8
+#: ../data/mlm.ui.h:8
 msgid "_Disc:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:9
+#: ../data/mlm.ui.h:9
 msgid "_Genre:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:10
+#: ../data/mlm.ui.h:10
 msgid "Blues"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:11
+#: ../data/mlm.ui.h:11
 msgid "Classic Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:12
+#: ../data/mlm.ui.h:12
 msgid "Country"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:13
+#: ../data/mlm.ui.h:13
 msgid "Dance"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:14
+#: ../data/mlm.ui.h:14
 msgid "Disco"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:15
+#: ../data/mlm.ui.h:15
 msgid "Funk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:16
+#: ../data/mlm.ui.h:16
 msgid "Grunge"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:17
+#: ../data/mlm.ui.h:17
 msgid "Hip-Hop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:18
+#: ../data/mlm.ui.h:18
 msgid "Jazz"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:19
+#: ../data/mlm.ui.h:19
 msgid "Metal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:20
+#: ../data/mlm.ui.h:20
 msgid "New Age"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:21
+#: ../data/mlm.ui.h:21
 msgid "Oldies"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:22
+#: ../data/mlm.ui.h:22
 msgid "Other"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:23
+#: ../data/mlm.ui.h:23
 msgid "Pop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:24
+#: ../data/mlm.ui.h:24
 msgid "R&B"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:25
+#: ../data/mlm.ui.h:25
 msgid "Rap"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:26
+#: ../data/mlm.ui.h:26
 msgid "Reggae"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:27
+#: ../data/mlm.ui.h:27
 msgid "Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:28
+#: ../data/mlm.ui.h:28
 msgid "Techno"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:29
+#: ../data/mlm.ui.h:29
 msgid "Industrial"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:30
+#: ../data/mlm.ui.h:30
 msgid "Alternative"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:31
+#: ../data/mlm.ui.h:31
 msgid "Ska"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:32
+#: ../data/mlm.ui.h:32
 msgid "Death Metal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:33
+#: ../data/mlm.ui.h:33
 msgid "Pranks"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:34
+#: ../data/mlm.ui.h:34
 msgid "Soundtrack"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:35
+#: ../data/mlm.ui.h:35
 msgid "Euro-Techno"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:36
+#: ../data/mlm.ui.h:36
 msgid "Ambient"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:37
+#: ../data/mlm.ui.h:37
 msgid "Trip-Hop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:38
+#: ../data/mlm.ui.h:38
 msgid "Vocal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:39
+#: ../data/mlm.ui.h:39
 msgid "Jazz+Funk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:40
+#: ../data/mlm.ui.h:40
 msgid "Fusion"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:41
+#: ../data/mlm.ui.h:41
 msgid "Trance"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:42
+#: ../data/mlm.ui.h:42
 msgid "Classical"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:43
+#: ../data/mlm.ui.h:43
 msgid "Instrumental"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:44
+#: ../data/mlm.ui.h:44
 msgid "Acid"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:45
+#: ../data/mlm.ui.h:45
 msgid "House"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:46
+#: ../data/mlm.ui.h:46
 msgid "Game"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:47
+#: ../data/mlm.ui.h:47
 msgid "Sound Clip"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:48
+#: ../data/mlm.ui.h:48
 msgid "Gospel"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:49
+#: ../data/mlm.ui.h:49
 msgid "Noise"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:50
+#: ../data/mlm.ui.h:50
 msgid "AlternRock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:51
+#: ../data/mlm.ui.h:51
 msgid "Bass"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:52
+#: ../data/mlm.ui.h:52
 msgid "Soul"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:53
+#: ../data/mlm.ui.h:53
 msgid "Punk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:54
+#: ../data/mlm.ui.h:54
 msgid "Space"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:55
+#: ../data/mlm.ui.h:55
 msgid "Meditative"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:56
+#: ../data/mlm.ui.h:56
 msgid "Instrumental Pop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:57
+#: ../data/mlm.ui.h:57
 msgid "Instrumental Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:58
+#: ../data/mlm.ui.h:58
 msgid "Ethnic"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:59
+#: ../data/mlm.ui.h:59
 msgid "Gothic"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:60
+#: ../data/mlm.ui.h:60
 msgid "Darkwave"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:61
+#: ../data/mlm.ui.h:61
 msgid "Techno-Industrial"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:62
+#: ../data/mlm.ui.h:62
 msgid "Electronic"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:63
+#: ../data/mlm.ui.h:63
 msgid "Pop-Folk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:64
+#: ../data/mlm.ui.h:64
 msgid "Eurodance"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:65
+#: ../data/mlm.ui.h:65
 msgid "Dream"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:66
+#: ../data/mlm.ui.h:66
 msgid "Southern Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:67
+#: ../data/mlm.ui.h:67
 msgid "Comedy"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:68
+#: ../data/mlm.ui.h:68
 msgid "Cult"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:69
+#: ../data/mlm.ui.h:69
 msgid "Gangsta"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:70
+#: ../data/mlm.ui.h:70
 msgid "Top 40"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:71
+#: ../data/mlm.ui.h:71
 msgid "Christian Rap"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:72
+#: ../data/mlm.ui.h:72
 msgid "Pop/Funk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:73
+#: ../data/mlm.ui.h:73
 msgid "Jungle"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:74
+#: ../data/mlm.ui.h:74
 msgid "Native American"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:75
+#: ../data/mlm.ui.h:75
 msgid "Cabaret"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:76
+#: ../data/mlm.ui.h:76
 msgid "New Wave"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:77
+#: ../data/mlm.ui.h:77
 msgid "Psychadelic"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:78
+#: ../data/mlm.ui.h:78
 msgid "Rave"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:79
+#: ../data/mlm.ui.h:79
 msgid "Showtunes"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:80
+#: ../data/mlm.ui.h:80
 msgid "Trailer"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:81
+#: ../data/mlm.ui.h:81
 msgid "Lo-Fi"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:82
+#: ../data/mlm.ui.h:82
 msgid "Tribal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:83
+#: ../data/mlm.ui.h:83
 msgid "Acid Punk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:84
+#: ../data/mlm.ui.h:84
 msgid "Acid Jazz"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:85
+#: ../data/mlm.ui.h:85
 msgid "Polka"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:86
+#: ../data/mlm.ui.h:86
 msgid "Retro"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:87
+#: ../data/mlm.ui.h:87
 msgid "Musical"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:88
+#: ../data/mlm.ui.h:88
 msgid "Rock & Roll"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:89
+#: ../data/mlm.ui.h:89
 msgid "Hard Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:90
+#: ../data/mlm.ui.h:90
 msgid "Folk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:91
+#: ../data/mlm.ui.h:91
 msgid "Folk-Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:92
+#: ../data/mlm.ui.h:92
 msgid "National Folk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:93
+#: ../data/mlm.ui.h:93
 msgid "Swing"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:94
+#: ../data/mlm.ui.h:94
 msgid "Fast Fusion"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:95
+#: ../data/mlm.ui.h:95
 msgid "Bebob"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:96
+#: ../data/mlm.ui.h:96
 msgid "Latin"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:97
+#: ../data/mlm.ui.h:97
 msgid "Revival"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:98
+#: ../data/mlm.ui.h:98
 msgid "Celtic"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:99
+#: ../data/mlm.ui.h:99
 msgid "Bluegrass"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:100
+#: ../data/mlm.ui.h:100
 msgid "Avantgarde"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:101
+#: ../data/mlm.ui.h:101
 msgid "Gothic Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:102
+#: ../data/mlm.ui.h:102
 msgid "Progressive Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:103
+#: ../data/mlm.ui.h:103
 msgid "Psychedelic Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:104
+#: ../data/mlm.ui.h:104
 msgid "Symphonic Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:105
+#: ../data/mlm.ui.h:105
 msgid "Slow Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:106
+#: ../data/mlm.ui.h:106
 msgid "Big Band"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:107
+#: ../data/mlm.ui.h:107
 msgid "Chorus"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:108
+#: ../data/mlm.ui.h:108
 msgid "Easy Listening"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:109
+#: ../data/mlm.ui.h:109
 msgid "Acoustic"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:110
+#: ../data/mlm.ui.h:110
 msgid "Humour"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:111
+#: ../data/mlm.ui.h:111
 msgid "Speech"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:112
+#: ../data/mlm.ui.h:112
 msgid "Chanson"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:113
+#: ../data/mlm.ui.h:113
 msgid "Opera"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:114
+#: ../data/mlm.ui.h:114
 msgid "Chamber Music"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:115
+#: ../data/mlm.ui.h:115
 msgid "Sonata"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:116
+#: ../data/mlm.ui.h:116
 msgid "Symphony"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:117
+#: ../data/mlm.ui.h:117
 msgid "Booty Bass"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:118
+#: ../data/mlm.ui.h:118
 msgid "Primus"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:119
+#: ../data/mlm.ui.h:119
 msgid "Porn Groove"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:120
+#: ../data/mlm.ui.h:120
 msgid "Satire"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:121
+#: ../data/mlm.ui.h:121
 msgid "Slow Jam"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:122
+#: ../data/mlm.ui.h:122
 msgid "Club"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:123
+#: ../data/mlm.ui.h:123
 msgid "Tango"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:124
+#: ../data/mlm.ui.h:124
 msgid "Samba"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:125
+#: ../data/mlm.ui.h:125
 msgid "Folklore"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:126
+#: ../data/mlm.ui.h:126
 msgid "Ballad"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:127
+#: ../data/mlm.ui.h:127
 msgid "Power Ballad"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:128
+#: ../data/mlm.ui.h:128
 msgid "Rhythmic Soul"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:129
+#: ../data/mlm.ui.h:129
 msgid "Freestyle"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:130
+#: ../data/mlm.ui.h:130
 msgid "Duet"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:131
+#: ../data/mlm.ui.h:131
 msgid "Punk Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:132
+#: ../data/mlm.ui.h:132
 msgid "Drum Solo"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:133
+#: ../data/mlm.ui.h:133
 msgid "A capella"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:134
+#: ../data/mlm.ui.h:134
 msgid "Euro-House"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:135
+#: ../data/mlm.ui.h:135
 msgid "Dance Hall"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:136
+#: ../data/mlm.ui.h:136
 msgid "Goa"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:137
+#: ../data/mlm.ui.h:137
 msgid "Drum & Bass"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:138
+#: ../data/mlm.ui.h:138
 msgid "Club-House"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:139
+#: ../data/mlm.ui.h:139
 msgid "Hardcore"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:140
+#: ../data/mlm.ui.h:140
 msgid "Terror"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:141
+#: ../data/mlm.ui.h:141
 msgid "Indie"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:142
+#: ../data/mlm.ui.h:142
 msgid "BritPop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:143
+#: ../data/mlm.ui.h:143
 msgid "Negerpunk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:144
+#: ../data/mlm.ui.h:144
 msgid "Polsk Punk"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:145
+#: ../data/mlm.ui.h:145
 msgid "Beat"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:146
+#: ../data/mlm.ui.h:146
 msgid "Christian Gangsta Rap"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:147
+#: ../data/mlm.ui.h:147
 msgid "Heavy Metal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:148
+#: ../data/mlm.ui.h:148
 msgid "Black Metal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:149
+#: ../data/mlm.ui.h:149
 msgid "Crossover"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:150
+#: ../data/mlm.ui.h:150
 msgid "Contemporary Christian"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:151
+#: ../data/mlm.ui.h:151
 msgid "Christian Rock"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:152
+#: ../data/mlm.ui.h:152
 msgid "Merengue"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:153
+#: ../data/mlm.ui.h:153
 msgid "Salsa"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:154
+#: ../data/mlm.ui.h:154
 msgid "Trash Metal"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:155
+#: ../data/mlm.ui.h:155
 msgid "Anime"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:156
+#: ../data/mlm.ui.h:156
 msgid "JPop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:157
+#: ../data/mlm.ui.h:157
 msgid "Synthpop"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:158
+#: ../data/mlm.ui.h:158
 msgid "_Comment:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:159
+#: ../data/mlm.ui.h:159
 msgid "Compo_ser:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:160
+#: ../data/mlm.ui.h:160
 msgid "_Original artist:"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:161
+#: ../data/mlm.ui.h:161
 msgid "Album cover"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:162
+#: ../data/mlm.ui.h:162
 msgid "Open"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:163
+#: ../data/mlm.ui.h:163
 msgid "Clear"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:164
+#: ../data/mlm.ui.h:164
 msgid "Artist"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:165
+#: ../data/mlm.ui.h:165
 msgid "Album _mode"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:166
+#: ../data/mlm.ui.h:166
 msgid "Re_encode"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:167
+#: ../data/mlm.ui.h:167
 msgid "_Update tags"
 msgstr ""
 
-#: ../data/mlm-encoder.ui.h:168
+#: ../data/mlm.ui.h:168
 msgid "<b>file</b>"
 msgstr ""

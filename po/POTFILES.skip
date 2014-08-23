@@ -1,6 +1,10 @@
-src/encoder.c
-src/file-tags.c
-src/frame-id.c
-src/genres.c
-src/tags.c
-src/verify.c
+analyze/analyze.c
+copy-tags/copy-tags.c
+libmlm/console-tools.c
+libmlm/file-tags.c
+libmlm/frame-id.c
+libmlm/genres.c
+mlm/encoder.c
+mlm/main.c
+tags/tags.c
+verify/verify.c
