@@ -340,20 +340,18 @@ namespace MLM {
                                            _("_Cancel"), ResponseType.CANCEL,
                                            _("_Open"), ResponseType.ACCEPT);
             int r = dialog.run();
-            if (r != ResponseType.ACCEPT) {
-                dialog.destroy();
-                return null;
-            }
             string fn = dialog.get_filename();
             dialog.destroy();
-            uint8[] bytes;
+            if (r != ResponseType.ACCEPT)
+                return null;
             try {
+                uint8[] bytes;
                 FileUtils.get_data(fn, out bytes);
+                return bytes;
             } catch (FileError fe) {
                 stderr.printf("There was an error reading from '%s'.\n", fn);
-                return null;
             }
-            return bytes;
+            return null;
         }
 
         private void select_cover_image() {
