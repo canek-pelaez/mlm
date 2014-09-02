@@ -1,115 +1,1187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkListStore" id="genre_model">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name id -->
+      <column type="gint"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Blues</col>
+        <col id="1">0</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Classic Rock</col>
+        <col id="1">1</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Country</col>
+        <col id="1">2</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Dance</col>
+        <col id="1">3</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Disco</col>
+        <col id="1">4</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Funk</col>
+        <col id="1">5</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Grunge</col>
+        <col id="1">6</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hip-Hop</col>
+        <col id="1">7</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jazz</col>
+        <col id="1">8</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Metal</col>
+        <col id="1">9</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">New Age</col>
+        <col id="1">10</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Oldies</col>
+        <col id="1">11</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Other</col>
+        <col id="1">12</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pop</col>
+        <col id="1">13</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">R&amp;B</col>
+        <col id="1">14</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rap</col>
+        <col id="1">15</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Reggae</col>
+        <col id="1">16</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rock</col>
+        <col id="1">17</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Techno</col>
+        <col id="1">18</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Industrial</col>
+        <col id="1">19</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Alternative</col>
+        <col id="1">20</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Ska</col>
+        <col id="1">21</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Death Metal</col>
+        <col id="1">22</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pranks</col>
+        <col id="1">23</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Soundtrack</col>
+        <col id="1">24</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Euro-Techno</col>
+        <col id="1">25</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Ambient</col>
+        <col id="1">26</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Trip-Hop</col>
+        <col id="1">27</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Vocal</col>
+        <col id="1">28</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jazz+Funk</col>
+        <col id="1">29</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Fusion</col>
+        <col id="1">30</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Trance</col>
+        <col id="1">31</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Classical</col>
+        <col id="1">32</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Instrumental</col>
+        <col id="1">33</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Acid</col>
+        <col id="1">34</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">House</col>
+        <col id="1">35</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Game</col>
+        <col id="1">36</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sound Clip</col>
+        <col id="1">37</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Gospel</col>
+        <col id="1">38</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Noise</col>
+        <col id="1">39</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">AlternRock</col>
+        <col id="1">40</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Bass</col>
+        <col id="1">41</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Soul</col>
+        <col id="1">42</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Punk</col>
+        <col id="1">43</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Space</col>
+        <col id="1">44</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Meditative</col>
+        <col id="1">45</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Instrumental Pop</col>
+        <col id="1">46</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Instrumental Rock</col>
+        <col id="1">47</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Ethnic</col>
+        <col id="1">48</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Gothic</col>
+        <col id="1">49</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Darkwave</col>
+        <col id="1">50</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Techno-Industrial</col>
+        <col id="1">51</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Electronic</col>
+        <col id="1">52</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pop-Folk</col>
+        <col id="1">53</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Eurodance</col>
+        <col id="1">54</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Dream</col>
+        <col id="1">55</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Southern Rock</col>
+        <col id="1">56</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Comedy</col>
+        <col id="1">57</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Cult</col>
+        <col id="1">58</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Gangsta</col>
+        <col id="1">59</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Top 40</col>
+        <col id="1">60</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Christian Rap</col>
+        <col id="1">61</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Pop/Funk</col>
+        <col id="1">62</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Jungle</col>
+        <col id="1">63</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Native American</col>
+        <col id="1">64</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Cabaret</col>
+        <col id="1">65</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">New Wave</col>
+        <col id="1">66</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Psychadelic</col>
+        <col id="1">67</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rave</col>
+        <col id="1">68</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Showtunes</col>
+        <col id="1">69</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Trailer</col>
+        <col id="1">70</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Lo-Fi</col>
+        <col id="1">71</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tribal</col>
+        <col id="1">72</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Acid Punk</col>
+        <col id="1">73</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Acid Jazz</col>
+        <col id="1">74</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Polka</col>
+        <col id="1">75</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Retro</col>
+        <col id="1">76</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Musical</col>
+        <col id="1">77</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rock &amp; Roll</col>
+        <col id="1">78</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hard Rock</col>
+        <col id="1">79</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Folk</col>
+        <col id="1">80</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Folk-Rock</col>
+        <col id="1">81</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">National Folk</col>
+        <col id="1">82</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Swing</col>
+        <col id="1">83</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Fast Fusion</col>
+        <col id="1">84</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Bebob</col>
+        <col id="1">85</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Latin</col>
+        <col id="1">86</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Revival</col>
+        <col id="1">87</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Celtic</col>
+        <col id="1">88</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Bluegrass</col>
+        <col id="1">89</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Avantgarde</col>
+        <col id="1">90</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Gothic Rock</col>
+        <col id="1">91</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Progressive Rock</col>
+        <col id="1">92</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Psychedelic Rock</col>
+        <col id="1">93</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Symphonic Rock</col>
+        <col id="1">94</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Slow Rock</col>
+        <col id="1">95</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Big Band</col>
+        <col id="1">96</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Chorus</col>
+        <col id="1">97</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Easy Listening</col>
+        <col id="1">98</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Acoustic</col>
+        <col id="1">99</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Humour</col>
+        <col id="1">100</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Speech</col>
+        <col id="1">101</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Chanson</col>
+        <col id="1">102</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Opera</col>
+        <col id="1">103</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Chamber Music</col>
+        <col id="1">104</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sonata</col>
+        <col id="1">105</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Symphony</col>
+        <col id="1">106</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Booty Bass</col>
+        <col id="1">107</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Primus</col>
+        <col id="1">108</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Porn Groove</col>
+        <col id="1">109</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Satire</col>
+        <col id="1">110</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Slow Jam</col>
+        <col id="1">111</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Club</col>
+        <col id="1">112</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tango</col>
+        <col id="1">113</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Samba</col>
+        <col id="1">114</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Folklore</col>
+        <col id="1">115</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Ballad</col>
+        <col id="1">116</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Power Ballad</col>
+        <col id="1">117</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Rhythmic Soul</col>
+        <col id="1">118</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Freestyle</col>
+        <col id="1">119</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Duet</col>
+        <col id="1">120</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Punk Rock</col>
+        <col id="1">121</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Drum Solo</col>
+        <col id="1">122</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">A capella</col>
+        <col id="1">123</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Euro-House</col>
+        <col id="1">124</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Dance Hall</col>
+        <col id="1">125</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Goa</col>
+        <col id="1">126</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Drum &amp; Bass</col>
+        <col id="1">127</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Club-House</col>
+        <col id="1">128</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Hardcore</col>
+        <col id="1">129</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Terror</col>
+        <col id="1">130</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Indie</col>
+        <col id="1">131</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">BritPop</col>
+        <col id="1">132</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Negerpunk</col>
+        <col id="1">133</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Polsk Punk</col>
+        <col id="1">134</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Beat</col>
+        <col id="1">135</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Christian Gangsta Rap</col>
+        <col id="1">136</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Heavy Metal</col>
+        <col id="1">137</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Black Metal</col>
+        <col id="1">138</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Crossover</col>
+        <col id="1">139</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Contemporary Christian</col>
+        <col id="1">140</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Christian Rock</col>
+        <col id="1">141</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Merengue</col>
+        <col id="1">142</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Salsa</col>
+        <col id="1">143</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Trash Metal</col>
+        <col id="1">144</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Anime</col>
+        <col id="1">145</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">JPop</col>
+        <col id="1">146</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Synthpop</col>
+        <col id="1">147</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkAdjustment" id="year_adjustment">
+    <property name="lower">1900</property>
+    <property name="upper">2014</property>
+    <property name="value">1900</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="disc_adjustment">
     <property name="lower">1</property>
     <property name="upper">99</property>
     <property name="value">1</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="track_count_adjustment">
+  <object class="GtkAdjustment" id="track_adjustment">
     <property name="lower">1</property>
     <property name="upper">99</property>
     <property name="value">1</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="track_number_adjustment">
+  <object class="GtkAdjustment" id="total_adjustment">
     <property name="lower">1</property>
     <property name="upper">99</property>
     <property name="value">1</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="year_adjustment">
-    <property name="lower">1900</property>
-    <property name="upper">2013</property>
-    <property name="value">1900</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkWindow" id="window">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">MLM Encoder</property>
+  <template class="MLMApplicationWindow" parent="GtkApplicationWindow">
+    <property name="visible">False</property>
+    <property name="can-focus">False</property>
+    <property name="resizable">False</property>
+    <property name="window-position">3</property>
+    <signal name="destroy" handler="on_window_destroy" swapped="no"/>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="spacing">6</property>
+        <property name="show-close-button">True</property>
+        <property name="title" translatable="no">Music Library Maintainer</property>
+        <child>
+          <object class="GtkBox" id="navigation_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="spacing">0</property>
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkButton" id="previous">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Previous MP3</property>
+                <child>
+                  <object class="GtkImage" id="previous_image">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+                    <property name="icon-size">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="next">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Next MP3</property>
+                <child>
+                  <object class="GtkImage" id="next_image">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">go-next-symbolic</property>
+                    <property name="icon-size">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="linked"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="save">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Save tags to MP3</property>
+            <child>
+              <object class="GtkImage" id="save_image">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">document-save-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="reencode">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Reencode MP3</property>
+            <child>
+              <object class="GtkImage" id="reencode_image">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">system-run-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+          </packing>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="GtkFrame" id="frame">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_left">6</property>
-        <property name="margin_right">6</property>
-        <property name="margin_top">6</property>
-        <property name="margin_bottom">6</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">in</property>
+        <property name="can-focus">False</property>
+        <property name="margin">18</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">etched-out</property>
         <child>
-          <object class="GtkAlignment" id="alignment">
+          <object class="GtkAlignment" id="frame_alignment">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">6</property>
-            <property name="margin_right">6</property>
-            <property name="margin_top">6</property>
-            <property name="margin_bottom">6</property>
+            <property name="can-focus">False</property>
+            <property name="top-padding">12</property>
+            <property name="bottom-padding">12</property>
+            <property name="left-padding">12</property>
+            <property name="right-padding">12</property>
             <child>
               <object class="GtkBox" id="vbox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">6</property>
-                <property name="margin_right">6</property>
-                <property name="margin_top">6</property>
-                <property name="margin_bottom">6</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
-                  <object class="GtkBox" id="artist_hbox">
+                  <object class="GtkGrid" id="grid">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
+                    <property name="can-focus">False</property>
+                    <property name="row-spacing">6</property>
+                    <property name="column-spacing">12</property>
                     <child>
                       <object class="GtkLabel" id="artist_label">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Artist:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">artist_entry</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">_Artist</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">artist</property>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="artist_entry">
+                      <object class="GtkEntry" id="artist">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="tooltip-text" translatable="yes">Main artist name</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="title_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">_Title</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">title</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="title">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="tooltip-text" translatable="yes">Title of the track</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="album_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">A_lbum</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">album</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="album">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="tooltip-text" translatable="yes">Album name</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="year_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">_Year</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">year</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="year">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="adjustment">year_adjustment</property>
+                        <property name="text">1900</property>
+                        <property name="tooltip-text" translatable="yes">Year of release</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="disc_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">_Disc</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">disc</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="disc">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="adjustment">disc_adjustment</property>
+                        <property name="text">1</property>
+                        <property name="tooltip-text" translatable="yes">Disc number</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="track_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">T_rack</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">track</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="track">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="adjustment">track_adjustment</property>
+                        <property name="text">1</property>
+                        <property name="tooltip-text" translatable="yes">Track number</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="total_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">T_otal</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">total</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="total">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="adjustment">total_adjustment</property>
+                        <property name="text">1</property>
+                        <property name="tooltip-text" translatable="yes">Total number of tracks</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="genre_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">_Genre</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">genre</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBoxText" id="genre_combobox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="active-id">0</property>
+                        <property name="has-entry">True</property>
+                        <property name="model">genre_model</property>
+                        <property name="entry_text-column">0</property>
+                        <property name="id-column">1</property>
+                        <child internal-child="entry">
+                          <object class="GtkEntry" id="genre">
+                            <property name="can-focus">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="text">Blues</property>
+                            <property name="tooltip-text" translatable="yes">Genre of the track</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">5</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="comment_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">_Comment</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">comment</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="comment">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="tooltip-text" translatable="yes">Track comment</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">6</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="composer_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Compo_ser</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">composer</property>
+                        <property name="tooltip-text" translatable="yes">Track composer</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="composer">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="tooltip-text" translatable="yes">Track composer</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">7</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="original_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Origi_nal artist</property>
+                        <property name="use-underline">True</property>
+                        <property name="mnemonic-widget">original</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="original">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="tooltip-text" translatable="yes">Original artist</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">8</property>
+                        <property name="width">3</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="title_hbox">
+                  <object class="GtkBox" id="hbox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="spacing">6</property>
+                    <property name="homogeneous">True</property>
                     <child>
-                      <object class="GtkLabel" id="title_label">
+                      <object class="GtkBox" id="cover_vbox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Title:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">title_entry</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkLabel" id="cover_image_label">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Front cover</property>
+                            <property name="halign">start</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="cover_hbox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="GtkImage" id="cover_image">
+                                <property name="width-request">150</property>
+                                <property name="height-request">150</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="icon-name">media-optical-cd-audio-symbolic</property>
+                                <property name="pixel-size">140</property>
+                                <property name="tooltip-text" translatable="yes">Front cover</property>
+                                <style>
+                                  <class name="dark-bg"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="cover_buttons_vbox">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkButton" id="open_cover_image_button">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <property name="always_show-image">True</property>
+                                    <property name="tooltip-text" translatable="yes">Open image</property>
+                                    <child>
+                                      <object class="GtkImage" id="open_cover_image">
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="icon-name">document-open-symbolic</property>
+                                        <property name="icon-size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="clear_cover_button">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <property name="tooltip-text" translatable="yes">Clear image</property>
+                                    <child>
+                                      <object class="GtkImage" id="clear_cover_image">
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="icon-name">edit-clear-all-symbolic</property>
+                                        <property name="icon-size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -118,13 +1190,113 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="title_entry">
+                      <object class="GtkBox" id="artist_vbox">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkLabel" id="artist_image_label">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">Artist</property>
+                            <property name="halign">start</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="artist_hbox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="GtkImage" id="artist_image">
+                                <property name="width-request">150</property>
+                                <property name="height-request">150</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="icon-name">avatar-default-symbolic</property>
+                                <property name="pixel-size">140</property>
+                                <property name="tooltip-text" translatable="yes">Artist</property>
+                                <style>
+                                  <class name="dark-bg"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="artist_buttons_vbox">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkButton" id="open_artist_image_button">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <property name="tooltip-text" translatable="yes">Open image</property>
+                                    <child>
+                                      <object class="GtkImage" id="open_artist_image">
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="icon-name">document-open-symbolic</property>
+                                        <property name="icon-size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="clear_artist_image_button">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <property name="tooltip-text" translatable="yes">Clear image</property>
+                                    <child>
+                                      <object class="GtkImage" id="clear_artist_image">
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="icon-name">edit-clear-all-symbolic</property>
+                                        <property name="icon-size">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
@@ -136,717 +1308,6 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkBox" id="album_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="album_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">A_lbum:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">album_entry</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="album_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="numbers_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="year_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Year:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">year_spinbutton</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="year_spinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                        <property name="width_chars">4</property>
-                        <property name="adjustment">year_adjustment</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="track_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">T_rack:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">track_number_spinbutton</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="track_number_spinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                        <property name="width_chars">2</property>
-                        <property name="adjustment">track_number_adjustment</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="of_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">/</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="track_count_spinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                        <property name="width_chars">2</property>
-                        <property name="adjustment">track_count_adjustment</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="disc_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Disc:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">disc_spinbutton</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">6</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="disc_spinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                        <property name="width_chars">2</property>
-                        <property name="adjustment">disc_adjustment</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">7</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="genre_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="genre_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Genre:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">genre_entry</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxText" id="genre_comboboxtext">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="active">0</property>
-                        <property name="has_entry">True</property>
-                        <property name="entry_text_column">0</property>
-                        <property name="id_column">1</property>
-                        <items>
-                          <item translatable="yes">Blues</item>
-                          <item translatable="yes">Classic Rock</item>
-                          <item translatable="yes">Country</item>
-                          <item translatable="yes">Dance</item>
-                          <item translatable="yes">Disco</item>
-                          <item translatable="yes">Funk</item>
-                          <item translatable="yes">Grunge</item>
-                          <item translatable="yes">Hip-Hop</item>
-                          <item translatable="yes">Jazz</item>
-                          <item translatable="yes">Metal</item>
-                          <item translatable="yes">New Age</item>
-                          <item translatable="yes">Oldies</item>
-                          <item translatable="yes">Other</item>
-                          <item translatable="yes">Pop</item>
-                          <item translatable="yes">R&amp;B</item>
-                          <item translatable="yes">Rap</item>
-                          <item translatable="yes">Reggae</item>
-                          <item translatable="yes">Rock</item>
-                          <item translatable="yes">Techno</item>
-                          <item translatable="yes">Industrial</item>
-                          <item translatable="yes">Alternative</item>
-                          <item translatable="yes">Ska</item>
-                          <item translatable="yes">Death Metal</item>
-                          <item translatable="yes">Pranks</item>
-                          <item translatable="yes">Soundtrack</item>
-                          <item translatable="yes">Euro-Techno</item>
-                          <item translatable="yes">Ambient</item>
-                          <item translatable="yes">Trip-Hop</item>
-                          <item translatable="yes">Vocal</item>
-                          <item translatable="yes">Jazz+Funk</item>
-                          <item translatable="yes">Fusion</item>
-                          <item translatable="yes">Trance</item>
-                          <item translatable="yes">Classical</item>
-                          <item translatable="yes">Instrumental</item>
-                          <item translatable="yes">Acid</item>
-                          <item translatable="yes">House</item>
-                          <item translatable="yes">Game</item>
-                          <item translatable="yes">Sound Clip</item>
-                          <item translatable="yes">Gospel</item>
-                          <item translatable="yes">Noise</item>
-                          <item translatable="yes">AlternRock</item>
-                          <item translatable="yes">Bass</item>
-                          <item translatable="yes">Soul</item>
-                          <item translatable="yes">Punk</item>
-                          <item translatable="yes">Space</item>
-                          <item translatable="yes">Meditative</item>
-                          <item translatable="yes">Instrumental Pop</item>
-                          <item translatable="yes">Instrumental Rock</item>
-                          <item translatable="yes">Ethnic</item>
-                          <item translatable="yes">Gothic</item>
-                          <item translatable="yes">Darkwave</item>
-                          <item translatable="yes">Techno-Industrial</item>
-                          <item translatable="yes">Electronic</item>
-                          <item translatable="yes">Pop-Folk</item>
-                          <item translatable="yes">Eurodance</item>
-                          <item translatable="yes">Dream</item>
-                          <item translatable="yes">Southern Rock</item>
-                          <item translatable="yes">Comedy</item>
-                          <item translatable="yes">Cult</item>
-                          <item translatable="yes">Gangsta</item>
-                          <item translatable="yes">Top 40</item>
-                          <item translatable="yes">Christian Rap</item>
-                          <item translatable="yes">Pop/Funk</item>
-                          <item translatable="yes">Jungle</item>
-                          <item translatable="yes">Native American</item>
-                          <item translatable="yes">Cabaret</item>
-                          <item translatable="yes">New Wave</item>
-                          <item translatable="yes">Psychadelic</item>
-                          <item translatable="yes">Rave</item>
-                          <item translatable="yes">Showtunes</item>
-                          <item translatable="yes">Trailer</item>
-                          <item translatable="yes">Lo-Fi</item>
-                          <item translatable="yes">Tribal</item>
-                          <item translatable="yes">Acid Punk</item>
-                          <item translatable="yes">Acid Jazz</item>
-                          <item translatable="yes">Polka</item>
-                          <item translatable="yes">Retro</item>
-                          <item translatable="yes">Musical</item>
-                          <item translatable="yes">Rock &amp; Roll</item>
-                          <item translatable="yes">Hard Rock</item>
-                          <item translatable="yes">Folk</item>
-                          <item translatable="yes">Folk-Rock</item>
-                          <item translatable="yes">National Folk</item>
-                          <item translatable="yes">Swing</item>
-                          <item translatable="yes">Fast Fusion</item>
-                          <item translatable="yes">Bebob</item>
-                          <item translatable="yes">Latin</item>
-                          <item translatable="yes">Revival</item>
-                          <item translatable="yes">Celtic</item>
-                          <item translatable="yes">Bluegrass</item>
-                          <item translatable="yes">Avantgarde</item>
-                          <item translatable="yes">Gothic Rock</item>
-                          <item translatable="yes">Progressive Rock</item>
-                          <item translatable="yes">Psychedelic Rock</item>
-                          <item translatable="yes">Symphonic Rock</item>
-                          <item translatable="yes">Slow Rock</item>
-                          <item translatable="yes">Big Band</item>
-                          <item translatable="yes">Chorus</item>
-                          <item translatable="yes">Easy Listening</item>
-                          <item translatable="yes">Acoustic</item>
-                          <item translatable="yes">Humour</item>
-                          <item translatable="yes">Speech</item>
-                          <item translatable="yes">Chanson</item>
-                          <item translatable="yes">Opera</item>
-                          <item translatable="yes">Chamber Music</item>
-                          <item translatable="yes">Sonata</item>
-                          <item translatable="yes">Symphony</item>
-                          <item translatable="yes">Booty Bass</item>
-                          <item translatable="yes">Primus</item>
-                          <item translatable="yes">Porn Groove</item>
-                          <item translatable="yes">Satire</item>
-                          <item translatable="yes">Slow Jam</item>
-                          <item translatable="yes">Club</item>
-                          <item translatable="yes">Tango</item>
-                          <item translatable="yes">Samba</item>
-                          <item translatable="yes">Folklore</item>
-                          <item translatable="yes">Ballad</item>
-                          <item translatable="yes">Power Ballad</item>
-                          <item translatable="yes">Rhythmic Soul</item>
-                          <item translatable="yes">Freestyle</item>
-                          <item translatable="yes">Duet</item>
-                          <item translatable="yes">Punk Rock</item>
-                          <item translatable="yes">Drum Solo</item>
-                          <item translatable="yes">A capella</item>
-                          <item translatable="yes">Euro-House</item>
-                          <item translatable="yes">Dance Hall</item>
-                          <item translatable="yes">Goa</item>
-                          <item translatable="yes">Drum &amp; Bass</item>
-                          <item translatable="yes">Club-House</item>
-                          <item translatable="yes">Hardcore</item>
-                          <item translatable="yes">Terror</item>
-                          <item translatable="yes">Indie</item>
-                          <item translatable="yes">BritPop</item>
-                          <item translatable="yes">Negerpunk</item>
-                          <item translatable="yes">Polsk Punk</item>
-                          <item translatable="yes">Beat</item>
-                          <item translatable="yes">Christian Gangsta Rap</item>
-                          <item translatable="yes">Heavy Metal</item>
-                          <item translatable="yes">Black Metal</item>
-                          <item translatable="yes">Crossover</item>
-                          <item translatable="yes">Contemporary Christian</item>
-                          <item translatable="yes">Christian Rock</item>
-                          <item translatable="yes">Merengue</item>
-                          <item translatable="yes">Salsa</item>
-                          <item translatable="yes">Trash Metal</item>
-                          <item translatable="yes">Anime</item>
-                          <item translatable="yes">JPop</item>
-                          <item translatable="yes">Synthpop</item>
-                        </items>
-                        <child internal-child="entry">
-                          <object class="GtkEntry" id="genre_entry">
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="comment_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="comment_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Comment:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">comment_entry</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="comment_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="composer_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="composer_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Compo_ser:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">composer_entry</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="composer_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="original_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel" id="original_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Original artist:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">original_entry</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="original_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">7</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSeparator" id="separator1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">8</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="pictures_box">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkBox" id="cover_picture_vbox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="cover_picture_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Album cover</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="cover_image">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">nodisc.jpg</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="cover_buttons_hbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <object class="GtkButton" id="cover_open_button">
-                                <property name="label" translatable="yes">Open</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="cover_clear_button">
-                                <property name="label" translatable="yes">Clear</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="artist_picture_vbox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="artist_picture_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Artist</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="artist_image">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="pixbuf">person.jpg</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="artist_buttons_hbox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <object class="GtkButton" id="artist_open_button">
-                                <property name="label" translatable="yes">Open</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="artist_clear_button">
-                                <property name="label" translatable="yes">Clear</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">9</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSeparator" id="separator2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">10</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="control_hbox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkCheckButton" id="album_mode_checkbutton">
-                        <property name="label" translatable="yes">Album _mode</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="reencode_button">
-                        <property name="label" translatable="yes">Re_encode</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="update_tags_button">
-                        <property name="label" translatable="yes">_Update tags</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">11</property>
-                  </packing>
-                </child>
               </object>
             </child>
           </object>
@@ -854,12 +1315,11 @@
         <child type="label">
           <object class="GtkLabel" id="frame_label">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">&lt;b&gt;file&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Filename</property>
           </object>
         </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>
