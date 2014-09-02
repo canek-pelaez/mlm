@@ -13,6 +13,19 @@ COMMON_VALAFLAGS =				\
 	--vapidir $(srcdir)/vapi 		\
 	$(NULL)
 
+# ====== gresource
+gresource_file = $(top_srcdir)/data/mlm.gresource.xml
+resource_files = 				\
+	$(top_srcdir)/data/mlm.ui		\
+	$(top_srcdir)/data/mlm.css		\
+	$(NULL)
+
+mlm/resources.c: $(gresource_file) $(resource_files)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) 	\
+		--target=$@			\
+		--sourcedir=$(top_srcdir)/data	\
+		--generate-source $<
+
 # ====== libid3tag-x
 
 noinst_LTLIBRARIES = id3tag-x/libid3tag-x.la
@@ -53,9 +66,50 @@ libmlm_libmlm_la_LIBADD =			\
 	id3tag-x/libid3tag-x.la			\
 	$(NULL)
 
+# ====== mlm
+
+bin_PROGRAMS = mlm/mlm
+
+#	mlm/encoder.vala
+
+mlm_mlm_SOURCES =				\
+	mlm/application-window.vala		\
+	mlm/application.vala			\
+	mlm/main.vala				\
+	mlm/resources.c				\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+#	@GSTREAMER_PACKAGES@
+
+mlm_mlm_VALAFLAGS =				\
+	$(COMMON_VALAFLAGS)			\
+	@GEE_PACKAGES@				\
+	@GTK_PACKAGES@				\
+	--pkg config				\
+	--gresources $(gresource_file)		\
+	$(NULL)
+
+#	@GSTREAMER_CFLAGS@
+
+mlm_mlm_CFLAGS =				\
+	@GEE_CFLAGS@				\
+	@GTK_CFLAGS@				\
+	-I$(srcdir)/libmlm			\
+	-w					\
+	$(NULL)
+
+#	@GSTREAMER_LIBS@
+
+mlm_mlm_LDADD =					\
+	@GEE_LIBS@				\
+	@GTK_LIBS@				\
+	libmlm/libmlm.la			\
+	$(NULL)
+
 # ====== mlm-verify
 
-bin_PROGRAMS = verify/mlm-verify
+bin_PROGRAMS += verify/mlm-verify
 
 verify_mlm_verify_SOURCES =			\
 	verify/verify.vala			\
@@ -176,47 +230,7 @@ tags_mlm_tags_LDADD =				\
 	libmlm/libmlm.la			\
 	$(NULL)
 
-# ====== mlm
-
-bin_PROGRAMS += mlm/mlm
-
-mlm_mlm_SOURCES =				\
-	mlm/main.vala				\
-	mlm/encoder.vala			\
-	vapi/mlm.vapi				\
-	$(NULL)
-
-mlm_mlm_VALAFLAGS =				\
-	$(COMMON_VALAFLAGS)			\
-	@GEE_PACKAGES@				\
-	@GSTREAMER_PACKAGES@			\
-	@GTK_PACKAGES@				\
-	--pkg config				\
-	$(NULL)
-
-mlm_mlm_CFLAGS =				\
-	@GEE_CFLAGS@				\
-	@GSTREAMER_CFLAGS@			\
-	@GTK_CFLAGS@				\
-	-I$(srcdir)/libmlm			\
-	-w					\
-	$(NULL)
-
-mlm_mlm_LDADD =					\
-	@GEE_LIBS@				\
-	@GSTREAMER_LIBS@			\
-	@GTK_LIBS@				\
-	libmlm/libmlm.la			\
-	$(NULL)
-
 # ====== UI files
-
-uidir = $(pkgdatadir)
-ui_DATA =					\
-	data/mlm.ui				\
-	data/nodisc.jpg				\
-	data/person.jpg				\
-	$(NULL)
 
 data_desktopdir = $(datadir)/applications
 data_desktop_DATA = data/mlm.desktop
@@ -228,11 +242,12 @@ noinst_DATA =					\
 	vapi/config.vapi			\
 	vapi/id3tag.vapi			\
 	vapi/mlm.vapi				\
+	$(gresource_file)			\
+	$(resource_files)			\
 	$(NULL)
 
 EXTRA_DIST =					\
 	$(noinst_DATA)				\
-	$(ui_DATA)				\
 	$(data_desktop_DATA)			\
 	$(data_icons_DATA)			\
 	$(NULL)
