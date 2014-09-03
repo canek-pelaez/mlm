@@ -22,7 +22,7 @@ using Gee;
 
 namespace MLM {
 
-    public class FileTags {
+    public class FileTags : GLib.Object, Gee.Comparable<FileTags> {
 
         public string artist { get; private set; }
         public string title { get; private set; }
@@ -40,8 +40,8 @@ namespace MLM {
         public uint8[] artist_picture { get; private set; }
         public string artist_picture_description { get; private set; }
         public bool has_tags { get; private set; }
+        public string filename { get; private set; }
 
-        private string filename;
         private File file;
         private Tag tag;
 
@@ -431,6 +431,14 @@ namespace MLM {
                 tag.options(TagOption.COMPRESSION, 0);
                 file.update();
             }
+        }
+
+        public int compare_to(FileTags tags) {
+            if (filename < tags.filename)
+                return -1;
+            if (filename > tags.filename)
+                return 1;
+            return 0;
         }
 
         ~FileTags() {
