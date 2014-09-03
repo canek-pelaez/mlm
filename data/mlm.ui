@@ -654,7 +654,9 @@
               <object class="GtkButton" id="previous">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="sensitive">False</property>
                 <property name="tooltip-text" translatable="yes">Previous MP3</property>
+                <signal name="clicked" handler="on_previous_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="previous_image">
                     <property name="visible">True</property>
@@ -670,6 +672,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="tooltip-text" translatable="yes">Next MP3</property>
+                <signal name="clicked" handler="on_next_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="next_image">
                     <property name="visible">True</property>
@@ -689,7 +692,9 @@
           <object class="GtkButton" id="save">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="sensitive">False</property>
             <property name="tooltip-text" translatable="yes">Save tags to MP3</property>
+            <signal name="clicked" handler="on_save_clicked" swapped="no"/>
             <child>
               <object class="GtkImage" id="save_image">
                 <property name="visible">True</property>
@@ -708,6 +713,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="tooltip-text" translatable="yes">Reencode MP3</property>
+            <signal name="clicked" handler="on_reencode_clicked" swapped="no"/>
             <child>
               <object class="GtkImage" id="reencode_image">
                 <property name="visible">True</property>
@@ -770,6 +776,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Main artist name</property>
+                        <signal name="changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -797,6 +804,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Title of the track</property>
+                        <signal name="changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -824,6 +832,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Album name</property>
+                        <signal name="changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -853,6 +862,7 @@
                         <property name="adjustment">year_adjustment</property>
                         <property name="text">1900</property>
                         <property name="tooltip-text" translatable="yes">Year of release</property>
+                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -881,6 +891,7 @@
                         <property name="adjustment">disc_adjustment</property>
                         <property name="text">1</property>
                         <property name="tooltip-text" translatable="yes">Disc number</property>
+                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">3</property>
@@ -909,6 +920,7 @@
                         <property name="adjustment">track_adjustment</property>
                         <property name="text">1</property>
                         <property name="tooltip-text" translatable="yes">Track number</property>
+                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -937,6 +949,7 @@
                         <property name="adjustment">total_adjustment</property>
                         <property name="text">1</property>
                         <property name="tooltip-text" translatable="yes">Total number of tracks</property>
+                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">3</property>
@@ -972,6 +985,7 @@
                             <property name="hexpand">True</property>
                             <property name="text">Blues</property>
                             <property name="tooltip-text" translatable="yes">Genre of the track</property>
+                            <signal name="changed" handler="tags_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -1001,6 +1015,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Track comment</property>
+                        <signal name="changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1029,6 +1044,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Track composer</property>
+                        <signal name="changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1056,6 +1072,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Original artist</property>
+                        <signal name="changed" handler="tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1132,6 +1149,7 @@
                                     <property name="receives-default">True</property>
                                     <property name="always_show-image">True</property>
                                     <property name="tooltip-text" translatable="yes">Open image</property>
+                                    <signal name="clicked" handler="on_open_cover_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkImage" id="open_cover_image">
                                         <property name="visible">True</property>
@@ -1153,6 +1171,7 @@
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <property name="tooltip-text" translatable="yes">Clear image</property>
+                                    <signal name="clicked" handler="on_clear_cover_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkImage" id="clear_cover_image">
                                         <property name="visible">True</property>
@@ -1244,6 +1263,7 @@
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <property name="tooltip-text" translatable="yes">Open image</property>
+                                    <signal name="clicked" handler="on_open_artist_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkImage" id="open_artist_image">
                                         <property name="visible">True</property>
@@ -1265,6 +1285,7 @@
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <property name="tooltip-text" translatable="yes">Clear image</property>
+                                    <signal name="clicked" handler="on_clear_artist_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkImage" id="clear_artist_image">
                                         <property name="visible">True</property>
