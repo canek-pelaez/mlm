@@ -21,9 +21,6 @@ namespace MLM {
 
     public class Main {
 
-        // private static const string UI =
-        //     Config.PKGDATADIR + Path.DIR_SEPARATOR_S + "mlm.ui";
-
         // private int current_year;
         // private Genre[] genres;
         // private HashMap<string, int> genre_map;
@@ -33,24 +30,6 @@ namespace MLM {
 
         // private Window window;
         // private Label frame_label;
-
-        // private Entry artist_entry;
-        // private Entry title_entry;
-        // private Entry album_entry;
-        // private SpinButton year_spin;
-        // private SpinButton track_number_spin;
-        // private SpinButton track_count_spin;
-        // private SpinButton disc_spin;
-        // private ComboBox genre_combo;
-        // private Entry genre_entry;
-        // private Entry comment_entry;
-        // private Entry composer_entry;
-        // private Entry original_entry;
-        // private Image cover_image;
-        // private Image artist_image;
-
-        // private static Gdk.Pixbuf no_cover;
-        // private static Gdk.Pixbuf no_artist;
 
         // private Dialog progress;
         // private ProgressBar progress_bar;
@@ -65,51 +44,11 @@ namespace MLM {
         // private string dest;
 
         // public Main(ArrayList<string> files) {
-        //     DateTime dt = new DateTime.now_local();
-        //     current_year = dt.get_year();
-        //     genres = Genre.all();
-        //     genre_map = new HashMap<string, int>();
-        //     for (int i = 0; i < genres.length; i++)
-        //         genre_map[genres[i].to_string()] = i;
-        //     transitioning = false;
-        //     updating_tracks = false;
-        //     album_mode = false;
-        //     this.files = files;
-        //     var builder = new Builder();
-        //     try {
-        //         builder.add_from_file(UI);
-        //     } catch (Error e) {
-        //         error("Could not open UI file '%s'.", UI);
-        //     }
-        //     window = builder.get_object("window") as Window;
-        //     frame_label = builder.get_object("frame_label") as Label;
-        //     artist_entry = builder.get_object("artist_entry") as Entry;
-        //     title_entry = builder.get_object("title_entry") as Entry;
-        //     album_entry = builder.get_object("album_entry") as Entry;
-        //     year_spin = builder.get_object("year_spinbutton") as SpinButton;
-        //     track_number_spin = builder.get_object("track_number_spinbutton") as SpinButton;
-        //     track_count_spin = builder.get_object("track_count_spinbutton") as SpinButton;
-        //     disc_spin = builder.get_object("disc_spinbutton") as SpinButton;
-        //     genre_combo = builder.get_object("genre_comboboxtext") as ComboBox;
-        //     genre_entry = builder.get_object("genre_entry") as Entry;
-        //     comment_entry = builder.get_object("comment_entry") as Entry;
-        //     composer_entry = builder.get_object("composer_entry") as Entry;
-        //     original_entry = builder.get_object("original_entry") as Entry;
-        //     cover_image = builder.get_object("cover_image") as Image;
-        //     artist_image = builder.get_object("artist_image") as Image;
-
-        //     no_cover = cover_image.get_pixbuf();
-        //     no_artist = artist_image.get_pixbuf();
-
-        //     window.window_position = WindowPosition.CENTER_ALWAYS;
-        //     window.destroy.connect(Gtk.main_quit);
 
         //     if (files.size == 0) {
         //         window.set_sensitive(false);
         //         return;
         //     }
-
-        //     year_spin.adjustment.upper = current_year;
 
         //     artist_entry.changed.connect(() => { update_artist(); });
         //     title_entry.changed.connect(() => { update_title(); });
@@ -122,13 +61,6 @@ namespace MLM {
         //     comment_entry.changed.connect(() => { update_comment(); });
         //     composer_entry.changed.connect(() => { update_composer(); });
         //     original_entry.changed.connect(() => { update_original(); });
-
-        //     /* Stupid GtkBuilder. */
-        //     EntryCompletion completion = new EntryCompletion();
-        //     completion.set_model(genre_combo.get_model());
-        //     completion.inline_completion = true;
-        //     completion.set_text_column(0);
-        //     genre_entry.set_completion(completion);
 
         //     Button button = builder.get_object("cover_open_button") as Button;
         //     button.clicked.connect(() => { select_cover_image(); });

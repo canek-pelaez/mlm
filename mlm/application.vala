@@ -21,7 +21,11 @@ namespace MLM {
 
     public class Application : Gtk.Application {
 
+        public bool dirty { get; set; }
+
         private ApplicationWindow window;
+        private Gee.ArrayList<FileTags> tags;
+        private Gee.BidirListIterator<FileTags> iterator;
 
         public Application() {
             application_id = "mx.unam.MLM";
@@ -50,11 +54,54 @@ namespace MLM {
             if (window == null)
                 window = new ApplicationWindow(this);
 
+            if (tags.size == 0) {
+                window.disable(UIItemFlags.NEXT|UIItemFlags.SAVE);
+            } else {
+                iterator = tags.bidir_list_iterator();
+                next();
+                if (tags.size == 1)
+                    window.disable(UIItemFlags.NEXT);
+            }
+
             window.present();
         }
 
         public override void open(GLib.File[] files, string hint) {
+            tags = new Gee.ArrayList<FileTags>();
+            foreach (var file in files) {
+                FileInfo info = null;
+                try {
+                    info = file.query_info("standard::*",
+                                           GLib.FileQueryInfoFlags.NONE);
+                } catch (GLib.Error e) {
+                    var p = file.get_path();
+                    var m = "There was a problem getting info from '%s'".printf(p);
+                    GLib.warning(m);
+                    continue;
+                }
+                var ctype = info.get_content_type();
+                if (ctype != "audio/mpeg") {
+                    var p = file.get_path();
+                    var m = "The filename '%s' is not an MP3".printf(p);
+                    GLib.warning(m);
+                    continue;
+                }
+                tags.add(new FileTags(file.get_path()));
+            }
+            tags.sort();
             activate();
+        }
+
+        public void previous() {
+        }
+
+        public void next() {
+        }
+
+        public void reencode() {
+        }
+
+        public void save() {
         }
 
         private void about() {
@@ -63,9 +110,9 @@ namespace MLM {
                 window,
                 "authors", authors,
                 "comments", _("A Gtk+ based music library maintainer"),
-                "copyright", "Copyright 2013 Canek Peláez Valdés",
+                "copyright", "Copyright 2014 Canek Peláez Valdés",
                 "license-type", Gtk.License.GPL_3_0,
-                "logo-icon-name", "gqpe",
+                "logo-icon-name", "mlm",
                 "version", Config.PACKAGE_VERSION,
                 "website", "http://github.com/canek-pelaez/mlm",
                 "wrap-license", true);
