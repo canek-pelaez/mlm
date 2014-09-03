@@ -155,11 +155,13 @@ copy_tags_mlm_copy_tags_SOURCES =		\
 copy_tags_mlm_copy_tags_VALAFLAGS =		\
 	$(COMMON_VALAFLAGS)			\
 	@GLIB_PACKAGES@				\
+	@GEE_PACKAGES@				\
 	@ID3TAG_PACKAGES@			\
 	$(NULL)
 
 copy_tags_mlm_copy_tags_CFLAGS =		\
 	@GLIB_CFLAGS@				\
+	@GEE_CFLAGS@				\
 	@ID3TAG_CFLAGS@				\
 	-I$(srcdir)/id3tag-x			\
 	-I$(srcdir)/libmlm			\
@@ -168,6 +170,7 @@ copy_tags_mlm_copy_tags_CFLAGS =		\
 
 copy_tags_mlm_copy_tags_LDADD =			\
 	@GLIB_LIBS@				\
+	@GEE_LIBS@				\
 	@ID3TAG_LIBS@				\
 	id3tag-x/libid3tag-x.la			\
 	libmlm/libmlm.la			\
