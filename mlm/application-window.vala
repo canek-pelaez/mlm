@@ -33,8 +33,40 @@ namespace MLM {
         private Gtk.Button previous;
         [GtkChild]
         private Gtk.Button next;
+
+        [GtkChild]
+        private Gtk.HeaderBar header;
+
+        private int _current;
+        public int current {
+            get { return _current; }
+            set {
+                _current = value;
+                header.set_subtitle("%d / %d".printf(_current, _last));
+            }
+        }
+
+        private int _last;
+        public int last {
+            get { return _last; }
+            set {
+                _last = value;
+                header.set_subtitle("%d / %d".printf(_current, _last));
+            }
+        }
+
         [GtkChild]
         private Gtk.Button save;
+
+        [GtkChild (name = "filename")]
+        private Gtk.Label filename_widget;
+        public string filename {
+            get { return filename_widget.get_text(); }
+            set {
+                var markup = GLib.Markup.printf_escaped("<b>%s</b>", value);
+                filename_widget.set_markup(markup);
+            }
+        }
 
         [GtkChild (name = "artist")]
         private Gtk.Entry artist_widget;
@@ -122,16 +154,16 @@ namespace MLM {
         [GtkChild]
         private Gtk.Adjustment year_adjustment;
 
-        public Gdk.Pixbuf _cover_pixbuf;
-        public Gdk.Pixbuf cover_pixbuf {
-            get { return _cover_pixbuf; }
-            set { _cover_pixbuf = update_image(cover_image, value); }
+        public uint8[] _cover_data;
+        public uint8[] cover_data {
+            get { return _cover_data; }
+            set { _cover_data = update_image(cover_image, value); }
         }
 
-        public Gdk.Pixbuf _artist_pixbuf;
-        public Gdk.Pixbuf artist_pixbuf {
-            get { return _artist_pixbuf; }
-            set { _artist_pixbuf = update_image(artist_image, value); }
+        public uint8[] _artist_data;
+        public uint8[] artist_data {
+            get { return _artist_data; }
+            set { _artist_data = update_image(artist_image, value); }
         }
 
         private Application app;
@@ -158,8 +190,8 @@ namespace MLM {
             genre_widget.completion.model = genre_model;
             genre_widget.completion.text_column = 0;
 
-            _cover_pixbuf = cover_image.get_pixbuf();
-            _artist_pixbuf = artist_image.get_pixbuf();
+            _cover_data = null;
+            _artist_data = null;
         }
 
         [GtkCallback]
@@ -178,8 +210,7 @@ namespace MLM {
         [GtkCallback]
         public void on_clear_cover_clicked() {}
 
-        private Gdk.Pixbuf? select_image(string title) {
-            Gdk.Pixbuf pixbuf = null;
+        private uint8[]? select_image(string title) {
             var dialog =
                 new Gtk.FileChooserDialog(title, this,
                                           Gtk.FileChooserAction.OPEN,
@@ -189,32 +220,29 @@ namespace MLM {
             string fn = dialog.get_filename();
             dialog.destroy();
             if (r != Gtk.ResponseType.ACCEPT)
-                return pixbuf;
+                return null;
             try {
-                uint8[] bytes;
-                FileUtils.get_data(fn, out bytes);
-                var mis = new MemoryInputStream.from_data(bytes, null);
-                pixbuf = new Gdk.Pixbuf.from_stream(mis);
+                uint8[] data;
+                FileUtils.get_data(fn, out data);
+                return data;
             } catch (GLib.FileError fe) {
-                stderr.printf("There was an error reading from '%s'.\n", fn);
-            } catch (GLib.Error e) {
-                stderr.printf("There was an error with the image '%s'.\n", fn);
+                GLib.warning("There was an error reading from '%s'.\n", fn);
             }
-            return pixbuf;
+            return null;
         }
 
         [GtkCallback]
         public void on_open_artist_clicked() {
-            var pixbuf = select_image("Select image for artist");
-            if (pixbuf != null)
-                artist_pixbuf = pixbuf;
+            var data = select_image("Select image for artist");
+            if (data != null)
+                artist_data = data;
         }
 
         [GtkCallback]
         public void on_open_cover_clicked() {
-            var pixbuf = select_image("Select image for cover");
-            if (pixbuf != null)
-                cover_pixbuf = pixbuf;
+            var data = select_image("Select image for cover");
+            if (data != null)
+                cover_data = data;
         }
 
         [GtkCallback]
@@ -237,14 +265,48 @@ namespace MLM {
             app.dirty = true;
         }
 
-        private Gdk.Pixbuf update_image(Gtk.Image image, Gdk.Pixbuf pixbuf) {
-            var scale = 150.0 / double.max(pixbuf.width, pixbuf.height);
-            var thumb = pixbuf.scale_simple((int)(pixbuf.width*scale),
+        [GtkCallback]
+        public bool on_window_key_press(Gdk.EventKey e) {
+            if (e.keyval == Gdk.Key.Page_Up) {
+                app.previous();
+                return true;
+            }
+            if (e.keyval == Gdk.Key.Page_Down) {
+                app.next();
+                return true;
+            }
+            if (e.keyval == Gdk.Key.Escape) {
+                app.quit();
+                return true;
+            }
+            return false;
+        }
+
+        private uint8[] update_image(Gtk.Image image, uint8[] data) {
+            if (data == null) {
+                if (image == cover_image)
+                    image.set_from_icon_name("media-optical-cd-audio-symbolic",
+                                             Gtk.IconSize.LARGE_TOOLBAR);
+                else
+                    image.set_from_icon_name("avatar-default-symbolic",
+                                             Gtk.IconSize.LARGE_TOOLBAR);
+                image.pixel_size = 140;
+                return data;
+            }
+            var mis = new MemoryInputStream.from_data(data, null);
+            Gdk.Pixbuf thumb = null;
+            try {
+                var pixbuf = new Gdk.Pixbuf.from_stream(mis);
+                var scale = 150.0 / double.max(pixbuf.width, pixbuf.height);
+                thumb = pixbuf.scale_simple((int)(pixbuf.width*scale),
                                             (int)(pixbuf.height*scale),
                                             Gdk.InterpType.BILINEAR);
+            } catch (GLib.Error e) {
+                GLib.warning("Could not set pixbuf from data.\n");
+            }
             image.set_from_pixbuf(thumb);
             tags_changed();
-            return pixbuf;
+            return data;
         }
 
         private void items_set_sensitive(UIItemFlags flags, bool s) {

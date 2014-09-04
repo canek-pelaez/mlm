@@ -23,9 +23,12 @@ namespace MLM {
 
         public bool dirty { get; set; }
 
+        private FileTags tags;
         private ApplicationWindow window;
-        private Gee.ArrayList<FileTags> tags;
-        private Gee.BidirListIterator<FileTags> iterator;
+        private int total;
+        private int index;
+        private Gee.ArrayList<GLib.File> files;
+        private Gee.BidirListIterator<GLib.File> iterator;
 
         public Application() {
             application_id = "mx.unam.MLM";
@@ -54,20 +57,22 @@ namespace MLM {
             if (window == null)
                 window = new ApplicationWindow(this);
 
-            if (tags.size == 0) {
+            if (total == 0) {
                 window.disable(UIItemFlags.NEXT|UIItemFlags.SAVE);
             } else {
-                iterator = tags.bidir_list_iterator();
+                iterator = files.bidir_list_iterator();
                 next();
-                if (tags.size == 1)
+                if (total == 1)
                     window.disable(UIItemFlags.NEXT);
             }
 
+            window.last = total;
+            window.disable(UIItemFlags.PREVIOUS);
             window.present();
         }
 
         public override void open(GLib.File[] files, string hint) {
-            tags = new Gee.ArrayList<FileTags>();
+            this.files = new Gee.ArrayList<GLib.File>();
             foreach (var file in files) {
                 FileInfo info = null;
                 try {
@@ -86,16 +91,63 @@ namespace MLM {
                     GLib.warning(m);
                     continue;
                 }
-                tags.add(new FileTags(file.get_path()));
+                this.files.add(file);
             }
-            tags.sort();
+            total = this.files.size;
+            this.files.sort(compare_files);
             activate();
         }
 
+        private static int compare_files(File a, File b) {
+            if (a.get_path() < b.get_path())
+                return -1;
+            if (a.get_path() > b.get_path())
+                return 1;
+            return 0;
+        }
+
+        private void update_mp3() {
+            var file = iterator.get();
+            tags = new FileTags(file.get_path());
+            window.filename = file.get_basename();
+            window.artist = tags.artist != null ? tags.artist : "";
+            window.title_ = tags.title != null ? tags.title : "";
+            window.album = tags.album != null ? tags.album : "";
+            window.year = tags.year != -1 ? tags.year : 1900;
+            window.disc = tags.disc_number != -1 ? tags.disc_number : 1;
+            window.track = tags.track_number != -1 ? tags.track_number : 1;
+            window.total = tags.track_count != -1 ? tags.track_count : 1;
+            var genre = Genre.all()[tags.genre].to_string();
+            window.genre = genre != null ? genre : "";
+            window.comment = tags.comment != null ? tags.comment : "";
+            window.composer = tags.composer != null ? tags.composer : "";
+            window.original = tags.original_artist != null ? tags.original_artist : "";
+            window.cover_data = tags.front_cover_picture;
+            window.artist_data = tags.artist_picture;
+            window.disable(UIItemFlags.SAVE);
+            window.current = index;
+        }
+
         public void previous() {
+            if (!iterator.has_previous())
+                return;
+            iterator.previous();
+            index--;
+            window.enable(UIItemFlags.NEXT);
+            if (!iterator.has_previous())
+                window.disable(UIItemFlags.PREVIOUS);
+            update_mp3();
         }
 
         public void next() {
+            if (!iterator.has_next())
+                return;
+            iterator.next();
+            index++;
+            window.enable(UIItemFlags.PREVIOUS);
+            if (!iterator.has_next())
+                window.disable(UIItemFlags.NEXT);
+            update_mp3();
         }
 
         public void reencode() {
