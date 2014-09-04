@@ -637,6 +637,7 @@
     <property name="resizable">False</property>
     <property name="window-position">3</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
+    <signal name="key-press-event" handler="on_window_key_press" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header">
         <property name="visible">True</property>
@@ -644,6 +645,7 @@
         <property name="spacing">6</property>
         <property name="show-close-button">True</property>
         <property name="title" translatable="no">Music Library Maintainer</property>
+        <property name="subtitle" translatable="no">0 / 0</property>
         <child>
           <object class="GtkBox" id="navigation_box">
             <property name="visible">True</property>
@@ -654,7 +656,6 @@
               <object class="GtkButton" id="previous">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="sensitive">False</property>
                 <property name="tooltip-text" translatable="yes">Previous MP3</property>
                 <signal name="clicked" handler="on_previous_clicked" swapped="no"/>
                 <child>
@@ -692,7 +693,6 @@
           <object class="GtkButton" id="save">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="sensitive">False</property>
             <property name="tooltip-text" translatable="yes">Save tags to MP3</property>
             <signal name="clicked" handler="on_save_clicked" swapped="no"/>
             <child>
@@ -1334,10 +1334,13 @@
           </object>
         </child>
         <child type="label">
-          <object class="GtkLabel" id="frame_label">
+          <object class="GtkLabel" id="filename">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Filename</property>
+            <property name="max-width-chars">40</property>
+            <property name="ellipsize">3</property>
+            <property name="use-markup">True</property>
+            <property name="label" translatable="yes">&lt;b&gt;Filename&lt;/b&gt;</property>
           </object>
         </child>
       </object>
