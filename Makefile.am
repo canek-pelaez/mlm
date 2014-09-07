@@ -70,39 +70,38 @@ libmlm_libmlm_la_LIBADD =			\
 
 bin_PROGRAMS = mlm/mlm
 
-#	mlm/encoder.vala
-
 mlm_mlm_SOURCES =				\
 	mlm/application-window.vala		\
 	mlm/application.vala			\
+	mlm/encoder.vala			\
 	mlm/main.vala				\
+	mlm/media.vala				\
+	mlm/player.vala				\
 	mlm/resources.c				\
 	vapi/mlm.vapi				\
 	$(NULL)
 
-#	@GSTREAMER_PACKAGES@
-
 mlm_mlm_VALAFLAGS =				\
 	$(COMMON_VALAFLAGS)			\
 	@GEE_PACKAGES@				\
+	@GSTREAMER_PACKAGES@			\
 	@GTK_PACKAGES@				\
+	--pkg posix				\
 	--pkg config				\
 	--gresources $(gresource_file)		\
 	$(NULL)
 
-#	@GSTREAMER_CFLAGS@
-
 mlm_mlm_CFLAGS =				\
 	@GEE_CFLAGS@				\
+	@GSTREAMER_CFLAGS@			\
 	@GTK_CFLAGS@				\
 	-I$(srcdir)/libmlm			\
 	-w					\
 	$(NULL)
 
-#	@GSTREAMER_LIBS@
-
 mlm_mlm_LDADD =					\
 	@GEE_LIBS@				\
+	@GSTREAMER_LIBS@			\
 	@GTK_LIBS@				\
 	libmlm/libmlm.la			\
 	$(NULL)
