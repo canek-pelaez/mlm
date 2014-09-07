@@ -4,7 +4,11 @@ libmlm/console-tools.c
 libmlm/file-tags.c
 libmlm/frame-id.c
 libmlm/genres.c
+mlm/application.c
+mlm/application-window.c
 mlm/encoder.c
 mlm/main.c
+mlm/media.c
+mlm/player.c
 tags/tags.c
 verify/verify.c

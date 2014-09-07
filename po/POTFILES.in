@@ -1,2 +1,7 @@
+mlm/application.vala
+mlm/application-window.vala
+mlm/encoder.vala
 mlm/main.vala
+mlm/media.vala
+mlm/player.vala
 [type: gettext/glade]data/mlm.ui
