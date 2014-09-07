@@ -19,18 +19,23 @@
 
 namespace MLM {
 
-    public class Encoder {
+    public class Encoder : Media{
 
         private string source;
         private string target;
-        private Gst.Pipeline pipe;
-
-        public bool encoding { get; private set; }
 
         public Encoder(string source, string target) {
+            base();
             this.source = source;
             this.target = target;
 
+            var src = pipe.get_by_name("src");
+            src.set_property("location", source);
+            var sink = pipe.get_by_name("sink");
+            sink.set_property("location", target);
+        }
+
+        protected override void set_pipeline() {
             try {
                 pipe = (Gst.Pipeline)
                 Gst.parse_launch(
@@ -41,75 +46,33 @@ namespace MLM {
                     "audioconvert                             ! " +
                     "lamemp3enc target=1 bitrate=128 cbr=true ! " +
                     "filesink name=sink");
-            } catch(Error e) {
+            } catch (GLib.Error e) {
                 stderr.printf("%s\n", e.message);
             }
-
-            var src = pipe.get_by_name("src");
-            src.set_property("location", source);
-            var sink = pipe.get_by_name("sink");
-            sink.set_property("location", target);
-
-            var bus = pipe.get_bus();
-            bus.add_signal_watch();
-            bus.message.connect((b,m) => { message_received(m); });
         }
 
-        private void message_received(Gst.Message message) {
-            if (message.type == Gst.MessageType.EOS)
-                if (change_pipeline_state(Gst.State.NULL))
-                    encoding = false;
+        protected override void message_received(Gst.Message message) {
+            switch (message.type) {
+            case Gst.MessageType.EOS:
+                pipe.set_state(Gst.State.NULL);
+                break;
+            case Gst.MessageType.STATE_CHANGED:
+                var state = Gst.State.NULL;
+                var pending = Gst.State.NULL;
+                pipe.get_state(out state, out pending, 100);
+                if (state != Gst.State.PLAYING)
+                    working = false;
+                break;
+            }
         }
 
-        private bool change_pipeline_state(Gst.State new_state) {
-            pipe.set_state(new_state);
-            Gst.State state = Gst.State.NULL;
-            Gst.State pending;
-
-            Gst.StateChangeReturn r;
-
-            do {
-                r = pipe.get_state(out state, out pending, 100);
-                if (r == Gst.StateChangeReturn.FAILURE)
-                    return false;
-            } while (state != new_state);
-
-            return true;
-        }
-
-        public bool encode() {
-            if (!change_pipeline_state(Gst.State.PLAYING))
-                return false;
-            encoding = true;
-            return true;
+        public void encode() {
+            pipe.set_state(Gst.State.PLAYING);
+            working = true;
         }
 
         public void cancel() {
-            change_pipeline_state(Gst.State.NULL);
-            encoding = false;
-        }
-
-        public double get_completion_percentage() {
-            Gst.State state;
-            Gst.State pending;
-
-            pipe.get_state(out state, out pending, 100);
-
-            if (state != Gst.State.PLAYING)
-                return 1.0;
-
-            int64 duration = -1;
-            Gst.Format format = Gst.Format.TIME;
-            while (duration == -1)
-                if (!pipe.query_duration(format, out duration))
-                    duration = -1;
-
-            int64 pos = -1;
-            while (pos == -1)
-                if (!pipe.query_position(format, out pos))
-                    pos = -1;
-
-            return (double)pos / (double)duration;
+            pipe.set_state(Gst.State.NULL);
         }
     }
 }
