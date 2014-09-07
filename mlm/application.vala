@@ -109,7 +109,7 @@ namespace MLM {
         private void update_mp3() {
             var file = iterator.get();
             tags = new FileTags(file.get_path());
-            window.filename = file.get_basename();
+            window.filename = file.get_path();
             window.artist = tags.artist != null ? tags.artist : "";
             window.title_ = tags.title != null ? tags.title : "";
             window.album = tags.album != null ? tags.album : "";
@@ -150,10 +150,30 @@ namespace MLM {
             update_mp3();
         }
 
-        public void reencode() {
+        public void save() {
+            set_tags_from_window(tags);
+            tags.update();
         }
 
-        public void save() {
+        public void set_tags_in_file(string dest) {
+            var etags = new FileTags(dest);
+            set_tags_from_window(etags);
+            etags.update();
+        }
+
+        private void set_tags_from_window(FileTags t) {
+            t.update_artist(window.artist);
+            t.update_title(window.title_);
+            t.update_album(window.album);
+            t.update_year(window.year);
+            t.update_disc_number(window.disc);
+            t.update_track(window.track, window.total);
+            t.update_genre(window.genre_id);
+            t.update_comment(window.comment);
+            t.update_composer(window.composer);
+            t.update_original_artist(window.original);
+            t.update_front_cover_picture(window.cover_data);
+            t.update_artist_picture(window.artist_data);
         }
 
         private void about() {
