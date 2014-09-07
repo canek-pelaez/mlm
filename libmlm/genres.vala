@@ -322,6 +322,14 @@ namespace MLM {
                     SYNTHPOP };
         }
 
+        public static int index_of(string genre) {
+            var genres = all();
+            for (int i = 0; i < genres.length; i++)
+                if (genre == genres[i].to_string())
+                    return i;
+            return -1;
+        }
+
         public string to_string() {
             switch (this) {
             case BLUES: return "Blues";
