@@ -21,8 +21,6 @@ namespace MLM {
 
     public class Application : Gtk.Application {
 
-        public bool dirty { get; set; }
-
         private FileTags tags;
         private ApplicationWindow window;
         private int total;
@@ -33,18 +31,20 @@ namespace MLM {
         public Application() {
             application_id = "mx.unam.MLM";
             flags |= GLib.ApplicationFlags.HANDLES_OPEN;
-
-            var action = new GLib.SimpleAction("about", null);
-            action.activate.connect(() => about());
-            add_action(action);
-
-            action = new GLib.SimpleAction("quit", null);
-            action.activate.connect(() => quit());
-            add_action(action);
         }
 
         public override void startup() {
             base.startup();
+
+            var action = new GLib.SimpleAction("about", null);
+            action.activate.connect(about);
+            add_action(action);
+
+            action = new GLib.SimpleAction("quit", null);
+            action.activate.connect(quit);
+            add_action(action);
+            add_accelerator("<Ctrl>Q", "app.quit", null);
+
             var menu = new GLib.Menu();
             menu.append(_("About"), "app.about");
             menu.append(_("Quit"), "app.quit");
@@ -52,22 +52,21 @@ namespace MLM {
         }
 
         public override void activate() {
-            base.activate();
-
             if (window == null)
                 window = new ApplicationWindow(this);
 
-            if (total == 0) {
-                window.disable(UIItemFlags.NEXT|UIItemFlags.SAVE);
-            } else {
-                iterator = files.bidir_list_iterator();
+            if (total > 0) {
+                window.enable(UIItemFlags.ALL);
+                iterator = this.files.bidir_list_iterator();
                 next();
+                window.disable(UIItemFlags.PREVIOUS);
                 if (total == 1)
                     window.disable(UIItemFlags.NEXT);
+                window.last = total;
+            } else {
+                window.disable(UIItemFlags.ALL);
             }
 
-            window.last = total;
-            window.disable(UIItemFlags.PREVIOUS);
             window.present();
         }
 
@@ -94,16 +93,14 @@ namespace MLM {
                 this.files.add(file);
             }
             total = this.files.size;
-            this.files.sort(compare_files);
+            this.files.sort((a, b) => {
+                    if (a.get_path() < b.get_path())
+                        return -1;
+                    if (a.get_path() > b.get_path())
+                        return 1;
+                    return 0;
+                });
             activate();
-        }
-
-        private static int compare_files(File a, File b) {
-            if (a.get_path() < b.get_path())
-                return -1;
-            if (a.get_path() > b.get_path())
-                return 1;
-            return 0;
         }
 
         private void update_mp3() {
