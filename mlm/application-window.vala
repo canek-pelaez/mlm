@@ -22,8 +22,10 @@ namespace MLM {
     public enum UIItemFlags {
         PREVIOUS     = 1 << 0,
         NEXT         = 1 << 1,
-        SAVE         = 1 << 2,
-        MASK         = 0x07;
+        REENCODE     = 1 << 2,
+        SAVE         = 1 << 3,
+        REST         = 1 << 4,
+        ALL          = 0x1f;
     }
 
     [GtkTemplate (ui = "/mx/unam/MLM/mlm.ui")]
@@ -57,6 +59,12 @@ namespace MLM {
         private Gtk.Button next;
 
         [GtkChild]
+        private Gtk.Button reencode;
+
+        [GtkChild]
+        private Gtk.Frame frame;
+
+        [GtkChild]
         private Gtk.Button save;
 
         [GtkChild (name = "filename")]
@@ -66,15 +74,14 @@ namespace MLM {
             get { return _filename; }
             set {
                 _filename = value;
-                var file = GLib.File.new_for_path(_filename);
-                var basename = file.get_basename();
+                var basename = GLib.Path.get_basename(filename);
                 var markup = GLib.Markup.printf_escaped("<b>%s</b>", basename);
                 filename_widget.set_markup(markup);
                 if (player != null)
                     player.pause();
                 reset_timer();
                 player = new Player(value);
-                player.status_changed.connect((s) => player_status_changed(s));
+                player.status_changed.connect(player_status_changed);
             }
         }
 
@@ -234,7 +241,7 @@ namespace MLM {
             genre_widget.completion = new Gtk.EntryCompletion();
             genre_widget.completion.model = genre_model;
             genre_widget.completion.text_column = 0;
-            genre_widget.completion.match_selected.connect((m,i) => {
+            genre_widget.completion.match_selected.connect((m, i) => {
                     genre_combobox.set_active_iter(i);
                     return true;
                 });
@@ -279,21 +286,21 @@ namespace MLM {
                 FileUtils.get_data(fn, out data);
                 return data;
             } catch (GLib.FileError fe) {
-                warning("There was an error loading image '%s'".printf(fn));
+                warning(_("There was an error loading image '%s'").printf(fn));
             }
             return null;
         }
 
         [GtkCallback]
         public void on_open_artist_clicked() {
-            var data = select_image("Select image for artist");
+            var data = select_image(_("Select image for artist"));
             if (data != null)
                 artist_data = data;
         }
 
         [GtkCallback]
         public void on_open_cover_clicked() {
-            var data = select_image("Select image for cover");
+            var data = select_image(_("Select image for cover"));
             if (data != null)
                 cover_data = data;
         }
@@ -412,8 +419,9 @@ namespace MLM {
 
         [GtkCallback]
         public void tags_changed() {
+            if (track > total)
+                total = track;
             save.sensitive = true;
-            app.dirty = true;
         }
 
         [GtkCallback]
@@ -472,7 +480,7 @@ namespace MLM {
                                             (int)(pixbuf.height*scale),
                                             Gdk.InterpType.BILINEAR);
             } catch (GLib.Error e) {
-                warning("Could not set pixbuf from data.");
+                warning(_("Could not set pixbuf from data."));
                 set_default_image(image);
                 uint8[] r = null;
                 return r;
@@ -487,8 +495,12 @@ namespace MLM {
                 previous.sensitive = s;
             if ((flags & UIItemFlags.NEXT) != 0)
                 next.sensitive = s;
+            if ((flags & UIItemFlags.REENCODE) != 0)
+                reencode.sensitive = s;
             if ((flags & UIItemFlags.SAVE) != 0)
                 save.sensitive = s;
+            if ((flags & UIItemFlags.REST) != 0)
+                frame.sensitive = s;
         }
 
         public void enable(UIItemFlags flags) {
@@ -504,7 +516,7 @@ namespace MLM {
                 this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.WARNING, Gtk.ButtonsType.CLOSE,
                 message);
-            dialog.title = "Warning";
+            dialog.title = _("Warning");
             dialog.run();
             dialog.destroy();
         }
