@@ -30,9 +30,7 @@ namespace MLM {
             Gst.init(ref args);
 
             var mlm = new Application();
-            mlm.run(args);
-
-            return 0;
+            return mlm.run(args);
         }
     }
 }
