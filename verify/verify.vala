@@ -17,8 +17,6 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Id3Tag;
-
 extern void exit(int exit_code);
 
 namespace MLM {
@@ -32,7 +30,7 @@ namespace MLM {
 
     public class Verifier {
 
-        private Tag tag;
+        private Id3Tag.Tag tag;
         private string filename;
         private string report;
         private bool anomalies;
@@ -52,7 +50,7 @@ namespace MLM {
                 missing_pictures = true;
             if ((options & Options.SMALL_PICTURES) != 0)
                 small_pictures = true;
-            DateTime dt = new DateTime.now_local();
+            var dt = new DateTime.now_local();
             current_year = dt.get_year();
         }
 
@@ -62,7 +60,7 @@ namespace MLM {
         }
 
         private string to_title(string str) {
-            string t = "";
+            var t = "";
             bool up = true;
             unichar uc;
             int i = 0;
@@ -86,15 +84,16 @@ namespace MLM {
             return t;
         }
 
-        private void verify_frame_textencoding(Frame frame,
-                                               string fid,
-                                               FieldTextEncoding te = FieldTextEncoding.UTF_8) {
-            string tedesc = "UTF-8";
-            if (te == FieldTextEncoding.ISO_8859_1)
+        private void verify_frame_textencoding(Id3Tag.Frame             frame,
+                                               string                   fid,
+                                               Id3Tag.FieldTextEncoding te =
+                                               Id3Tag.FieldTextEncoding.UTF_8) {
+            var tedesc = "UTF-8";
+            if (te == Id3Tag.FieldTextEncoding.ISO_8859_1)
                 tedesc = "ISO-8859-1";
             for (int i = 0; i < frame.fields.length; i++) {
-                Field field = frame.field(i);
-                if (field.type == FieldType.TEXTENCODING &&
+                var field = frame.field(i);
+                if (field.type == Id3Tag.FieldType.TEXTENCODING &&
                     field.gettextencoding() != te) {
                     add_to_report("\tThe %s encoding is not %s.\n".printf(fid, tedesc));
                     if (fixit) {
@@ -105,22 +104,22 @@ namespace MLM {
             }
         }
 
-        private void verify_text_frame(Frame  frame,
-                                       string fid,
-                                       bool   check_empty) {
+        private void verify_text_frame(Id3Tag.Frame frame,
+                                       string       fid,
+                                       bool         check_empty) {
             verify_frame_textencoding(frame, fid);
             if (check_empty && frame.get_text() == "")
                 add_to_report("\nThe %s frame is empty.\n".printf(fid));
         }
 
-        private void verify_year_frame(Frame frame) {
+        private void verify_year_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "year");
             int year = int.parse(frame.get_text());
             if (year < 1900 || year > current_year)
                 add_to_report("\tThe year %d is out of range.\n".printf(year));
         }
 
-        private int verify_disc_frame(Frame frame) {
+        private int verify_disc_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "disc");
             int disc = int.parse(frame.get_text());
             if (disc < 1 || disc > 99)
@@ -128,15 +127,15 @@ namespace MLM {
             return disc;
         }
 
-        private void verify_genre_frame(Frame frame) {
+        private void verify_genre_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "genre");
-            string g = frame.get_text();
-            bool number = true;
+            var g = frame.get_text();
+            var number = true;
             int n = -1;
             for (int i = 0; i < g.data.length; i++)
                 if (g.data[i] < (int)'0' || g.data[i] > (int)'9')
                     number = false;
-            Genre[] genres = Genre.all();
+            var genres = Genre.all();
             if (!number) {
                 for (int i = 0; i < genres.length; i++)
                     if (g == genres[i].to_string())
@@ -157,18 +156,18 @@ namespace MLM {
             }
         }
 
-        private void verify_comment_frame(Frame frame) {
+        private void verify_comment_frame(Id3Tag.Frame frame) {
             for (int i = 0; i < frame.fields.length; i++) {
-                Field field = frame.field(i);
-                if (field.type == FieldType.TEXTENCODING &&
-                    field.gettextencoding() != FieldTextEncoding.UTF_8) {
+                var field = frame.field(i);
+                if (field.type == Id3Tag.FieldType.TEXTENCODING &&
+                    field.gettextencoding() != Id3Tag.FieldTextEncoding.UTF_8) {
                     add_to_report("\tThe comment encoding is not UTF-8.\n");
                     if (fixit) {
-                        field.settextencoding(FieldTextEncoding.UTF_8);
+                        field.settextencoding(Id3Tag.FieldTextEncoding.UTF_8);
                         add_to_report("\t\t...fixed.\n");
                     }
                 }
-                if (field.type == FieldType.LANGUAGE &&
+                if (field.type == Id3Tag.FieldType.LANGUAGE &&
                     (string)field.immediate_value != "eng") {
                     add_to_report("\tThe comment language is not 'eng'.\n");
                     if (fixit) {
@@ -176,7 +175,7 @@ namespace MLM {
                         add_to_report("\t\t...fixed.\n");
                     }
                 }
-                if (field.type == FieldType.STRING &&
+                if (field.type == Id3Tag.FieldType.STRING &&
                     (string)field.getstring() != "") {
                     add_to_report("\tThe small comment is not empty.\n");
                     if (fixit) {
@@ -189,20 +188,21 @@ namespace MLM {
                 add_to_report("\tThe comment is empty.\n");
         }
 
-        private void verify_picture_frame(Frame frame) {
+        private void verify_picture_frame(Id3Tag.Frame frame) {
             bool detach = false;
-            PictureType pt = PictureType.OTHER;
+            var pt = Id3Tag.PictureType.OTHER;
             for (int i = 0; i < frame.fields.length; i++) {
-                Field field = frame.field(i);
-                if (field.type == FieldType.TEXTENCODING &&
-                    field.gettextencoding() != FieldTextEncoding.UTF_8)
+                var field = frame.field(i);
+                if (field.type == Id3Tag.FieldType.TEXTENCODING &&
+                    field.gettextencoding() != Id3Tag.FieldTextEncoding.UTF_8)
                     add_to_report("\tThe picture text encoding is not UTF-8.\n");
-                if (field.type == FieldType.LATIN1 &&
+                if (field.type == Id3Tag.FieldType.LATIN1 &&
                     (string)field.getlatin1() != "image/jpeg")
                     add_to_report("\tThe picture mime type is not 'image/jpeg'.\n");
-                if (field.type == FieldType.INT8) {
-                    pt = (PictureType)field.getint();
-                    if (pt != PictureType.COVERFRONT && pt != PictureType.ARTIST) {
+                if (field.type == Id3Tag.FieldType.INT8) {
+                    pt = (Id3Tag.PictureType)field.getint();
+                    if (pt != Id3Tag.PictureType.COVERFRONT &&
+                        pt != Id3Tag.PictureType.ARTIST) {
                         add_to_report("\tThe picture type is neither cover front nor artist.\n");
                         if (fixit)
                             detach = true;
@@ -217,9 +217,9 @@ namespace MLM {
             if (small_pictures) {
                 uint8[] data = frame.get_picture(pt);
                 string ptype = "front cover";
-                if (pt == PictureType.ARTIST)
+                if (pt == Id3Tag.PictureType.ARTIST)
                     ptype = "artist";
-                var mis = new MemoryInputStream.from_data(data, null);
+                var mis = new GLib.MemoryInputStream.from_data(data, null);
                 Gdk.Pixbuf pixbuf = null;
                 try {
                     pixbuf = new Gdk.Pixbuf.from_stream(mis);
@@ -233,7 +233,7 @@ namespace MLM {
                                       "less than 500 pixels (%d).\n".printf(max));
                 }
             }
-            string desc = frame.get_picture_description();
+            var desc = frame.get_picture_description();
             if (desc == "") {
                 add_to_report("\tThe picture description is empty.\n");
             }
@@ -246,11 +246,11 @@ namespace MLM {
             }
             if (desc == "(No Disc)")
                 return;
-            Frame album_frame = tag.search_frame(FrameId.ALBUM);
+            var album_frame = tag.search_frame(FrameId.ALBUM);
             if (album_frame == null)
                 return;
-            string album = album_frame.get_text();
-            if (pt == PictureType.COVERFRONT && desc != album + " cover") {
+            var album = album_frame.get_text();
+            if (pt == Id3Tag.PictureType.COVERFRONT && desc != album + " cover") {
                 add_to_report("\tThe front cover description is not correct.\n");
                 if (fixit) {
                     frame.set_picture_description(album + " cover");
@@ -259,9 +259,9 @@ namespace MLM {
             }
         }
 
-        private int verify_track_frame(Frame frame) {
+        private int verify_track_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "track");
-            string t = frame.get_text();
+            var t = frame.get_text();
             int tn, tc;
             if (t.index_of("/") == -1) {
                 add_to_report("\tTrack count missing.\n");
@@ -269,7 +269,7 @@ namespace MLM {
                 if (tn < 1 || tn > 99)
                     add_to_report("\tThe track number %d is out of range.\n".printf(tn));
             } else {
-                string[] tt = t.split("/");
+                var tt = t.split("/");
                 tn = int.parse(tt[0]);
                 tc = int.parse(tt[1]);
                 if (tn < 1 || tn > 99)
@@ -287,7 +287,7 @@ namespace MLM {
                 stderr.printf("%s: No such file.\n", filename);
                 return;
             }
-            var file = new Id3Tag.File(filename, FileMode.READWRITE);
+            var file = new Id3Tag.File(filename, Id3Tag.FileMode.READWRITE);
             if (file == null) {
                 stderr.printf("%s: Could not link to file.\n", filename);
                 return;
@@ -310,16 +310,16 @@ namespace MLM {
             string album = "";
             string track = "";
             string disc = "";
-            var invalid = new Gee.ArrayList<Frame>();
+            var invalid = new Gee.ArrayList<Id3Tag.Frame>();
             for (int i = 0; i < tag.frames.length; i++) {
-                Frame frame = tag.frames[i];
+                var frame = tag.frames[i];
                 if (frame.id == FrameId.ARTIST) {
                     verify_text_frame(frame, "artist", true);
                     artist = frame.get_text();
                 } else if (frame.id == FrameId.TITLE) {
                     verify_text_frame(frame, "title", true);
                     title = frame.get_text();
-                    string tt = to_title(title);
+                    var tt = to_title(title);
                     if (tt != title) {
                         add_to_report("\tThe title %s is not in title format.\n".printf(title));
                         if (fixit) {
@@ -352,9 +352,9 @@ namespace MLM {
                     verify_comment_frame(frame);
                 } else if (frame.id == FrameId.PICTURE) {
                     verify_picture_frame(frame);
-                    if (frame.get_picture_type() == PictureType.COVERFRONT)
+                    if (frame.get_picture_type() == Id3Tag.PictureType.COVERFRONT)
                         fcp++;
-                    if (frame.get_picture_type() == PictureType.ARTIST)
+                    if (frame.get_picture_type() == Id3Tag.PictureType.ARTIST)
                         ap++;
                 } else {
                     invalid.add(frame);
@@ -384,7 +384,7 @@ namespace MLM {
             if (comments > 1)
                 add_to_report("\tFile has more than one comment.\n");
             if (anomalies && fixit) {
-                tag.options(TagOption.COMPRESSION, 0);
+                tag.options(Id3Tag.TagOption.COMPRESSION, 0);
                 file.update();
             }
             file.close();
