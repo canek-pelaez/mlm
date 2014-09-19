@@ -29,7 +29,7 @@ namespace MLM {
 
             var bus = pipe.get_bus();
             bus.add_signal_watch();
-            bus.message.connect((b,m) => { message_received(m); });
+            bus.message.connect(message_received);
         }
 
         protected abstract void set_pipeline();
