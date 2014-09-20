@@ -17,8 +17,6 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-
 extern void exit(int exit_code);
 
 namespace MLM {
@@ -35,7 +33,7 @@ namespace MLM {
         private static const string GENRE    = "--genre";
         private static const string COMMENT  = "--comment";
         private static const string COMPOSER = "--composer";
-        private static const string ORIGINAL = "--original-artist";
+        private static const string ORIGINAL = "--original";
         private static const string COVER_P  = "--front-cover-picture";
         private static const string ARTIST_P = "--artist-picture";
         private static const string REMOVE   = "--remove";
@@ -84,7 +82,7 @@ namespace MLM {
    -g, --genre='Genre'                        Set the genre.
    -c, --comment='Comment'                    Set the comment.
    -s, --composer='Composer'                  Set the composer.
-   -o, --original-artist='Original Artist'    Set the original artist.
+   -o, --original='Original Artist'           Set the original artist.
    -f, --front-cover-picture=file.jpg         Set the front cover picture from file.
    -u, --artist-picture=file.jpg              Set the artist picture from file.
    -r, --remove                               Remove all tags.
@@ -138,8 +136,8 @@ Format for printing:
             return t.char_count();
         }
 
-        private static ArrayList<string> split_line(string line) {
-            var ll = new ArrayList<string>();
+        private static Gee.ArrayList<string> split_line(string line) {
+            var ll = new Gee.ArrayList<string>();
             string[] words = line.split(" ");
             string l = words[0];
             for (int i = 1; i < words.length; i++) {
@@ -154,7 +152,7 @@ Format for printing:
             return ll;
         }
 
-        private static string boxed_output(ArrayList<string> lines) {
+        private static string boxed_output(Gee.ArrayList<string> lines) {
             string output = "┏";
             for (int i = 0; i < output_width - 2; i++)
                 output += "━";
@@ -211,7 +209,7 @@ Format for printing:
                 stderr.printf("The file '%s' has no ID3 v2.4.0 tags.\n", filename);
                 return;
             }
-            var lines = new ArrayList<string>();
+            var lines = new Gee.ArrayList<string>();
             string line = ConsoleTools.cyan(Filename.display_basename(filename));
             lines.add(line);
             Genre[] genres = Genre.all();
@@ -361,7 +359,7 @@ Format for printing:
             file.write(data);
         }
 
-        private static void update_tags(string filename, HashMap<string, string> flags) {
+        private static void update_tags(string filename, Gee.HashMap<string, string> flags) {
             if (!FileUtils.test(filename, FileTest.EXISTS)) {
                 stderr.printf("No such file: '%s'\n", filename);
                 return;
@@ -485,7 +483,7 @@ Format for printing:
             DateTime dt = new DateTime.now_local();
             current_year = dt.get_year();
 
-            var available_flags = new HashMap<string, string>();
+            var available_flags = new Gee.HashMap<string, string>();
             available_flags[Flag.S_HELP] = Flag.HELP;
             available_flags[Flag.S_ARTIST] = Flag.ARTIST;
             available_flags[Flag.S_TITLE] = Flag.TITLE;
@@ -506,8 +504,8 @@ Format for printing:
             available_flags[Flag.S_OUT_FCP] = Flag.OUT_FCP;
             available_flags[Flag.S_OUT_AP] = Flag.OUT_AP;
 
-            var flags = new HashMap<string, string>();
-            var filenames = new ArrayList<string>();
+            var flags = new Gee.HashMap<string, string>();
+            var filenames = new Gee.ArrayList<string>();
 
             for (int i = 1; i < args.length; i++) {
                 string a = args[i];
