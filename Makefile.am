@@ -10,21 +10,8 @@ AM_CPPFLAGS =					\
 COMMON_VALAFLAGS =				\
 	--enable-experimental			\
 	--target-glib=2.38			\
-	--vapidir $(srcdir)/vapi 		\
+	--vapidir $(top_srcdir)/vapi 		\
 	$(NULL)
-
-# ====== gresource
-gresource_file = $(top_srcdir)/data/mlm.gresource.xml
-resource_files = 				\
-	$(top_srcdir)/data/mlm.ui		\
-	$(top_srcdir)/data/mlm.css		\
-	$(NULL)
-
-mlm/resources.c: $(gresource_file) $(resource_files)
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) 	\
-		--target=$@			\
-		--sourcedir=$(top_srcdir)/data	\
-		--generate-source $<
 
 # ====== libid3tag-x
 
@@ -42,7 +29,7 @@ libmlm_libmlm_la_SOURCES =			\
 	libmlm/genres.vala			\
 	libmlm/frame-id.vala			\
 	libmlm/file-tags.vala			\
-	libmlm/console-tools.vala		\
+	libmlm/util.vala			\
 	$(NULL)
 
 libmlm_libmlm_la_VALAFLAGS =			\
@@ -50,11 +37,13 @@ libmlm_libmlm_la_VALAFLAGS =			\
 	--vapi vapi/mlm.vapi			\
 	--header libmlm/mlm.h			\
 	@GEE_PACKAGES@				\
+	@GIO_PACKAGES@				\
 	@ID3TAG_PACKAGES@			\
 	$(NULL)
 
 libmlm_libmlm_la_CFLAGS =			\
 	@GEE_CFLAGS@				\
+	@GIO_CFLAGS@				\
 	@ID3TAG_CFLAGS@				\
 	-I$(srcdir)/id3tag-x			\
 	-w					\
@@ -62,6 +51,7 @@ libmlm_libmlm_la_CFLAGS =			\
 
 libmlm_libmlm_la_LIBADD =			\
 	@GEE_LIBS@				\
+	@GIO_LIBS@				\
 	@ID3TAG_LIBS@				\
 	id3tag-x/libid3tag-x.la			\
 	$(NULL)
@@ -103,6 +93,33 @@ mlm_mlm_LDADD =					\
 	@GEE_LIBS@				\
 	@GSTREAMER_LIBS@			\
 	@GTK_LIBS@				\
+	libmlm/libmlm.la			\
+	$(NULL)
+
+# ====== mlm-tags
+
+bin_PROGRAMS += tags/mlm-tags
+
+tags_mlm_tags_SOURCES =				\
+	tags/tags.vala				\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+tags_mlm_tags_VALAFLAGS =			\
+	$(COMMON_VALAFLAGS)			\
+	@GEE_PACKAGES@				\
+	$(NULL)
+
+tags_mlm_tags_CFLAGS =				\
+	@GEE_CFLAGS@				\
+	-I$(srcdir)/id3tag-x			\
+	-I$(srcdir)/libmlm			\
+	-w					\
+	$(NULL)
+
+tags_mlm_tags_LDADD =				\
+	@GEE_LIBS@				\
+	id3tag-x/libid3tag-x.la			\
 	libmlm/libmlm.la			\
 	$(NULL)
 
@@ -205,32 +222,18 @@ analyze_mlm_analyze_LDADD =			\
 	libmlm/libmlm.la			\
 	$(NULL)
 
-# ====== mlm-tags
-
-bin_PROGRAMS += tags/mlm-tags
-
-tags_mlm_tags_SOURCES =				\
-	tags/tags.vala				\
-	vapi/mlm.vapi				\
+# ====== gresource
+gresource_file = $(top_srcdir)/data/mlm.gresource.xml
+resource_files = 				\
+	$(top_srcdir)/data/mlm.ui		\
+	$(top_srcdir)/data/mlm.css		\
 	$(NULL)
 
-tags_mlm_tags_VALAFLAGS =			\
-	$(COMMON_VALAFLAGS)			\
-	@GEE_PACKAGES@				\
-	$(NULL)
-
-tags_mlm_tags_CFLAGS =				\
-	@GEE_CFLAGS@				\
-	-I$(srcdir)/id3tag-x			\
-	-I$(srcdir)/libmlm			\
-	-w					\
-	$(NULL)
-
-tags_mlm_tags_LDADD =				\
-	@GEE_LIBS@				\
-	id3tag-x/libid3tag-x.la			\
-	libmlm/libmlm.la			\
-	$(NULL)
+mlm/resources.c: $(gresource_file) $(resource_files)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) 	\
+		--target=$@			\
+		--sourcedir=$(top_srcdir)/data	\
+		--generate-source $<
 
 # ====== UI files
 
