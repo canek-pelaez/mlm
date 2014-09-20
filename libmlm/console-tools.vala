@@ -78,5 +78,36 @@ namespace MLM {
                 stderr.printf("There was an error writing to '%s'.\n", filename);
             }
         }
+
+        public static string normalize(string str) {
+            var s = str.normalize(-1, GLib.NormalizeMode.NFKD);
+            try {
+                uint8[] outbuf = new uint8[s.length];
+                size_t read = s.length;
+                size_t written = 0;
+
+                var conv = new GLib.CharsetConverter("ASCII//IGNORE", "UTF-8");
+                var r = conv.convert(s.data, outbuf, ConverterFlags.NONE,
+                                     out read, out written);
+                string t = (string)outbuf;
+
+                if (r == GLib.ConverterResult.ERROR)
+                    return "";
+
+                t = t.down();
+                var regex = new GLib.Regex("[\\[\\]#:\\.,?!/)(\\']");
+                t = regex.replace(t, t.length, 0, "");
+                t = t.replace("&", "and");
+                t = t.replace(" ", "_");
+                t = t.replace("/", "_");
+                t = t.replace("-", "_");
+                if (t.has_suffix("mp3"))
+                    t = t.replace("mp3", ".mp3");
+                return t;
+            } catch (GLib.Error e) {
+                GLib.warning("%s", e.message);
+            }
+            return "";
+        }
     }
 }
