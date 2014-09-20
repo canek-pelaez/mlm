@@ -51,16 +51,16 @@ namespace MLM {
                 test_encoding = "UNKNOWN";
                 break;
             }
-            stdout.printf(ConsoleTools.key_value("Textencoding", test_encoding));
+            stdout.printf(Util.term_key_value("Textencoding", test_encoding));
         }
 
         private void analyze_stringlist(Field field) {
             for (int i = 0; i < field.stringlist.length; i++) {
                 string s = UCS4.utf8duplicate(field.getstrings(i));
                 stdout.printf("\t\t%s %s: \"%s\"\n",
-                              ConsoleTools.blue("String"),
-                              ConsoleTools.cyan("%d".printf(i)),
-                              ConsoleTools.yellow(s));
+                              Util.term_blue("String"),
+                              Util.term_cyan("%d".printf(i)),
+                              Util.term_yellow(s));
             }
         }
 
@@ -135,8 +135,8 @@ namespace MLM {
                 break;
             }
             stdout.printf("\t%s: \"%s\"\n",
-                          ConsoleTools.blue("Picture type"),
-                          ConsoleTools.yellow(ptype));
+                          Util.term_blue("Picture type"),
+                          Util.term_yellow(ptype));
         }
 
         private void analyze_field(Frame frame, Field field) {
@@ -148,8 +148,8 @@ namespace MLM {
                 break;
             case FieldType.LATIN1:
                 stdout.printf("\t%s: %s\n",
-                              ConsoleTools.blue("Latin1"),
-                              ConsoleTools.yellow(field.getlatin1()));
+                              Util.term_blue("Latin1"),
+                              Util.term_yellow(field.getlatin1()));
                 break;
             case FieldType.LATIN1FULL:
                 stdout.printf("\tLatin1 full\n");
@@ -160,23 +160,23 @@ namespace MLM {
             case FieldType.STRING:
                 s = UCS4.utf8duplicate(field.getstring());
                 stdout.printf("\t%s: \"%s\"\n",
-                              ConsoleTools.blue("String"),
-                              ConsoleTools.yellow(s));
+                              Util.term_blue("String"),
+                              Util.term_yellow(s));
                 break;
             case FieldType.STRINGFULL:
                 s = UCS4.utf8duplicate(field.getfullstring());
                 stdout.printf("\t%s: \"%s\"\n",
-                              ConsoleTools.blue("String full"),
-                              ConsoleTools.yellow(s));
+                              Util.term_blue("String full"),
+                              Util.term_yellow(s));
                 break;
             case FieldType.STRINGLIST:
-                stdout.printf("\t%s\n", ConsoleTools.blue("String list"));
+                stdout.printf("\t%s\n", Util.term_blue("String list"));
                 analyze_stringlist(field);
                 break;
             case FieldType.LANGUAGE:
                 stdout.printf("\t%s: %s\n",
-                              ConsoleTools.blue("Languaje"),
-                              ConsoleTools.yellow((string)field.immediate_value));
+                              Util.term_blue("Languaje"),
+                              Util.term_yellow((string)field.immediate_value));
                 break;
             case FieldType.FRAMEID:
                 stdout.printf("\tFrame id\n");
@@ -191,12 +191,12 @@ namespace MLM {
                 } else if (frame.id == FrameId.POPULARIMETER) {
                     double r = v / 2.55;
                     stdout.printf("\t%s: %s\n",
-                                  ConsoleTools.blue("Rating"),
-                                  ConsoleTools.yellow("%g%%".printf(r)));
+                                  Util.term_blue("Rating"),
+                                  Util.term_yellow("%g%%".printf(r)));
                 } else {
                     stdout.printf("\t%s: %s\n",
-                                  ConsoleTools.blue("UNKNOWN int8"),
-                                  ConsoleTools.yellow("%d".printf(v)));
+                                  Util.term_blue("UNKNOWN int8"),
+                                  Util.term_yellow("%d".printf(v)));
                 }
                 break;
             case FieldType.INT16:
@@ -212,18 +212,18 @@ namespace MLM {
                 v = (int)field.number_value;
                 if (frame.id == FrameId.POPULARIMETER) {
                     stdout.printf("\t%s: %s\n",
-                                  ConsoleTools.blue("Counter"),
-                                  ConsoleTools.yellow("%d".printf(v)));
+                                  Util.term_blue("Counter"),
+                                  Util.term_yellow("%d".printf(v)));
                 } else {
                     stdout.printf("\t%s: %s\n",
-                                  ConsoleTools.blue("UNKNOWN int32 plus"),
-                                  ConsoleTools.yellow("%d".printf(v)));
+                                  Util.term_blue("UNKNOWN int32 plus"),
+                                  Util.term_yellow("%d".printf(v)));
                 }
                 break;
             case FieldType.BINARYDATA:
                 stdout.printf("\t%s: %s bytes\n",
-                              ConsoleTools.blue("Binary data"),
-                              ConsoleTools.yellow("%d".printf(field.binary_data.length)));
+                              Util.term_blue("Binary data"),
+                              Util.term_yellow("%d".printf(field.binary_data.length)));
                 break;
             default:
                 break;
@@ -232,9 +232,9 @@ namespace MLM {
 
         private void analyze_frame(Frame frame) {
             stdout.printf("%s %s: (%s)\n",
-                          ConsoleTools.blue("Frame"),
-                          ConsoleTools.yellow(frame.id),
-                          ConsoleTools.cyan(frame.description));
+                          Util.term_blue("Frame"),
+                          Util.term_yellow(frame.id),
+                          Util.term_cyan(frame.description));
             for (int i = 0; i < frame.fields.length; i++) {
                 analyze_field(frame, frame.field(i));
             }

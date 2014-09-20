@@ -19,38 +19,39 @@
 
 namespace MLM {
 
-    public class ConsoleTools {
+    public class Util {
 
-        public static string gray(string s) {
+        public static string term_gray(string s) {
             return "\033[1m\033[90m%s\033[0m".printf(s);
         }
 
-        public static string red(string s) {
+        public static string term_red(string s) {
             return "\033[1m\033[91m%s\033[0m".printf(s);
         }
 
-        public static string green(string s) {
+        public static string term_green(string s) {
             return "\033[1m\033[92m%s\033[0m".printf(s);
         }
 
-        public static string yellow(string s) {
+        public static string term_yellow(string s) {
             return "\033[1m\033[93m%s\033[0m".printf(s);
         }
 
-        public static string blue(string s) {
+        public static string term_blue(string s) {
             return "\033[1m\033[94m%s\033[0m".printf(s);
         }
 
-        public static string purple(string s) {
+        public static string term_purple(string s) {
             return "\033[1m\033[95m%s\033[0m".printf(s);
         }
 
-        public static string cyan(string s) {
+        public static string term_cyan(string s) {
             return "\033[1m\033[96m%s\033[0m".printf(s);
         }
 
-        public static string key_value(string key, string value) {
-            return "%s: %s".printf(blue(key), yellow(value));
+        public static string term_key_value(string key, string value) {
+            return "%s: %s".printf(term_blue(key),
+                                   term_yellow(value));
         }
 
         public static GLib.TimeVal get_file_time(string filename) {

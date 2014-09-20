@@ -368,7 +368,7 @@ namespace MLM {
             front_cover_picture_description = artist_picture_description = null;
             has_tags = false;
 
-            time = ConsoleTools.get_file_time(filename);
+            time = Util.get_file_time(filename);
 
             file = new Id3Tag.File(filename, Id3Tag.FileMode.READWRITE);
             tag = file.tag();
@@ -473,7 +473,7 @@ namespace MLM {
                 stderr.printf("There was an error when removing tags from '%s'.\n", filename);
             file = null;
 
-            ConsoleTools.set_file_time(filename, time);
+            Util.set_file_time(filename, time);
 
             read_tags();
         }
@@ -496,7 +496,7 @@ namespace MLM {
         ~FileTags() {
             if (file != null) {
                 file.close();
-                ConsoleTools.set_file_time(filename, time);
+                Util.set_file_time(filename, time);
             }
         }
     }

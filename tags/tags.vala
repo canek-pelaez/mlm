@@ -121,8 +121,8 @@ Format for printing:
             stdout.printf("Supported genres:\n");
             for (int i = 0; i < genres.length; i++)
                 stdout.printf("   %s %s\n",
-                              ConsoleTools.blue("%03d".printf(i)),
-                              ConsoleTools.yellow(genres[i].to_string()));
+                              Util.term_blue("%03d".printf(i)),
+                              Util.term_yellow(genres[i].to_string()));
             exit(0);
         }
 
@@ -157,7 +157,7 @@ Format for printing:
             for (int i = 0; i < output_width - 2; i++)
                 output += "━";
             output += "┓";
-            output = ConsoleTools.red(output) + "\n";
+            output = Util.term_red(output) + "\n";
 
             int c = 0;
             foreach (var line in lines) {
@@ -167,9 +167,9 @@ Format for printing:
                     int ac = (cc == 0 && c > 0) ? 26 : 13;
                     if (ll.size > 1 && cc > 0)
                         ac = 7;
-                    output += ConsoleTools.red("┃");
+                    output += Util.term_red("┃");
                     if (ll.size > 1) {
-                        output += ConsoleTools.yellow(l);
+                        output += Util.term_yellow(l);
                         if (cc++ == 0)
                             ac = 22;
                         else
@@ -179,13 +179,13 @@ Format for printing:
                     }
                     for (int i = 0; i < output_width - l.char_count() - 2 + ac; i++)
                         output += " ";
-                    output += ConsoleTools.red("┃") + "\n";
+                    output += Util.term_red("┃") + "\n";
                 }
                 if (c++ == 0) {
-                    output += ConsoleTools.red("┠");
+                    output += Util.term_red("┠");
                     for (int i = 0; i < output_width - 2; i++)
-                        output += ConsoleTools.red("─");
-                    output += ConsoleTools.red("┨") + "\n";
+                        output += Util.term_red("─");
+                    output += Util.term_red("┨") + "\n";
                 }
             }
 
@@ -194,7 +194,7 @@ Format for printing:
                 last_line += "━";
             last_line += "┛";
 
-            output += ConsoleTools.red(last_line) + "\n";
+            output += Util.term_red(last_line) + "\n";
 
             return output;
         }
@@ -210,50 +210,50 @@ Format for printing:
                 return;
             }
             var lines = new Gee.ArrayList<string>();
-            string line = ConsoleTools.cyan(Filename.display_basename(filename));
+            string line = Util.term_cyan(Filename.display_basename(filename));
             lines.add(line);
             Genre[] genres = Genre.all();
             if (file_tags.artist != null)
-                lines.add(ConsoleTools.key_value("Artist", file_tags.artist));
+                lines.add(Util.term_key_value("Artist", file_tags.artist));
             if (file_tags.title != null)
-                lines.add(ConsoleTools.key_value("Title", file_tags.title));
+                lines.add(Util.term_key_value("Title", file_tags.title));
             if (file_tags.album != null)
-                lines.add(ConsoleTools.key_value("Album", file_tags.album));
+                lines.add(Util.term_key_value("Album", file_tags.album));
             if (file_tags.year != -1)
-                lines.add(ConsoleTools.key_value("Year", "%d".printf(file_tags.year)));
+                lines.add(Util.term_key_value("Year", "%d".printf(file_tags.year)));
             if (file_tags.track != -1) {
                 if (file_tags.total != -1)
                     lines.add(
-                        ConsoleTools.key_value(
+                        Util.term_key_value(
                             "Track",
                             "%d of %d".printf(file_tags.track,
                                               file_tags.total)));
                 else
                     lines.add(
-                        ConsoleTools.key_value(
+                        Util.term_key_value(
                             "Track",
                             "%d".printf(file_tags.track)));
             }
             if (file_tags.disc != -1)
-                lines.add(ConsoleTools.key_value("Disc number",
+                lines.add(Util.term_key_value("Disc number",
                                                  "%d".printf(file_tags.disc)));
             if (file_tags.genre != -1)
-                lines.add(ConsoleTools.key_value("Genre",
+                lines.add(Util.term_key_value("Genre",
                                                  genres[file_tags.genre].to_string()));
             if (file_tags.comment != null)
-                lines.add(ConsoleTools.key_value("Comment",
+                lines.add(Util.term_key_value("Comment",
                                                  file_tags.comment));
             if (file_tags.composer != null)
-                lines.add(ConsoleTools.key_value("Composer",
+                lines.add(Util.term_key_value("Composer",
                                                  file_tags.composer));
             if (file_tags.original != null)
-                lines.add(ConsoleTools.key_value("Original artist",
+                lines.add(Util.term_key_value("Original artist",
                                                  file_tags.original));
             if (file_tags.front_cover_picture != null)
-                lines.add(ConsoleTools.key_value("Front cover picture",
+                lines.add(Util.term_key_value("Front cover picture",
                                                  file_tags.front_cover_picture_description));
             if (file_tags.artist_picture != null)
-                lines.add(ConsoleTools.key_value("Artist picture",
+                lines.add(Util.term_key_value("Artist picture",
                                                  file_tags.artist_picture_description));
             stdout.printf("%s", boxed_output(lines));
         }
