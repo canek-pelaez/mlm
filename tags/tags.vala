@@ -29,8 +29,8 @@ namespace MLM {
         private static const string TITLE    = "--title";
         private static const string ALBUM    = "--album";
         private static const string YEAR     = "--year";
-        private static const string TRACK_N  = "--track-number";
-        private static const string TRACK_C  = "--track-count";
+        private static const string TRACK    = "--track";
+        private static const string TOTAL    = "--total";
         private static const string DISC_N   = "--disc-number";
         private static const string GENRE    = "--genre";
         private static const string COMMENT  = "--comment";
@@ -49,8 +49,8 @@ namespace MLM {
         private static const string S_TITLE    = "-t";
         private static const string S_ALBUM    = "-l";
         private static const string S_YEAR     = "-y";
-        private static const string S_TRACK_N  = "-n";
-        private static const string S_TRACK_C  = "-#";
+        private static const string S_TRACK    = "-n";
+        private static const string S_TOTAL    = "-#";
         private static const string S_DISC_N   = "-d";
         private static const string S_GENRE    = "-g";
         private static const string S_COMMENT  = "-c";
@@ -223,22 +223,22 @@ Format for printing:
                 lines.add(ConsoleTools.key_value("Album", file_tags.album));
             if (file_tags.year != -1)
                 lines.add(ConsoleTools.key_value("Year", "%d".printf(file_tags.year)));
-            if (file_tags.track_number != -1) {
-                if (file_tags.track_count != -1)
+            if (file_tags.track != -1) {
+                if (file_tags.total != -1)
                     lines.add(
                         ConsoleTools.key_value(
                             "Track",
-                            "%d of %d".printf(file_tags.track_number,
-                                              file_tags.track_count)));
+                            "%d of %d".printf(file_tags.track,
+                                              file_tags.total)));
                 else
                     lines.add(
                         ConsoleTools.key_value(
                             "Track",
-                            "%d".printf(file_tags.track_number)));
+                            "%d".printf(file_tags.track)));
             }
-            if (file_tags.disc_number != -1)
+            if (file_tags.disc != -1)
                 lines.add(ConsoleTools.key_value("Disc number",
-                                                 "%d".printf(file_tags.disc_number)));
+                                                 "%d".printf(file_tags.disc)));
             if (file_tags.genre != -1)
                 lines.add(ConsoleTools.key_value("Genre",
                                                  genres[file_tags.genre].to_string()));
@@ -248,9 +248,9 @@ Format for printing:
             if (file_tags.composer != null)
                 lines.add(ConsoleTools.key_value("Composer",
                                                  file_tags.composer));
-            if (file_tags.original_artist != null)
+            if (file_tags.original != null)
                 lines.add(ConsoleTools.key_value("Original artist",
-                                                 file_tags.original_artist));
+                                                 file_tags.original));
             if (file_tags.front_cover_picture != null)
                 lines.add(ConsoleTools.key_value("Front cover picture",
                                                  file_tags.front_cover_picture_description));
@@ -285,17 +285,17 @@ Format for printing:
                 f = f.replace("%l", ft.album);
             if (ft.year != -1)
                 f = f.replace("%y", "%d".printf(ft.year));
-            if (ft.track_number != -1) {
-                f = f.replace("%n", "%d".printf(ft.track_number));
-                f = f.replace("%N", "%02d".printf(ft.track_number));
+            if (ft.track != -1) {
+                f = f.replace("%n", "%d".printf(ft.track));
+                f = f.replace("%N", "%02d".printf(ft.track));
             }
-            if (ft.track_count != -1) {
-                f = f.replace("%#", "%d".printf(ft.track_count));
-                f = f.replace("%C", "%02d".printf(ft.track_count));
+            if (ft.total != -1) {
+                f = f.replace("%#", "%d".printf(ft.total));
+                f = f.replace("%C", "%02d".printf(ft.total));
             }
-            if (ft.disc_number != -1) {
-                f = f.replace("%d", "%d".printf(ft.disc_number));
-                f = f.replace("%D", "%02d".printf(ft.disc_number));
+            if (ft.disc != -1) {
+                f = f.replace("%d", "%d".printf(ft.disc));
+                f = f.replace("%D", "%02d".printf(ft.disc));
             }
             if (ft.genre != -1)
                 f = f.replace("%g", g[ft.genre].to_string());
@@ -303,8 +303,8 @@ Format for printing:
                 f = f.replace("%c", ft.comment);
             if (ft.composer != null)
                 f = f.replace("%s", ft.composer);
-            if (ft.original_artist != null)
-                f = f.replace("%o", ft.original_artist);
+            if (ft.original != null)
+                f = f.replace("%o", ft.original);
 
             stdout.printf(f);
         }
@@ -368,55 +368,56 @@ Format for printing:
             }
             var ft = new FileTags(filename);
             if (flags.has_key(Flag.ARTIST))
-                ft.update_artist(flags[Flag.ARTIST]);
+                ft.artist = flags[Flag.ARTIST];
             if (flags.has_key(Flag.TITLE))
-                ft.update_title(flags[Flag.TITLE]);
+                ft.title = flags[Flag.TITLE];
             if (flags.has_key(Flag.ALBUM))
-                ft.update_album(flags[Flag.ALBUM]);
+                ft.album = flags[Flag.ALBUM];
             if (flags.has_key(Flag.COMPOSER))
-                ft.update_composer(flags[Flag.COMPOSER]);
+                ft.composer = flags[Flag.COMPOSER];
             if (flags.has_key(Flag.ORIGINAL))
-                ft.update_original_artist(flags[Flag.ORIGINAL]);
+                ft.original = flags[Flag.ORIGINAL];
             if (flags.has_key(Flag.COMMENT))
-                ft.update_comment(flags[Flag.COMMENT]);
+                ft.comment = flags[Flag.COMMENT];
             if (flags.has_key(Flag.YEAR)) {
                 if (flags[Flag.YEAR] == "") {
-                    ft.update_year(-1);
+                    ft.year = -1;
                 } else {
                     int year = int.parse(flags[Flag.YEAR]);
                     if (year >= 1900 && year <= current_year)
-                        ft.update_year(year);
+                        ft.year = year;
                     else
                         stderr.printf("The year %d is invalid. Ignoring.\n", year);
                 }
             }
             if (flags.has_key(Flag.DISC_N)) {
                 if (flags[Flag.DISC_N] == "") {
-                    ft.update_disc_number(-1);
+                    ft.disc = -1;
                 } else {
                     int dn = int.parse(flags[Flag.DISC_N]);
                     if (dn >= 1 && dn <= 99)
-                        ft.update_disc_number(dn);
+                        ft.disc = dn;
                     else
                         stderr.printf("The disc number %d is invalid. Ignoring.\n", dn);
                 }
             }
-            if (flags.has_key(Flag.TRACK_N) || flags.has_key(Flag.TRACK_C)) {
-                int tn = ft.track_number;
-                int tc = ft.track_count;
-                if (flags.has_key(Flag.TRACK_N) && flags[Flag.TRACK_N] == "")
-                    tn = -1;
-                else if (flags.has_key(Flag.TRACK_N))
-                    tn = int.parse(flags[Flag.TRACK_N]);
-                if (flags.has_key(Flag.TRACK_C) && flags[Flag.TRACK_C] == "")
-                    tc = -1;
-                else if (flags.has_key(Flag.TRACK_C))
-                    tc = int.parse(flags[Flag.TRACK_C]);
-                if ((tn == -1 && tc == -1)            ||
-                    (tn >= 1 && tn <= 99 && tc == -1) ||
-                    (tn >= 1 && tn <= 99 && tc >= 1 && tc <= 99)) {
-                    ft.update_track(tn, tc);
-                } else if (tc >= 1 && tc <= 99 && tn == -1) {
+            if (flags.has_key(Flag.TRACK) || flags.has_key(Flag.TOTAL)) {
+                int track = ft.track;
+                int total = ft.total;
+                if (flags.has_key(Flag.TRACK) && flags[Flag.TRACK] == "")
+                    track = -1;
+                else if (flags.has_key(Flag.TRACK))
+                    track = int.parse(flags[Flag.TRACK]);
+                if (flags.has_key(Flag.TOTAL) && flags[Flag.TOTAL] == "")
+                    total = -1;
+                else if (flags.has_key(Flag.TOTAL))
+                    total = int.parse(flags[Flag.TOTAL]);
+                if ((track == -1 && total == -1)            ||
+                    (track >= 1 && track <= 99 && total == -1) ||
+                    (track >= 1 && track <= 99 && total >= 1 && total <= 99)) {
+                    ft.track = track;
+                    ft.total = total;
+                } else if (total >= 1 && total <= 99 && track == -1) {
                     stderr.printf("You cannot set the track count while the " +
                                   "track number is unset. Ignoring tracks.\n");
                 } else {
@@ -442,13 +443,13 @@ Format for printing:
                     }
                 }
                 if (new_genre != -1)
-                    ft.update_genre(new_genre);
+                    ft.genre = new_genre;
                 else
                     stderr.printf("The genre '%s' is invalid. Ignoring.\n", genre);
             }
             if (flags.has_key(Flag.COVER_P)) {
                 if (flags[Flag.COVER_P] == "") {
-                    ft.update_front_cover_picture(null);
+                    ft.front_cover_picture = null;
                 } else {
                     uint8[] bytes = null;
                     try {
@@ -458,12 +459,12 @@ Format for printing:
                         bytes = null;
                     }
                     if (bytes != null)
-                        ft.update_front_cover_picture(bytes);
+                        ft.front_cover_picture = bytes;
                 }
             }
             if (flags.has_key(Flag.ARTIST_P)) {
                 if (flags[Flag.ARTIST_P] == "") {
-                    ft.update_artist_picture(null);
+                    ft.artist_picture = null;
                 } else {
                     uint8[] bytes = null;
                     try {
@@ -473,7 +474,7 @@ Format for printing:
                         bytes = null;
                     }
                     if (bytes != null)
-                        ft.update_artist_picture(bytes);
+                        ft.artist_picture = bytes;
                 }
             }
 
@@ -490,8 +491,8 @@ Format for printing:
             available_flags[Flag.S_TITLE] = Flag.TITLE;
             available_flags[Flag.S_ALBUM] = Flag.ALBUM;
             available_flags[Flag.S_YEAR] = Flag.YEAR;
-            available_flags[Flag.S_TRACK_N] = Flag.TRACK_N;
-            available_flags[Flag.S_TRACK_C] = Flag.TRACK_C;
+            available_flags[Flag.S_TRACK] = Flag.TRACK;
+            available_flags[Flag.S_TOTAL] = Flag.TOTAL;
             available_flags[Flag.S_DISC_N] = Flag.DISC_N;
             available_flags[Flag.S_GENRE] = Flag.GENRE;
             available_flags[Flag.S_COMMENT] = Flag.COMMENT;
