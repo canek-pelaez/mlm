@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-07 01:43-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2014-09-20 00:08-0500\n"
+"PO-Revision-Date: 2014-09-20 00:11-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,57 +17,60 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../mlm/application.vala:47
+#: ../src/gui/application.vala:49
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
-#: ../mlm/application.vala:48
+#: ../src/gui/application.vala:50
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
-#: ../mlm/application.vala:182
+#: ../src/gui/application.vala:182
 msgid "A Gtk+ based music library maintainer"
-msgstr ""
+msgstr "Un manejador de bibliotecas musicales basado en Gtk+"
 
-#: ../mlm/application-window.vala:270 ../mlm/application-window.vala:336
+#: ../src/gui/application-window.vala:277
+#: ../src/gui/application-window.vala:343
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
-#: ../mlm/application-window.vala:271
+#: ../src/gui/application-window.vala:278
 msgid "_Open"
-msgstr ""
+msgstr "_Abrir"
 
-#: ../mlm/application-window.vala:282
+#: ../src/gui/application-window.vala:289
 #, c-format
 msgid "There was an error loading image '%s'"
-msgstr ""
+msgstr "Hubo un error al cargar la imagen '%s'"
 
-#: ../mlm/application-window.vala:289
+#: ../src/gui/application-window.vala:296
 msgid "Select image for artist"
-msgstr ""
+msgstr "Seleccione una imagen para el artista"
 
-#: ../mlm/application-window.vala:296
+#: ../src/gui/application-window.vala:303
 msgid "Select image for cover"
-msgstr ""
+msgstr "Seleccione una imagen para la portada"
 
-#: ../mlm/application-window.vala:335
+#: ../src/gui/application-window.vala:342
 msgid "Reencoding"
-msgstr ""
+msgstr "Reencodeando"
 
-#: ../mlm/application-window.vala:337
+#: ../src/gui/application-window.vala:344
 #, c-format
 msgid ""
 "Reencoding '%s'\n"
 "into '%s'... "
 msgstr ""
+"Reencodeando '%s'\n"
+"en '%s'"
 
-#: ../mlm/application-window.vala:476
+#: ../src/gui/application-window.vala:483
 msgid "Could not set pixbuf from data."
-msgstr ""
+msgstr "No se pudo inicializar el pixbuf a partir de los datos."
 
-#: ../mlm/application-window.vala:508
+#: ../src/gui/application-window.vala:519
 msgid "Warning"
-msgstr ""
+msgstr "Advertencia"
 
 #: ../data/mlm.ui.h:1
 msgid "Blues"

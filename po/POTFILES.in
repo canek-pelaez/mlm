@@ -1,7 +1,12 @@
-mlm/application.vala
-mlm/application-window.vala
-mlm/encoder.vala
-mlm/main.vala
-mlm/media.vala
-mlm/player.vala
+src/accommodator/accommodator.vala
+src/analyze/analyze.vala
+src/copy-tags/copy-tags.vala
+src/gui/application.vala
+src/gui/application-window.vala
+src/gui/encoder.vala
+src/gui/main.vala
+src/gui/media.vala
+src/gui/player.vala
+src/tags/tags.vala
+src/verify/verify.vala
 [type: gettext/glade]data/mlm.ui

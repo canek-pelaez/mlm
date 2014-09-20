@@ -3,7 +3,7 @@ AC_INIT([mlm],
         [https://github.com/canek-pelaez/mlm/issues],
         [mlm],
         [https://github.com/canek-pelaez/mlm])
-AC_CONFIG_SRCDIR([mlm/main.vala])
+AC_CONFIG_SRCDIR([src/gui/main.vala])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
