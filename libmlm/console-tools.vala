@@ -79,7 +79,7 @@ namespace MLM {
             }
         }
 
-        public static string normalize(string str) {
+        public static string asciize(string str) {
             var s = str.normalize(-1, GLib.NormalizeMode.NFKD);
             try {
                 uint8[] outbuf = new uint8[s.length];
