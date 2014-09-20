@@ -52,5 +52,31 @@ namespace MLM {
         public static string key_value(string key, string value) {
             return "%s: %s".printf(blue(key), yellow(value));
         }
+
+        public static GLib.TimeVal get_file_time(string filename) {
+            try {
+                var file = GLib.File.new_for_path(filename);
+                var info = file.query_info("time::modified",
+                                                     GLib.FileQueryInfoFlags.NONE);
+                return info.get_modification_time();
+            } catch (GLib.Error e) {
+                stderr.printf("There was an error reading from '%s'.\n", filename);
+            }
+            return GLib.TimeVal();
+        }
+
+        public static void set_file_time(string filename, GLib.TimeVal time) {
+            try {
+                var file = GLib.File.new_for_path(filename);
+                var info = new GLib.FileInfo();
+                info.set_attribute_uint64("time::modified", (uint64)time.tv_sec);
+                info.set_attribute_uint32("time::modified-usec", (uint32)time.tv_usec);
+                info.set_attribute_uint64("time::access", (uint64)time.tv_sec);
+                info.set_attribute_uint32("time::access-usec", (uint32)time.tv_usec);
+                file.set_attributes_from_info(info, GLib.FileQueryInfoFlags.NONE);
+            } catch (GLib.Error e) {
+                stderr.printf("There was an error writing to '%s'.\n", filename);
+            }
+        }
     }
 }
