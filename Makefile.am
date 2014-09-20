@@ -123,6 +123,36 @@ tags_mlm_tags_LDADD =				\
 	libmlm/libmlm.la			\
 	$(NULL)
 
+# ====== mlm-accommodator
+
+bin_PROGRAMS += accommodator/mlm-accommodator
+
+accommodator_mlm_accommodator_SOURCES =		\
+	accommodator/accommodator.vala		\
+	vapi/mlm.vapi				\
+	$(NULL)
+
+accommodator_mlm_accommodator_VALAFLAGS =	\
+	$(COMMON_VALAFLAGS)			\
+	@GEE_PACKAGES@				\
+	@GIO_PACKAGES@				\
+	$(NULL)
+
+accommodator_mlm_accommodator_CFLAGS =		\
+	@GEE_CFLAGS@				\
+	@GIO_CFLAGS@				\
+	-I$(srcdir)/id3tag-x			\
+	-I$(srcdir)/libmlm			\
+	-w					\
+	$(NULL)
+
+accommodator_mlm_accommodator_LDADD =		\
+	@GEE_LIBS@				\
+	@GIO_LIBS@				\
+	id3tag-x/libid3tag-x.la			\
+	libmlm/libmlm.la			\
+	$(NULL)
+
 # ====== mlm-verify
 
 bin_PROGRAMS += verify/mlm-verify
