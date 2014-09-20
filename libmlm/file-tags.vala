@@ -352,6 +352,7 @@ namespace MLM {
         public bool has_tags { get; private set; }
 
         private string filename;
+        private GLib.TimeVal time;
         private Id3Tag.File file;
         private Id3Tag.Tag tag;
 
@@ -366,6 +367,8 @@ namespace MLM {
             _front_cover_picture = _artist_picture = null;
             front_cover_picture_description = artist_picture_description = null;
             has_tags = false;
+
+            time = ConsoleTools.get_file_time(filename);
 
             file = new Id3Tag.File(filename, Id3Tag.FileMode.READWRITE);
             tag = file.tag();
@@ -397,8 +400,8 @@ namespace MLM {
                 } else if (frame.id == FrameId.DISC) {
                     _disc = int.parse(frame.get_text());
                 } else if (frame.id == FrameId.GENRE) {
-                    string g = frame.get_text();
-                    Genre[] genres = Genre.all();
+                    var g = frame.get_text();
+                    var genres = Genre.all();
                     for (int j = 0; j < genres.length; j++)
                         if (g == genres[j].to_string())
                             _genre = j;
@@ -416,12 +419,12 @@ namespace MLM {
                 } else if (frame.id == FrameId.ORIGINAL) {
                     _original = frame.get_text();
                 } else if (frame.id == FrameId.PICTURE) {
-                    uint8[] fc_data = frame.get_picture(Id3Tag.PictureType.COVERFRONT);
+                    var fc_data = frame.get_picture(Id3Tag.PictureType.COVERFRONT);
                     if (fc_data != null) {
                         _front_cover_picture = fc_data;
                         front_cover_picture_description = frame.get_picture_description();
                     }
-                    uint8[] a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
+                    var a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
                     if (a_data != null) {
                         _artist_picture = a_data;
                         artist_picture_description = frame.get_picture_description();
@@ -464,10 +467,13 @@ namespace MLM {
             for (int i = 0; i < new_bytes.length; i++)
                 new_bytes[i] = bytes[i + size];
 
-            FileStream file = FileStream.open(filename, "w");
+            GLib.FileStream file = GLib.FileStream.open(filename, "w");
             size_t r = file.write(new_bytes);
             if (r != new_bytes.length)
                 stderr.printf("There was an error when removing tags from '%s'.\n", filename);
+            file = null;
+
+            ConsoleTools.set_file_time(filename, time);
 
             read_tags();
         }
@@ -488,8 +494,10 @@ namespace MLM {
         }
 
         ~FileTags() {
-            if (file != null)
+            if (file != null) {
                 file.close();
+                ConsoleTools.set_file_time(filename, time);
+            }
         }
     }
 }
