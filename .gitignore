@@ -14,6 +14,9 @@ config.*
 configure
 libtool
 m4
+accommodator/*.c
+accommodator/*.h
+accommodator/mlm-accommodator
 analyze/*.c
 analyze/*.h
 analyze/mlm-analyze
