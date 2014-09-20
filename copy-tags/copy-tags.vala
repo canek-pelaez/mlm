@@ -39,29 +39,30 @@ namespace MLM {
 
         public void copy() {
             if (source_tags.artist != null)
-                target_tags.update_artist(source_tags.artist);
+                target_tags.artist = source_tags.artist;
             if (source_tags.title != null)
-                target_tags.update_title(source_tags.title);
+                target_tags.title = source_tags.title;
             if (source_tags.album != null)
-                target_tags.update_album(source_tags.album);
-            target_tags.update_year(source_tags.year);
-            if (source_tags.track_number != -1 &&
-                source_tags.track_count != -1)
-                target_tags.update_track(source_tags.track_number,
-                                         source_tags.track_count);
-            target_tags.update_disc_number(source_tags.disc_number);
+                target_tags.album = source_tags.album;
+            target_tags.year = source_tags.year;
+            if (source_tags.track != -1) {
+                target_tags.track = source_tags.track;
+                if (source_tags.total != -1)
+                    target_tags.total = source_tags.total;
+            }
+            target_tags.disc = source_tags.disc;
             if (source_tags.genre != -1)
-                target_tags.update_genre(source_tags.genre);
+                target_tags.genre = source_tags.genre;
             if (source_tags.comment != null)
-                target_tags.update_comment(source_tags.comment);
+                target_tags.comment = source_tags.comment;
             if (source_tags.composer != null)
-                target_tags.update_composer(source_tags.composer);
-            if (source_tags.original_artist != null)
-                target_tags.update_original_artist(source_tags.original_artist);
+                target_tags.composer = source_tags.composer;
+            if (source_tags.original != null)
+                target_tags.original = source_tags.original;
             if (source_tags.front_cover_picture != null)
-                target_tags.update_front_cover_picture(source_tags.front_cover_picture);
+                target_tags.front_cover_picture = source_tags.front_cover_picture;
             if (source_tags.artist_picture != null)
-                target_tags.update_artist_picture(source_tags.artist_picture);
+                target_tags.artist_picture = source_tags.artist_picture;
             target_tags.update();
         }
 
