@@ -111,14 +111,14 @@ namespace MLM {
             window.title_ = tags.title != null ? tags.title : "";
             window.album = tags.album != null ? tags.album : "";
             window.year = tags.year != -1 ? tags.year : 1900;
-            window.disc = tags.disc_number != -1 ? tags.disc_number : 1;
-            window.track = tags.track_number != -1 ? tags.track_number : 1;
-            window.total = tags.track_count != -1 ? tags.track_count : 1;
+            window.disc = tags.disc != -1 ? tags.disc : 1;
+            window.track = tags.track != -1 ? tags.track : 1;
+            window.total = tags.total != -1 ? tags.total : 1;
             var genre = Genre.all()[tags.genre].to_string();
             window.genre = genre != null ? genre : "";
             window.comment = tags.comment != null ? tags.comment : "";
             window.composer = tags.composer != null ? tags.composer : "";
-            window.original = tags.original_artist != null ? tags.original_artist : "";
+            window.original = tags.original != null ? tags.original : "";
             window.cover_data = tags.front_cover_picture;
             window.artist_data = tags.artist_picture;
             window.disable(UIItemFlags.SAVE);
@@ -159,18 +159,19 @@ namespace MLM {
         }
 
         private void set_tags_from_window(FileTags t) {
-            t.update_artist(window.artist);
-            t.update_title(window.title_);
-            t.update_album(window.album);
-            t.update_year(window.year);
-            t.update_disc_number(window.disc);
-            t.update_track(window.track, window.total);
-            t.update_genre(window.genre_id);
-            t.update_comment(window.comment);
-            t.update_composer(window.composer);
-            t.update_original_artist(window.original);
-            t.update_front_cover_picture(window.cover_data);
-            t.update_artist_picture(window.artist_data);
+            t.artist = window.artist;
+            t.title = window.title_;
+            t.album = window.album;
+            t.year = window.year;
+            t.disc = window.disc;
+            t.track = window.track;
+            t.total = window.total;
+            t.genre = window.genre_id;
+            t.comment = window.comment;
+            t.composer = window.composer;
+            t.original = window.original;
+            t.front_cover_picture = window.cover_data;
+            t.artist_picture = window.artist_data;
         }
 
         private void about() {
