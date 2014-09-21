@@ -234,20 +234,19 @@ src_mlm_analyze_SOURCES =			\
 src_mlm_analyze_VALAFLAGS =			\
 	$(COMMON_VALAFLAGS)			\
 	@ID3TAG_PACKAGES@			\
-	@GEE_PACKAGES@				\
 	$(NULL)
 
 src_mlm_analyze_CFLAGS =			\
+	@GLIB_CFLAGS@				\
 	@ID3TAG_CFLAGS@				\
-	@GEE_CFLAGS@				\
 	-I$(srcdir)/lib/id3tag-x		\
 	-I$(srcdir)/lib/mlm			\
 	-w					\
 	$(NULL)
 
 src_mlm_analyze_LDADD =				\
+	@GLIB_LIBS@				\
 	@ID3TAG_LIBS@				\
-	@GEE_LIBS@				\
 	lib/libid3tag-x.la			\
 	lib/libmlm.la				\
 	$(NULL)
