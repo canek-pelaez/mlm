@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-20 00:08-0500\n"
-"PO-Revision-Date: 2014-09-20 00:11-0500\n"
+"POT-Creation-Date: 2014-09-21 17:43-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,58 +19,51 @@ msgstr ""
 
 #: ../src/gui/application.vala:49
 msgid "About"
-msgstr "Acerca de"
+msgstr ""
 
 #: ../src/gui/application.vala:50
 msgid "Quit"
-msgstr "Salir"
+msgstr ""
 
 #: ../src/gui/application.vala:182
 msgid "A Gtk+ based music library maintainer"
-msgstr "Un manejador de bibliotecas musicales basado en Gtk+"
+msgstr ""
 
-#: ../src/gui/application-window.vala:277
-#: ../src/gui/application-window.vala:343
+#: ../src/gui/application-window.vala:275
 msgid "_Cancel"
-msgstr "_Cancelar"
+msgstr ""
 
-#: ../src/gui/application-window.vala:278
+#: ../src/gui/application-window.vala:276
 msgid "_Open"
-msgstr "_Abrir"
+msgstr ""
 
-#: ../src/gui/application-window.vala:289
+#: ../src/gui/application-window.vala:287
 #, c-format
 msgid "There was an error loading image '%s'"
-msgstr "Hubo un error al cargar la imagen '%s'"
+msgstr ""
 
-#: ../src/gui/application-window.vala:296
+#: ../src/gui/application-window.vala:294
 msgid "Select image for artist"
-msgstr "Seleccione una imagen para el artista"
+msgstr ""
 
-#: ../src/gui/application-window.vala:303
+#: ../src/gui/application-window.vala:301
 msgid "Select image for cover"
-msgstr "Seleccione una imagen para la portada"
+msgstr ""
 
-#: ../src/gui/application-window.vala:342
-msgid "Reencoding"
-msgstr "Reencodeando"
+#: ../src/gui/application-window.vala:464
+msgid "Could not set pixbuf from data."
+msgstr ""
 
-#: ../src/gui/application-window.vala:344
+#: ../src/gui/application-window.vala:500
+msgid "Warning"
+msgstr ""
+
+#: ../src/gui/reencoding-dialog.vala:39
 #, c-format
 msgid ""
 "Reencoding '%s'\n"
 "into '%s'... "
 msgstr ""
-"Reencodeando '%s'\n"
-"en '%s'"
-
-#: ../src/gui/application-window.vala:483
-msgid "Could not set pixbuf from data."
-msgstr "No se pudo inicializar el pixbuf a partir de los datos."
-
-#: ../src/gui/application-window.vala:519
-msgid "Warning"
-msgstr "Advertencia"
 
 #: ../data/mlm.ui.h:1
 msgid "Blues"
@@ -790,4 +783,12 @@ msgstr ""
 
 #: ../data/mlm.ui.h:180
 msgid "<b>Filename</b>"
+msgstr ""
+
+#: ../data/reencoding-dialog.ui.h:1
+msgid "Reencoding"
+msgstr ""
+
+#: ../data/reencoding-dialog.ui.h:2
+msgid "Cancel"
 msgstr ""

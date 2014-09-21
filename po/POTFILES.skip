@@ -12,5 +12,6 @@ src/gui/encoder.c
 src/gui/main.c
 src/gui/media.c
 src/gui/player.c
+src/gui/reencoding-dialog.c
 src/tags/tags.c
 src/verify/verify.c
