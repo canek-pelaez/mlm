@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -17,13 +17,16 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Id3Tag;
-
-extern void exit(int exit_code);
-
 namespace MLM {
 
     public class CopyTags {
+
+        private enum ReturnCode {
+            OK               = 0,
+            INVALID_ARGUMENT = 1,
+            MISSING_ARGUMENT = 2,
+            NO_SUCH_FILE     = 3
+        }
 
         private string source;
         private string target;
@@ -38,6 +41,8 @@ namespace MLM {
         }
 
         public void copy() {
+            var time = Util.get_file_time(source);
+
             if (source_tags.artist != null)
                 target_tags.artist = source_tags.artist;
             if (source_tags.title != null)
@@ -64,28 +69,50 @@ namespace MLM {
             if (source_tags.artist_picture != null)
                 target_tags.artist_picture = source_tags.artist_picture;
             target_tags.update();
+            target_tags = null;
+
+            Util.set_file_time(source, time);
         }
 
-        public static void error(string message) {
+        public static int error(string message,
+                                int    return_code,
+                                string command = "mlm-copy-tags",
+                                bool   help = false) {
             stderr.printf("%s\n", message);
-            exit(1);
+            if (help)
+                stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
+            return return_code;
         }
 
-        public static void main(string[] args) {
+        public static int main(string[] args) {
+            try {
+                var opt = new GLib.OptionContext("SOURCE TARGET - Copy Id3v2.4.0 tags");
+                opt.set_help_enabled(true);
+                opt.parse(ref args);
+            } catch (GLib.OptionError e) {
+                return error(e.message, ReturnCode.INVALID_ARGUMENT,
+                             args[0], true);
+            }
+
             if (args.length != 3)
-                error("Use: %s SOURCE.mp3 TARGET.mp3".printf(args[0]));
+                return error("Missing SOURCE and/or TARGET",
+                             ReturnCode.MISSING_ARGUMENT, args[0], true);
 
             string source = args[1];
             string target = args[2];
 
             if (!FileUtils.test(source, FileTest.EXISTS))
-                error("The file ‘%s’ does not exists.".printf(source));
+                return error("The source file ‘%s’ does not exists.".printf(source),
+                             ReturnCode.NO_SUCH_FILE);
 
             if (!FileUtils.test(target, FileTest.EXISTS))
-                error("The file ‘%s’ does not exists.".printf(target));
+                return error("The target file ‘%s’ does not exists.".printf(target),
+                             ReturnCode.NO_SUCH_FILE);
 
             var ct = new CopyTags(source, target);
             ct.copy();
+
+            return ReturnCode.OK;
         }
     }
 }
