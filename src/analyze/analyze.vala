@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -17,34 +17,36 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Id3Tag;
-
-extern void exit(int exit_code);
-
 namespace MLM {
 
     public class Analyzer {
 
-        private Tag tag;
+        private enum ReturnCode {
+            OK               = 0,
+            INVALID_ARGUMENT = 1,
+            MISSING_FILES    = 2
+        }
+
+        private Id3Tag.Tag tag;
         private string filename;
 
         public Analyzer(string filename) {
             this.filename = filename;
         }
 
-        private void analyze_text_encoding(Field field) {
+        private void analyze_text_encoding(Id3Tag.Field field) {
             string test_encoding = "";
             switch (field.gettextencoding()) {
-            case FieldTextEncoding.ISO_8859_1:
+            case Id3Tag.FieldTextEncoding.ISO_8859_1:
                 test_encoding = "ISO-8859-1";
                 break;
-            case FieldTextEncoding.UTF_16:
+            case Id3Tag.FieldTextEncoding.UTF_16:
                 test_encoding = "UTF-16";
                 break;
-            case FieldTextEncoding.UTF_16BE:
+            case Id3Tag.FieldTextEncoding.UTF_16BE:
                 test_encoding = "UTF-16BE";
                 break;
-            case FieldTextEncoding.UTF_8:
+            case Id3Tag.FieldTextEncoding.UTF_8:
                 test_encoding = "UTF-8";
                 break;
             default:
@@ -54,9 +56,9 @@ namespace MLM {
             stdout.printf(Util.term_key_value("Textencoding", test_encoding));
         }
 
-        private void analyze_stringlist(Field field) {
+        private void analyze_stringlist(Id3Tag.Field field) {
             for (int i = 0; i < field.stringlist.length; i++) {
-                string s = UCS4.utf8duplicate(field.getstrings(i));
+                string s = Id3Tag.UCS4.utf8duplicate(field.getstrings(i));
                 stdout.printf("\t\t%s %s: \"%s\"\n",
                               Util.term_blue("String"),
                               Util.term_cyan("%d".printf(i)),
@@ -64,70 +66,70 @@ namespace MLM {
             }
         }
 
-        private void analyze_picture_type(Field field) {
+        private void analyze_picture_type(Id3Tag.Field field) {
             string ptype = "";
             switch (field.number_value) {
-            case PictureType.OTHER:
+            case Id3Tag.PictureType.OTHER:
                 ptype = "Other";
                 break;
-            case PictureType.PNG32ICON:
+            case Id3Tag.PictureType.PNG32ICON:
                 ptype = " 32x32 pixels 'file icon' (PNG only)";
                 break;
-            case PictureType.OTHERICON:
+            case Id3Tag.PictureType.OTHERICON:
                 ptype = "Other file icon";
                 break;
-            case PictureType.COVERFRONT:
+            case Id3Tag.PictureType.COVERFRONT:
                 ptype = "Cover (front)";
                 break;
-            case PictureType.COVERBACK:
+            case Id3Tag.PictureType.COVERBACK:
                 ptype = "Cover (back)";
                 break;
-            case PictureType.LEAFLETPAGE:
+            case Id3Tag.PictureType.LEAFLETPAGE:
                 ptype = "Leaflet page";
                 break;
-            case PictureType.MEDIA:
+            case Id3Tag.PictureType.MEDIA:
                 ptype = "Media (e.g. lable side of CD)";
                 break;
-            case PictureType.LEADARTIST:
+            case Id3Tag.PictureType.LEADARTIST:
                 ptype = "Lead artist/lead performer/soloist";
                 break;
-            case PictureType.ARTIST:
+            case Id3Tag.PictureType.ARTIST:
                 ptype = "Artist/performer";
                 break;
-            case PictureType.CONDUCTOR:
+            case Id3Tag.PictureType.CONDUCTOR:
                 ptype = "Conductor";
                 break;
-            case PictureType.BAND:
+            case Id3Tag.PictureType.BAND:
                 ptype = "Band/Orchestra";
                 break;
-            case PictureType.COMPOSER:
+            case Id3Tag.PictureType.COMPOSER:
                 ptype = "Composer";
                 break;
-            case PictureType.LYRICIST:
+            case Id3Tag.PictureType.LYRICIST:
                 ptype = "Lyricist/text writer";
                 break;
-            case PictureType.REC_LOCATION:
+            case Id3Tag.PictureType.REC_LOCATION:
                 ptype = "Recording Location";
                 break;
-            case PictureType.RECORDING:
+            case Id3Tag.PictureType.RECORDING:
                 ptype = "During recording";
                 break;
-            case PictureType.PERFORMANCE:
+            case Id3Tag.PictureType.PERFORMANCE:
                 ptype = "During performance";
                 break;
-            case PictureType.VIDEO:
+            case Id3Tag.PictureType.VIDEO:
                 ptype = "Movie/video screen capture";
                 break;
-            case PictureType.FISH:
+            case Id3Tag.PictureType.FISH:
                 ptype = "A bright coloured fish";
                 break;
-            case PictureType.ILLUSTRATION:
+            case Id3Tag.PictureType.ILLUSTRATION:
                 ptype = "Illustration";
                 break;
-            case PictureType.ARTISTLOGO:
+            case Id3Tag.PictureType.ARTISTLOGO:
                 ptype = "Band/artist logotype";
                 break;
-            case PictureType.PUBLISHERLOGO:
+            case Id3Tag.PictureType.PUBLISHERLOGO:
                 ptype = "Publisher/Studio logotype";
                 break;
             default:
@@ -139,52 +141,53 @@ namespace MLM {
                           Util.term_yellow(ptype));
         }
 
-        private void analyze_field(Frame frame, Field field) {
+        private void analyze_field(Id3Tag.Frame frame,
+                                   Id3Tag.Field field) {
             int v;
             string s;
             switch (field.type) {
-            case FieldType.TEXTENCODING:
+            case Id3Tag.FieldType.TEXTENCODING:
                 analyze_text_encoding(field);
                 break;
-            case FieldType.LATIN1:
+            case Id3Tag.FieldType.LATIN1:
                 stdout.printf("\t%s: %s\n",
                               Util.term_blue("Latin1"),
                               Util.term_yellow(field.getlatin1()));
                 break;
-            case FieldType.LATIN1FULL:
+            case Id3Tag.FieldType.LATIN1FULL:
                 stdout.printf("\tLatin1 full\n");
                 break;
-            case FieldType.LATIN1LIST:
+            case Id3Tag.FieldType.LATIN1LIST:
                 stdout.printf("\tLatin1 list\n");
                 break;
-            case FieldType.STRING:
-                s = UCS4.utf8duplicate(field.getstring());
+            case Id3Tag.FieldType.STRING:
+                s = Id3Tag.UCS4.utf8duplicate(field.getstring());
                 stdout.printf("\t%s: \"%s\"\n",
                               Util.term_blue("String"),
                               Util.term_yellow(s));
                 break;
-            case FieldType.STRINGFULL:
-                s = UCS4.utf8duplicate(field.getfullstring());
+            case Id3Tag.FieldType.STRINGFULL:
+                s = Id3Tag.UCS4.utf8duplicate(field.getfullstring());
                 stdout.printf("\t%s: \"%s\"\n",
                               Util.term_blue("String full"),
                               Util.term_yellow(s));
                 break;
-            case FieldType.STRINGLIST:
+            case Id3Tag.FieldType.STRINGLIST:
                 stdout.printf("\t%s\n", Util.term_blue("String list"));
                 analyze_stringlist(field);
                 break;
-            case FieldType.LANGUAGE:
+            case Id3Tag.FieldType.LANGUAGE:
                 stdout.printf("\t%s: %s\n",
                               Util.term_blue("Languaje"),
                               Util.term_yellow((string)field.immediate_value));
                 break;
-            case FieldType.FRAMEID:
+            case Id3Tag.FieldType.FRAMEID:
                 stdout.printf("\tFrame id\n");
                 break;
-            case FieldType.DATE:
+            case Id3Tag.FieldType.DATE:
                 stdout.printf("\tDate\n");
                 break;
-            case FieldType.INT8:
+            case Id3Tag.FieldType.INT8:
                 v = (int)field.number_value;
                 if (frame.id == FrameId.PICTURE) {
                     analyze_picture_type(field);
@@ -199,16 +202,16 @@ namespace MLM {
                                   Util.term_yellow("%d".printf(v)));
                 }
                 break;
-            case FieldType.INT16:
+            case Id3Tag.FieldType.INT16:
                 stdout.printf("\tInt16\n");
                 break;
-            case FieldType.INT24:
+            case Id3Tag.FieldType.INT24:
                 stdout.printf("\tInt24\n");
                 break;
-            case FieldType.INT32:
+            case Id3Tag.FieldType.INT32:
                 stdout.printf("\tInt32\n");
                 break;
-            case FieldType.INT32PLUS:
+            case Id3Tag.FieldType.INT32PLUS:
                 v = (int)field.number_value;
                 if (frame.id == FrameId.POPULARIMETER) {
                     stdout.printf("\t%s: %s\n",
@@ -220,7 +223,7 @@ namespace MLM {
                                   Util.term_yellow("%d".printf(v)));
                 }
                 break;
-            case FieldType.BINARYDATA:
+            case Id3Tag.FieldType.BINARYDATA:
                 stdout.printf("\t%s: %s bytes\n",
                               Util.term_blue("Binary data"),
                               Util.term_yellow("%d".printf(field.binary_data.length)));
@@ -230,7 +233,7 @@ namespace MLM {
             }
         }
 
-        private void analyze_frame(Frame frame) {
+        private void analyze_frame(Id3Tag.Frame frame) {
             stdout.printf("%s %s: (%s)\n",
                           Util.term_blue("Frame"),
                           Util.term_yellow(frame.id),
@@ -245,7 +248,7 @@ namespace MLM {
                 stderr.printf("%s: No such file.\n", filename);
                 return;
             }
-            File file = new File(filename, FileMode.READONLY);
+            Id3Tag.File file = new Id3Tag.File(filename, Id3Tag.FileMode.READONLY);
             if (file == null) {
                 stderr.printf("%s: Could not link to file.\n", filename);
                 return;
@@ -263,35 +266,32 @@ namespace MLM {
             file.close();
         }
 
-        private static void use() {
-            stdout.printf(
-"""Use: mlm-analyze FILE ...
-
-OPTIONS:
-    --help              Print this help.
-""");
-            exit(1);
+        public static int error(string message,
+                                int    return_code,
+                                string command) {
+            stderr.printf("error: %s\n", message);
+            stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
+            return return_code;
         }
 
         public static int main(string[] args) {
-            var files = new Gee.ArrayList<string>();
-
-            if (args.length < 2)
-                use();
-
-            for (int i = 1; i < args.length; i++) {
-                if (args[i].has_prefix("--"))
-                    use();
-                files.add(args[i]);
+            try {
+                var opt_context = new OptionContext("FILE... - Analyze Id3v2.4.0 tags");
+                opt_context.set_help_enabled(true);
+                opt_context.parse(ref args);
+            } catch (GLib.OptionError e) {
+                return error(e.message, ReturnCode.INVALID_ARGUMENT, args[0]);
             }
 
-            foreach (string file in files) {
-                Analyzer a = new Analyzer(file);
+            if (args.length < 2)
+                return error("Missing MP3 file(s)", ReturnCode.MISSING_FILES, args[0]);
+
+            for (int i = 1; i < args.length; i++) {
+                Analyzer a = new Analyzer(args[i]);
                 a.analyze();
             }
 
-            return 0;
+            return ReturnCode.OK;
         }
     }
 }
-
