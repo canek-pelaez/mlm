@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -17,11 +17,19 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-extern void exit(int exit_code);
-
 namespace MLM {
 
     public class Accommodator {
+
+        private enum ReturnCode {
+            OK                  = 0,
+            INVALID_ARGUMENT    = 1,
+            MISSING_OUTPUT_DIR  = 2,
+            MISSING_FILES       = 3,
+            INVALID_OUTPUT_DIR  = 4,
+            INVALID_DESTINATION = 5,
+            COPY_ERROR          = 6
+        }
 
         private string filename;
         private string artist;
@@ -40,7 +48,7 @@ namespace MLM {
             track = tags.track;
         }
 
-        public void accommodate() {
+        public int accommodate() {
             var letter = artist.get_char(0).to_string();
 
             string[] subdirs = { letter, artist, album };
@@ -50,7 +58,8 @@ namespace MLM {
                 if (!GLib.FileUtils.test(dir, GLib.FileTest.EXISTS)) {
                     GLib.DirUtils.create(dir, 0755);
                 } else if (!GLib.FileUtils.test(dir, GLib.FileTest.IS_DIR)) {
-                    error("Invalid destination");
+                    return error("Invalid destination",
+                                 ReturnCode.INVALID_DESTINATION);
                 }
             }
 
@@ -59,13 +68,16 @@ namespace MLM {
             var src = GLib.File.new_for_path(filename);
             var dst = GLib.File.new_for_path(dest);
             try {
+                var time = Util.get_file_time(filename);
                 src.copy(dst, GLib.FileCopyFlags.OVERWRITE);
+                Util.set_file_time(dest, time);
             } catch (GLib.Error e) {
-                error(e.message);
+                return error(e.message, ReturnCode.COPY_ERROR);
             }
-            stdout.printf("Copied\t'%s'\ninto\t'%s'\n",
+            stdout.printf("Copied\t‘%s’\ninto\t‘%s’\n",
                           Util.term_red(src.get_basename()),
                           Util.term_green(dst.get_basename()));
+            return 0;
         }
 
         private static string directory;
@@ -76,39 +88,53 @@ namespace MLM {
             { null }
         };
 
-        private static void error(string error) {
-            stdout.printf("error: %s\n".printf(error));
-            exit(1);
+        private static int error(string error,
+                                 int    return_code,
+                                 string command = "mlm-accommodator",
+                                 bool   help = false) {
+            stderr.printf("error: %s\n", error);
+            if (help)
+                stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
+            return return_code;
         }
 
-        private static void print_help(string command, string error) {
-            stdout.printf("error: %s\n", error);
-            stdout.printf("Run '%s --help' to see a full list ".printf(command) +
-                          "of available command line options.\n");
-            exit(1);
-        }
-
-        public static void main(string[] args) {
+        public static int main(string[] args) {
             try {
-                var opt = new GLib.OptionContext("FILENAMES - MLM accommodator");
+                var opt = new GLib.OptionContext("FILE... - Accommodate MP3 files");
                 opt.set_help_enabled(true);
                 opt.add_main_entries(options, null);
                 opt.parse(ref args);
             } catch (GLib.OptionError e) {
-                print_help(args[0], e.message);
+                return error(e.message, ReturnCode.INVALID_ARGUMENT);
             }
 
             if (directory == null)
-                print_help(args[0], "Missing output directory");
+                return error("Missing output directory",
+                             ReturnCode.MISSING_OUTPUT_DIR,
+                             args[0], true);
 
-            if (!GLib.FileUtils.test(directory, GLib.FileTest.EXISTS) ||
+            if (args.length < 2)
+                return error("Missing MP3 file(s)",
+                             ReturnCode.MISSING_FILES,
+                             args[0], true);
+
+            if (GLib.FileUtils.test(directory, GLib.FileTest.EXISTS) &&
                 !GLib.FileUtils.test(directory, GLib.FileTest.IS_DIR))
-                print_help(args[0], "Invalid output directory");
+                return error("Invalid output directory",
+                             ReturnCode.INVALID_OUTPUT_DIR,
+                             args[0], true);
 
-            foreach (var arg in args[1:args.length]) {
-                var accommodator = new Accommodator(arg);
-                accommodator.accommodate();
+            if (!GLib.FileUtils.test(directory, GLib.FileTest.EXISTS))
+                GLib.DirUtils.create(directory, 0755);
+
+            for (int i = 1; i < args.length; i++) {
+                var accommodator = new Accommodator(args[i]);
+                int r = accommodator.accommodate();
+                if (r != ReturnCode.OK)
+                    return r;
             }
+
+            return 0;
         }
     }
 }
