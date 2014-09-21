@@ -151,7 +151,6 @@ namespace MLM {
                 int i = Genre.index_of(value);
                 if (i != -1) {
                     genre_combobox.active = i;
-                    //genre_widget.set_text(value);
                 }
             }
         }
@@ -207,8 +206,7 @@ namespace MLM {
         [GtkChild]
         private Gtk.Label time;
 
-        private Gtk.Dialog progress;
-        private Gtk.ProgressBar progress_bar;
+        private ReencodingDialog progress;
 
         private Application app;
         private Player player;
@@ -320,7 +318,8 @@ namespace MLM {
             } while (GLib.FileUtils.test(dest, GLib.FileTest.EXISTS));
             encoder = new Encoder(filename, dest);
             encoder.encode();
-            create_progress_dialog(dest);
+            progress = new ReencodingDialog(GLib.Path.get_basename(filename),
+                                            GLib.Path.get_basename(dest));
             GLib.Idle.add(upgrade_progressbar);
             if (progress.run() != Gtk.ResponseType.OK) {
                 encoder.cancel();
@@ -337,27 +336,9 @@ namespace MLM {
             save.sensitive = false;
         }
 
-        private void create_progress_dialog(string dest) {
-            progress = new Gtk.Dialog.with_buttons(
-                _("Reencoding"), this, Gtk.DialogFlags.MODAL,
-                _("_Cancel"), Gtk.ResponseType.CANCEL);
-            var label = new Gtk.Label(_("Reencoding '%s'\ninto '%s'... ").printf
-                                    (GLib.Path.get_basename(filename),
-                                     GLib.Path.get_basename(dest)));
-            progress_bar = new Gtk.ProgressBar();
-            var vbox = new Gtk.Box(Gtk.Orientation.VERTICAL, 6);
-            vbox.pack_start(label);
-            vbox.pack_start(progress_bar);
-            var content = progress.get_content_area();
-            content.margin = 6;
-            content.spacing = 6;
-            content.pack_start(vbox);
-            progress.show_all();
-        }
-
         private bool upgrade_progressbar() {
             double p = encoder.get_completion();
-            progress_bar.set_fraction(p);
+            progress.bar.set_fraction(p);
             if (p < 1.0)
                 return true;
             progress.response(Gtk.ResponseType.OK);
