@@ -67,6 +67,7 @@ src_mlm_SOURCES =				\
 	src/gui/main.vala			\
 	src/gui/media.vala			\
 	src/gui/player.vala			\
+	src/gui/reencoding-dialog.vala		\
 	src/gui/resources.c			\
 	vapi/mlm.vapi				\
 	$(NULL)
@@ -254,8 +255,9 @@ src_mlm_analyze_LDADD =				\
 # ====== gresource
 gresource_file = $(top_srcdir)/data/mlm.gresource.xml
 resource_files = 				\
-	$(top_srcdir)/data/mlm.ui		\
 	$(top_srcdir)/data/mlm.css		\
+	$(top_srcdir)/data/mlm.ui		\
+	$(top_srcdir)/data/reencoding-dialog.ui	\
 	$(NULL)
 
 src/gui/resources.c: $(gresource_file) $(resource_files)
