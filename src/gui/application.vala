@@ -79,15 +79,15 @@ namespace MLM {
                                            GLib.FileQueryInfoFlags.NONE);
                 } catch (GLib.Error e) {
                     var p = file.get_path();
-                    var m = "There was a problem getting info from '%s'".printf(p);
-                    GLib.warning(m);
+                    var m = "There was a problem getting info from ‘%s’.".printf(p);
+                    stderr.printf("%s\n", m);
                     continue;
                 }
                 var ctype = info.get_content_type();
                 if (ctype != "audio/mpeg") {
                     var p = file.get_path();
-                    var m = "The filename '%s' is not an MP3".printf(p);
-                    GLib.warning(m);
+                    var m = "The filename ‘%s’ is not an MP3".printf(p);
+                    stderr.printf("%s\n", m);
                     continue;
                 }
                 this.files.add(file);

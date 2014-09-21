@@ -230,7 +230,7 @@ namespace MLM {
                 var file = GLib.File.new_for_uri("resource:///mx/unam/MLM/mlm.css");
                 provider.load_from_file(file);
             } catch (GLib.Error e) {
-                GLib.warning("There was a problem loading 'mlm.css'");
+                stderr.printf("There was a problem loading ‘mlm.css’");
             }
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                       provider, 999);

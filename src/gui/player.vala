@@ -46,7 +46,7 @@ namespace MLM {
                         "decodebin        ! " +
                         "autoaudiosink");
             } catch (GLib.Error e) {
-                GLib.warning("There was an error while creating the play pipeline");
+                stderr.printf("There was an error while creating the play pipeline.\n");
             }
         }
 
