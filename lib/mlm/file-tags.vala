@@ -160,7 +160,7 @@ namespace MLM {
                 if (value == _total)
                     return;
                 Id3Tag.Frame track_frame;
-                if (value == -1) {
+                if (value == -1 && _track != -1) {
                     track_frame = tag.search_frame(FrameId.TRACK);
                     track_frame.set_text("%02d".printf(_track));
                     _total = -1;
@@ -304,7 +304,7 @@ namespace MLM {
                 if (value == null) {
                     fcp_frame = tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
                     tag.detachframe(fcp_frame);
-                    front_cover_picture = null;
+                    _front_cover_picture = null;
                     return;
                 }
                 if (_front_cover_picture == null) {
@@ -325,25 +325,22 @@ namespace MLM {
             set {
                 if (_artist_picture == null && value == null)
                     return;
-                Id3Tag.Frame artist_picture_frame;
+                Id3Tag.Frame ap_frame;
                 if (value == null) {
-                    artist_picture_frame =
-                    tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
-                    tag.detachframe(artist_picture_frame);
-                    artist_picture = null;
+                    ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
+                    tag.detachframe(ap_frame);
+                    _artist_picture = null;
                     return;
                 }
                 if (_artist_picture == null) {
-                    artist_picture_frame =
-                    tag.create_picture_frame(Id3Tag.PictureType.COVERFRONT);
-                    tag.attachframe(artist_picture_frame);
+                    ap_frame = tag.create_picture_frame(Id3Tag.PictureType.ARTIST);
+                    tag.attachframe(ap_frame);
                 } else {
-                    artist_picture_frame =
-                    tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
+                    ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
                 }
                 _artist_picture = value;
-                artist_picture_frame.set_picture(_artist_picture,
-                                      album != null ? album + " cover" : "");
+                ap_frame.set_picture(_artist_picture,
+                                     artist != null ? artist + " cover" : "");
             }
         }
 
@@ -430,7 +427,7 @@ namespace MLM {
                         artist_picture_description = frame.get_picture_description();
                     }
                 } else {
-                    stderr.printf("Invalid frame '%s' will be deleted.\n", frame.id);
+                    GLib.warning("Invalid frame ‘%s’ will be deleted.\n", frame.id);
                     invalid_frames.add(frame);
                 }
             }
@@ -452,7 +449,7 @@ namespace MLM {
             try {
                 FileUtils.get_data(filename, out bytes);
             } catch (GLib.Error e) {
-                stderr.printf("There was an error reading from '%s'.\n", filename);
+                GLib.warning("There was an error reading from ‘%s’.\n", filename);
                 return;
             }
 
@@ -470,7 +467,7 @@ namespace MLM {
             GLib.FileStream file = GLib.FileStream.open(filename, "w");
             size_t r = file.write(new_bytes);
             if (r != new_bytes.length)
-                stderr.printf("There was an error when removing tags from '%s'.\n", filename);
+                GLib.warning("There was an error removing tags from ‘%s’.\n", filename);
             file = null;
 
             Util.set_file_time(filename, time);

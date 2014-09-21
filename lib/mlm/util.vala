@@ -61,7 +61,7 @@ namespace MLM {
                                                      GLib.FileQueryInfoFlags.NONE);
                 return info.get_modification_time();
             } catch (GLib.Error e) {
-                stderr.printf("There was an error reading from '%s'.\n", filename);
+                GLib.warning("There was an error reading from ‘%s’.\n", filename);
             }
             return GLib.TimeVal();
         }
@@ -76,7 +76,7 @@ namespace MLM {
                 info.set_attribute_uint32("time::access-usec", (uint32)time.tv_usec);
                 file.set_attributes_from_info(info, GLib.FileQueryInfoFlags.NONE);
             } catch (GLib.Error e) {
-                stderr.printf("There was an error writing to '%s'.\n", filename);
+                GLib.warning("There was an error writing to ‘%s’.\n", filename);
             }
         }
 
