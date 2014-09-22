@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -46,6 +46,30 @@ namespace MLM {
                     var ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
                     ap_frame.set_picture_description(_artist);
                 }
+            }
+        }
+
+        private string _band;
+        public string band {
+            get { return _band; }
+            set {
+                if (value == "" && _band == null)
+                    return;
+                Id3Tag.Frame band_frame;
+                if (value == "") {
+                    band_frame = tag.search_frame(FrameId.BAND);
+                    tag.detachframe(band_frame);
+                    _band = null;
+                    return;
+                }
+                if (_band == null) {
+                    band_frame = tag.create_text_frame(FrameId.BAND);
+                    tag.attachframe(band_frame);
+                } else {
+                    band_frame = tag.search_frame(FrameId.BAND);
+                }
+                _band = value;
+                band_frame.set_text(_band);
             }
         }
 
@@ -359,7 +383,7 @@ namespace MLM {
         }
 
         private void read_tags() {
-            _artist = _title = _album = _comment = _composer = _original = null;
+            _artist = _title = _album = _band = _comment = _composer = _original = null;
             _year = _track = _total = _disc = _genre = -1;
             _front_cover_picture = _artist_picture = null;
             front_cover_picture_description = artist_picture_description = null;
@@ -382,6 +406,8 @@ namespace MLM {
                     _title = frame.get_text();
                 } else if (frame.id == FrameId.ALBUM) {
                     _album = frame.get_text();
+                } else if (frame.id == FrameId.BAND) {
+                    _band = frame.get_text();
                 } else if (frame.id == FrameId.YEAR) {
                     _year = int.parse(frame.get_text());
                 } else if (frame.id == FrameId.TRACK) {
@@ -477,9 +503,9 @@ namespace MLM {
 
         public void update() {
             if (_artist == null && _title == null && _album == null &&
-                _comment == null && _composer == null && _original == null &&
-                _year == -1 && _track == -1 && _total == -1 &&
-                _disc == -1 && _genre == -1 &&
+                _band == null && _comment == null && _composer == null &&
+                _original == null && _year == -1 && _track == -1 &&
+                _total == -1 && _disc == -1 && _genre == -1 &&
                 _front_cover_picture == null && _artist_picture == null &&
                 front_cover_picture_description == null &&
                 artist_picture_description == null) {

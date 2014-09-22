@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ namespace MLM {
         public static const string ARTIST   = "TPE1";
         public static const string TITLE    = "TIT2";
         public static const string ALBUM    = "TALB";
+        public static const string BAND     = "TPE2";
         public static const string YEAR     = "TDRC";
         public static const string TRACK    = "TRCK";
         public static const string DISC     = "TPOS";
