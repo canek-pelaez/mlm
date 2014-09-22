@@ -19,39 +19,23 @@
 
 namespace MLM {
 
+    public enum Color {
+        GRAY   = 0,
+        RED    = 1,
+        GREEN  = 2,
+        YELLOW = 3,
+        BLUE   = 4,
+        PURPLE = 5,
+        CYAN   = 6,
+        NONE   = 999
+    }
+
     public class Util {
 
-        public static string term_gray(string s) {
-            return "\033[1m\033[90m%s\033[0m".printf(s);
-        }
-
-        public static string term_red(string s) {
-            return "\033[1m\033[91m%s\033[0m".printf(s);
-        }
-
-        public static string term_green(string s) {
-            return "\033[1m\033[92m%s\033[0m".printf(s);
-        }
-
-        public static string term_yellow(string s) {
-            return "\033[1m\033[93m%s\033[0m".printf(s);
-        }
-
-        public static string term_blue(string s) {
-            return "\033[1m\033[94m%s\033[0m".printf(s);
-        }
-
-        public static string term_purple(string s) {
-            return "\033[1m\033[95m%s\033[0m".printf(s);
-        }
-
-        public static string term_cyan(string s) {
-            return "\033[1m\033[96m%s\033[0m".printf(s);
-        }
-
-        public static string term_key_value(string key, string value) {
-            return "%s: %s".printf(term_blue(key),
-                                   term_yellow(value));
+        public static string color(string s, Color c) {
+            if (c == Color.NONE)
+                return s;
+            return "\033[1m\033[9%dm%s\033[0m".printf(c, s);
         }
 
         public static GLib.TimeVal get_file_time(string filename) {

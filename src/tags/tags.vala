@@ -78,7 +78,6 @@ namespace MLM {
         private static string  out_artist_picture;
 
         private static int     current_year = 2014;
-        private static int     output_width = 80;
 
         private const GLib.OptionEntry[] options = {
             { "artist", 'a', 0, GLib.OptionArg.STRING, ref artist,
@@ -151,82 +150,9 @@ Format for printing:
             stdout.printf("Supported genres:\n");
             for (int i = 0; i < genres.length; i++)
                 stdout.printf("   %s %s\n",
-                              Util.term_blue("%03d".printf(i)),
-                              Util.term_yellow(genres[i].to_string()));
+                              Util.color("%03d".printf(i), Color.BLUE),
+                              Util.color(genres[i].to_string(), Color.YELLOW));
             return ReturnCode.OK;
-        }
-
-        private static uint char_count(string s) {
-            var t = s.replace("\033[1m\033", "");
-            t = t.replace("\033[0m", "");
-            for (int i = 90; i <= 96; i++) {
-                var r = "[%dm".printf(i);
-                t = t.replace(r, "");
-            }
-            return t.char_count();
-        }
-
-        private static Gee.ArrayList<string> split_line(string line) {
-            var ll = new Gee.ArrayList<string>();
-            var words = line.split(" ");
-            var l = words[0];
-            for (int i = 1; i < words.length; i++) {
-                if (char_count(l) + 1 + char_count(words[i]) < output_width - 2) {
-                    l += " " + words[i];
-                } else {
-                    ll.add(l);
-                    l = "    " + words[i];
-                }
-            }
-            ll.add(l);
-            return ll;
-        }
-
-        private static string boxed_output(Gee.ArrayList<string> lines) {
-            var output = "┏";
-            for (int i = 0; i < output_width - 2; i++)
-                output += "━";
-            output += "┓";
-            output = Util.term_red(output) + "\n";
-
-            int c = 0;
-            foreach (var line in lines) {
-                int cc = 0;
-                var ll = split_line(line);
-                foreach (var l in ll) {
-                    int ac = (cc == 0 && c > 0) ? 26 : 13;
-                    if (ll.size > 1 && cc > 0)
-                        ac = 7;
-                    output += Util.term_red("┃");
-                    if (ll.size > 1) {
-                        output += Util.term_yellow(l);
-                        if (cc++ == 0)
-                            ac = 22;
-                        else
-                            ac = 4;
-                    } else {
-                        output += l;
-                    }
-                    for (int i = 0; i < output_width - l.char_count() - 2 + ac; i++)
-                        output += " ";
-                    output += Util.term_red("┃") + "\n";
-                }
-                if (c++ == 0) {
-                    output += Util.term_red("┠");
-                    for (int i = 0; i < output_width - 2; i++)
-                        output += Util.term_red("─");
-                    output += Util.term_red("┨") + "\n";
-                }
-            }
-
-            var last_line = "┗";
-            for (int i = 0; i < output_width - 2; i++)
-                last_line += "━";
-            last_line += "┛";
-
-            output += Util.term_red(last_line) + "\n";
-
-            return output;
         }
 
         private static void print_standard_tags(string filename) {
@@ -239,55 +165,44 @@ Format for printing:
                 stderr.printf("The file ‘%s’ has no ID3 v2.4.0 tags.\n", filename);
                 return;
             }
-            var lines = new Gee.ArrayList<string>();
-            var line = Util.term_cyan(Filename.display_basename(filename));
-            lines.add(line);
-            var genres = Genre.all();
+            var box = new PrettyBox(80, Color.RED);
+            box.set_title(GLib.Filename.display_basename(filename), Color.CYAN);
             if (file_tags.artist != null)
-                lines.add(Util.term_key_value("Artist", file_tags.artist));
+                box.add_body_key_value("Artist", file_tags.artist);
             if (file_tags.title != null)
-                lines.add(Util.term_key_value("Title", file_tags.title));
+                box.add_body_key_value("Title", file_tags.title);
             if (file_tags.album != null)
-                lines.add(Util.term_key_value("Album", file_tags.album)); 
+                box.add_body_key_value("Album", file_tags.album); 
             if (file_tags.band != null)
-                lines.add(Util.term_key_value("Album band", file_tags.band));
-           if (file_tags.year != -1)
-                lines.add(Util.term_key_value("Year", "%d".printf(file_tags.year)));
+                box.add_body_key_value("Album band", file_tags.band);
+            if (file_tags.year != -1)
+                box.add_body_key_value("Year", "%d".printf(file_tags.year));
+            int n = file_tags.track, t = file_tags.total;
             if (file_tags.track != -1) {
                 if (file_tags.total != -1)
-                    lines.add(
-                        Util.term_key_value(
-                            "Track",
-                            "%d of %d".printf(file_tags.track,
-                                              file_tags.total)));
+                    box.add_body_key_value("Track", "%d of %d".printf(n, t));
                 else
-                    lines.add(
-                        Util.term_key_value(
-                            "Track",
-                            "%d".printf(file_tags.track)));
+                    box.add_body_key_value("Track", "%d".printf(n));
             }
+            int d = file_tags.disc;
             if (file_tags.disc != -1)
-                lines.add(Util.term_key_value("Disc number",
-                                              "%d".printf(file_tags.disc)));
+                box.add_body_key_value("Disc number", "%d".printf(d));
+            var genres = Genre.all();
             if (file_tags.genre != -1)
-                lines.add(Util.term_key_value("Genre",
-                                              genres[file_tags.genre].to_string()));
+                box.add_body_key_value("Genre", genres[file_tags.genre].to_string());
             if (file_tags.comment != null)
-                lines.add(Util.term_key_value("Comment",
-                                              file_tags.comment));
+                box.add_body_key_value("Comment", file_tags.comment);
             if (file_tags.composer != null)
-                lines.add(Util.term_key_value("Composer",
-                                              file_tags.composer));
+                box.add_body_key_value("Composer", file_tags.composer);
             if (file_tags.original != null)
-                lines.add(Util.term_key_value("Original artist",
-                                              file_tags.original));
+                box.add_body_key_value("Original artist", file_tags.original);
+            var desc = file_tags.front_cover_picture_description;
             if (file_tags.front_cover_picture != null)
-                lines.add(Util.term_key_value("Front cover picture",
-                                              file_tags.front_cover_picture_description));
+                box.add_body_key_value("Front cover picture", desc);
+            desc = file_tags.artist_picture_description;
             if (file_tags.artist_picture != null)
-                lines.add(Util.term_key_value("Artist picture",
-                                              file_tags.artist_picture_description));
-            stdout.printf("%s", boxed_output(lines));
+                box.add_body_key_value("Artist picture", desc);
+            stdout.printf("%s", box.to_string());
         }
 
         private static void print_tags(string filename, string format) {

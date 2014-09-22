@@ -32,6 +32,14 @@ namespace MLM {
             COPY_ERROR          = 7
         }
 
+        private static string directory;
+
+        private const GLib.OptionEntry[] options = {
+            { "output", 'o', 0, GLib.OptionArg.FILENAME, ref directory,
+              "Output directory", "DIRECTORY" },
+            { null }
+        };
+
         private string filename;
         private string artist;
         private string album;
@@ -83,18 +91,10 @@ namespace MLM {
                 return error(e.message, ReturnCode.COPY_ERROR);
             }
             stdout.printf("Copied\t‘%s’\ninto\t‘%s’\n",
-                          Util.term_red(src.get_basename()),
-                          Util.term_green(dst.get_basename()));
+                          Util.color(src.get_basename(), Color.RED),
+                          Util.color(dst.get_basename(), Color.GREEN));
             return 0;
         }
-
-        private static string directory;
-
-        private const GLib.OptionEntry[] options = {
-            { "output", 'o', 0, GLib.OptionArg.FILENAME, ref directory,
-              "Output directory", "DIRECTORY" },
-            { null }
-        };
 
         private static int error(string error,
                                  int    return_code,
@@ -142,7 +142,7 @@ namespace MLM {
                     return r;
             }
 
-            return 0;
+            return ReturnCode.OK;
         }
     }
 }

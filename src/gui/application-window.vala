@@ -333,7 +333,7 @@ namespace MLM {
                 GLib.FileUtils.remove(dest);
             } else {
                 app.set_tags_in_file(dest);
-            }
+                }
             progress.destroy();
             progress = null;
         }

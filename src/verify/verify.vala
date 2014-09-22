@@ -56,7 +56,7 @@ namespace MLM {
 
         private void add_to_report(string s) {
             anomalies = true;
-            report += Util.term_red(s);
+            report += Util.color(s, Color.RED);
         }
 
         private string to_title(string str) {
@@ -297,7 +297,7 @@ namespace MLM {
                 stderr.printf("%s: Could not extract tags from file.\n", filename);
                 return;
             }
-            report = "%s:\n".printf(Util.term_cyan(filename));
+            report = "%s:\n".printf(Util.color(filename, Color.CYAN));
             if (tag.frames.length == 0)
                 add_to_report("\tFile has no frames.\n");
             int fcp = 0;
