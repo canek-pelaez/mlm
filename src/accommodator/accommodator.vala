@@ -28,7 +28,8 @@ namespace MLM {
             MISSING_FILES       = 3,
             INVALID_OUTPUT_DIR  = 4,
             INVALID_DESTINATION = 5,
-            COPY_ERROR          = 6
+            NOT_ENOUGH_INFO     = 6,
+            COPY_ERROR          = 7
         }
 
         private string filename;
@@ -41,7 +42,10 @@ namespace MLM {
         public Accommodator(string filename) {
             this.filename = filename;
             var tags = new FileTags(filename);
-            artist = Util.asciize(tags.artist);
+            if (tags.band != null)
+                artist = Util.asciize(tags.band);
+            else
+                artist = tags.artist;
             album = Util.asciize(tags.album);
             title = Util.asciize(tags.title);
             disc = tags.disc;
@@ -49,6 +53,10 @@ namespace MLM {
         }
 
         public int accommodate() {
+            if (artist == null || album == null || title == null ||
+                disc == -1 || track == -1)
+                return error("Not enough information to accomodate file",
+                             ReturnCode.NOT_ENOUGH_INFO);
             var letter = artist.get_char(0).to_string();
 
             string[] subdirs = { letter, artist, album };
