@@ -80,13 +80,13 @@ namespace MLM {
         private static int     current_year = 2014;
 
         private const GLib.OptionEntry[] options = {
-            { "artist", 'a', 0, GLib.OptionArg.FILENAME, ref artist,
+            { "artist", 'a', 0, GLib.OptionArg.STRING, ref artist,
               "Artist name", "ARTIST" },
-            { "title", 't', 0, GLib.OptionArg.FILENAME, ref title,
+            { "title", 't', 0, GLib.OptionArg.STRING, ref title,
               "Track title", "DIRECTORY" },
-            { "album", 'l', 0, GLib.OptionArg.FILENAME, ref album,
+            { "album", 'l', 0, GLib.OptionArg.STRING, ref album,
               "Album name", "ALBUM" },
-            { "band", 'b', 0, GLib.OptionArg.FILENAME, ref band,
+            { "band", 'b', 0, GLib.OptionArg.STRING, ref band,
               "Album band", "BAND" },
             { "year", 'y', 0, GLib.OptionArg.STRING, ref s_year,
               "Release year", "YEAR" },
@@ -98,11 +98,11 @@ namespace MLM {
               "Disc number", "DISC" },
             { "genre", 'g', 0, GLib.OptionArg.STRING, ref s_genre,
               "Genre", "GENRE" },
-            { "comment", 'c', 0, GLib.OptionArg.FILENAME, ref comment,
+            { "comment", 'c', 0, GLib.OptionArg.STRING, ref comment,
               "Comment", "COMMENT" },
-            { "composer", 's', 0, GLib.OptionArg.FILENAME, ref composer,
+            { "composer", 's', 0, GLib.OptionArg.STRING, ref composer,
               "Composer", "COMPOSER" },
-            { "original", 'o', 0, GLib.OptionArg.FILENAME, ref original,
+            { "original", 'o', 0, GLib.OptionArg.STRING, ref original,
               "Original artist", "ORIGINAL" },
             { "cover-picture", 'f', 0, GLib.OptionArg.FILENAME, ref cover_picture,
               "Front cover picture", "FILENAME" },
@@ -110,7 +110,7 @@ namespace MLM {
               "Artist picture", "FILENAME" },
             { "remove", 'r', 0, GLib.OptionArg.NONE, ref remove,
               "Remove tags from file", null },
-            { "print", 'p', 0, GLib.OptionArg.FILENAME, ref format,
+            { "print", 'p', 0, GLib.OptionArg.STRING, ref format,
               "Formated print", "FORMAT" },
             { "genres", 'G', 0, GLib.OptionArg.NONE, ref genres,
               "Print supported genres", null },
@@ -401,6 +401,7 @@ Format for printing:
         }
 
         public static int main(string[] args) {
+            GLib.Intl.setlocale(GLib.LocaleCategory.ALL, "");
             try {
                 var opt = new GLib.OptionContext("FILES... - Edit and show MP3 files tags");
                 opt.set_help_enabled(true);
