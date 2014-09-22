@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -104,6 +104,13 @@ namespace MLM {
         public string album {
             get { return album_widget.get_text(); }
             set { album_widget.set_text(value); }
+        }
+
+        [GtkChild (name = "band")]
+        private Gtk.Entry band_widget;
+        public string band {
+            get { return band_widget.get_text(); }
+            set { band_widget.set_text(value); }
         }
 
         [GtkChild (name = "year")]

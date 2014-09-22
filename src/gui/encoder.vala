@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by

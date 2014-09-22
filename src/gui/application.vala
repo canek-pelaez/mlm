@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013 Canek Peláez Valdés
+ * Copyright 2013-2014 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -110,6 +110,7 @@ namespace MLM {
             window.artist = tags.artist != null ? tags.artist : "";
             window.title_ = tags.title != null ? tags.title : "";
             window.album = tags.album != null ? tags.album : "";
+            window.band = tags.band != null ? tags.band : "";
             window.year = tags.year != -1 ? tags.year : 1900;
             window.disc = tags.disc != -1 ? tags.disc : 1;
             window.track = tags.track != -1 ? tags.track : 1;
@@ -162,6 +163,7 @@ namespace MLM {
             t.artist = window.artist;
             t.title = window.title_;
             t.album = window.album;
+            t.band = window.band;
             t.year = window.year;
             t.disc = window.disc;
             t.track = window.track;
