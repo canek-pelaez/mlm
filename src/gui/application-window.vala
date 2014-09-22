@@ -192,7 +192,7 @@ namespace MLM {
         public uint8[] _cover_data;
         public uint8[] cover_data {
             get { return _cover_data; }
-            set { _cover_data = update_image(cover_image, value); }
+            set { _cover_data = update_image(cover_image, value, _cover_data); }
         }
 
         [GtkChild]
@@ -201,7 +201,7 @@ namespace MLM {
         public uint8[] _artist_data;
         public uint8[] artist_data {
             get { return _artist_data; }
-            set { _artist_data = update_image(artist_image, value); }
+            set { _artist_data = update_image(artist_image, value, _artist_data); }
         }
 
         [GtkChild]
@@ -335,6 +335,7 @@ namespace MLM {
                 app.set_tags_in_file(dest);
             }
             progress.destroy();
+            progress = null;
         }
 
         [GtkCallback]
@@ -345,7 +346,8 @@ namespace MLM {
 
         private bool upgrade_progressbar() {
             double p = encoder.get_completion();
-            progress.bar.set_fraction(p);
+            if (progress != null)
+                progress.set_progress(p);
             if (p < 1.0)
                 return true;
             progress.response(Gtk.ResponseType.OK);
@@ -454,10 +456,13 @@ namespace MLM {
             image.pixel_size = 140;
         }
 
-        private uint8[] update_image(Gtk.Image image, uint8[] data) {
+        private uint8[] update_image(Gtk.Image image,
+                                     uint8[]   data,
+                                     uint8[]   original) {
             if (data == null) {
-                set_default_image(image);
-                return data;
+                if (original == null)
+                    set_default_image(image);
+                return original;
             }
             var mis = new MemoryInputStream.from_data(data, null);
             Gdk.Pixbuf thumb = null;
@@ -469,9 +474,9 @@ namespace MLM {
                                             Gdk.InterpType.BILINEAR);
             } catch (GLib.Error e) {
                 warning(_("Could not set pixbuf from data."));
-                set_default_image(image);
-                uint8[] r = null;
-                return r;
+                if (original == null)
+                    set_default_image(image);
+                return original;
             }
             image.set_from_pixbuf(thumb);
             tags_changed();

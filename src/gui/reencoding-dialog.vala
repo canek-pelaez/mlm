@@ -27,19 +27,14 @@ namespace MLM {
 
         [GtkChild]
         private Gtk.ProgressBar progress_bar;
-        public Gtk.ProgressBar bar { get { return progress_bar; } }
 
-        private string source;
-        private string destination;
-
-        public ReencodingDialog(string source, string destination) {
-            this.source = source;
-            this.destination = destination;
-
-            label.label = _("Reencoding '%s'\ninto '%s'... ").printf(
-                source, destination);
-
+        public ReencodingDialog(string source, string target) {
+            label.label = _("Reencoding '%s'\ninto '%s'... ").printf(source, target);
             show_all();
+        }
+
+        public void set_progress(double p) {
+            progress_bar.set_fraction(p);
         }
     }
 }
