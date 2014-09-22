@@ -53,6 +53,7 @@ namespace MLM {
         private static string  artist;
         private static string  title;
         private static string  album;
+        private static string  band;
         private static string  s_year;
         private static int     year;
         private static string  s_track;
@@ -86,6 +87,8 @@ namespace MLM {
               "Track title", "DIRECTORY" },
             { "album", 'l', 0, GLib.OptionArg.STRING, ref album,
               "Album name", "ALBUM" },
+            { "band", 'b', 0, GLib.OptionArg.STRING, ref band,
+              "Album band", "BAND" },
             { "year", 'y', 0, GLib.OptionArg.STRING, ref s_year,
               "Release year", "YEAR" },
             { "track", 'n', 0, GLib.OptionArg.STRING, ref s_track,
@@ -129,6 +132,7 @@ Format for printing:
   %a: Artist name
   %t: Track title
   %l: Album name
+  %b: Album band
   %y: Release year
   %n: Track number
   %N: Track number (zero padded)
@@ -244,8 +248,10 @@ Format for printing:
             if (file_tags.title != null)
                 lines.add(Util.term_key_value("Title", file_tags.title));
             if (file_tags.album != null)
-                lines.add(Util.term_key_value("Album", file_tags.album));
-            if (file_tags.year != -1)
+                lines.add(Util.term_key_value("Album", file_tags.album)); 
+            if (file_tags.band != null)
+                lines.add(Util.term_key_value("Album band", file_tags.band));
+           if (file_tags.year != -1)
                 lines.add(Util.term_key_value("Year", "%d".printf(file_tags.year)));
             if (file_tags.track != -1) {
                 if (file_tags.total != -1)
@@ -307,6 +313,8 @@ Format for printing:
                 f = f.replace("%t", ft.title);
             if (ft.album != null)
                 f = f.replace("%l", ft.album);
+            if (ft.band != null)
+                f = f.replace("%b", ft.band);
             if (ft.year != -1)
                 f = f.replace("%y", "%d".printf(ft.year));
             if (ft.track != -1) {
@@ -403,6 +411,8 @@ Format for printing:
                 ft.title = title;
             if (album != null)
                 ft.album = album;
+            if (band != null)
+                ft.band = band;
             if (composer != null)
                 ft.composer = composer;
             if (original != null)
@@ -452,7 +462,7 @@ Format for printing:
         }
 
         private static bool edit_file() {
-            return (artist != null || title != null || album != null ||
+            return (artist != null || title != null || album != null || band != null ||
                     comment != null || composer != null || original != null ||
                     cover_picture != null || artist_picture != null ||
                     s_year != null || s_track != null || s_total != null ||
