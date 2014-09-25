@@ -96,11 +96,11 @@ id3_tag_create_picture_frame(struct id3_tag*       tag,
                 if (field->type == ID3_FIELD_TYPE_TEXTENCODING)
                         id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
                 if (field->type == ID3_FIELD_TYPE_LATIN1)
-                        id3_field_setlatin1(field, "image/jpeg");
+                        id3_field_setlatin1(field, (unsigned char*)"image/jpeg");
                 if (field->type == ID3_FIELD_TYPE_INT8)
                         field->number.value = ptype;
                 if (field->type == ID3_FIELD_TYPE_STRING) {
-                        id3_ucs4_t* s = id3_utf8_ucs4duplicate("");
+                        id3_ucs4_t* s = id3_utf8_ucs4duplicate((id3_utf8_t*)"");
                         id3_field_setstring(field, s);
                         free(s);
                 }
@@ -135,7 +135,9 @@ id3_frame_set_text(struct id3_frame* frame,
                 if (field->type == ID3_FIELD_TYPE_TEXTENCODING)
                         id3_field_settextencoding(field, ID3_FIELD_TEXTENCODING_UTF_8);
                 if (field->type == ID3_FIELD_TYPE_STRINGLIST) {
-                        id3_ucs4_t* ucs[] = { id3_utf8_ucs4duplicate(text) };
+                        id3_ucs4_t* ucs[] = {
+                                id3_utf8_ucs4duplicate((id3_utf8_t*)text)
+                        };
                         id3_field_setstrings(field, 1, ucs);
                         free(ucs[0]);
                 }
@@ -166,7 +168,7 @@ id3_frame_set_comment_text(struct id3_frame* frame,
                 union id3_field* field = id3_frame_field(frame, i);
                 if (field->type != ID3_FIELD_TYPE_STRINGFULL)
                         continue;
-                id3_ucs4_t* ucs = id3_utf8_ucs4duplicate(text);
+                id3_ucs4_t* ucs = id3_utf8_ucs4duplicate((id3_utf8_t*)text);
                 id3_field_setfullstring(field, ucs);
                 free(ucs);
         }
@@ -206,7 +208,7 @@ id3_frame_set_picture(struct id3_frame* frame,
         for (i = 0; i < frame->nfields; i++) {
                 union id3_field* field = id3_frame_field(frame, i);
                 if (field->type == ID3_FIELD_TYPE_STRING) {
-                        id3_ucs4_t* s = id3_utf8_ucs4duplicate(desc);
+                        id3_ucs4_t* s = id3_utf8_ucs4duplicate((id3_utf8_t*)desc);
                         id3_field_setstring(field, s);
                         free(s);
                 }
@@ -219,11 +221,10 @@ char*
 id3_frame_get_picture_description(struct id3_frame* frame)
 {
         int i;
-        long pt = -1;
         for (i = 0; i < frame->nfields; i++) {
                 union id3_field* field = id3_frame_field(frame, i);
                 if (field->type == ID3_FIELD_TYPE_STRING) {
-                        return id3_ucs4_utf8duplicate(id3_field_getstring(field));
+                        return (char*)id3_ucs4_utf8duplicate(id3_field_getstring(field));
                 }
         }
         return NULL;
@@ -237,7 +238,7 @@ id3_frame_set_picture_description(struct id3_frame* frame,
         for (i = 0; i < frame->nfields; i++) {
                 union id3_field* field = id3_frame_field(frame, i);
                 if (field->type == ID3_FIELD_TYPE_STRING) {
-                        id3_ucs4_t* s = id3_utf8_ucs4duplicate(desc);
+                        id3_ucs4_t* s = id3_utf8_ucs4duplicate((id3_utf8_t*)desc);
                         id3_field_setstring(field, s);
                         free(s);
                 }

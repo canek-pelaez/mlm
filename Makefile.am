@@ -21,6 +21,8 @@ lib_libid3tag_x_la_SOURCES =			\
 	lib/id3tag-x/id3tag-x.h			\
 	$(NULL)
 
+lib_libid3tag_x_la_CFLAGS = -Wall
+
 # ====== libmlm
 
 noinst_LTLIBRARIES += lib/libmlm.la
