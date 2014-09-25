@@ -42,32 +42,36 @@ namespace MLM {
 
         private string filename;
         private string artist;
-        private string album;
         private string title;
-        private int disc;
-        private int track;
+        private string album;
+        private string band;
+        private int disc = -1;
+        private int track = -1;
 
         public Accommodator(string filename) {
             this.filename = filename;
             var tags = new FileTags(filename);
+            if (tags.artist != null)
+                artist = Util.asciize(tags.artist);
+            if (tags.title != null)
+                title = Util.asciize(tags.title);
+            if (tags.album != null)
+                album = Util.asciize(tags.album);
             if (tags.band != null)
-                artist = Util.asciize(tags.band);
+                band = Util.asciize(tags.band);
             else
-                artist = tags.artist;
-            album = Util.asciize(tags.album);
-            title = Util.asciize(tags.title);
+                band = artist;
             disc = tags.disc;
             track = tags.track;
         }
 
         public int accommodate() {
-            if (artist == null || album == null || title == null ||
-                disc == -1 || track == -1)
-                return error("Not enough information to accomodate file",
+            if (artist == null || title == null || album == null)
+                return error("Not enough information to accomodate ‘%s’".printf(filename),
                              ReturnCode.NOT_ENOUGH_INFO);
-            var letter = artist.get_char(0).to_string();
+            var letter = band.get_char(0).to_string();
 
-            string[] subdirs = { letter, artist, album };
+            string[] subdirs = { letter, band, album };
             var dir = directory;
             foreach (var subdir in subdirs) {
                 dir = dir + Path.DIR_SEPARATOR_S + subdir;
@@ -79,7 +83,12 @@ namespace MLM {
                 }
             }
 
-            var dest = "%s/%d_-_%02d_-_%s_-_%s.mp3".printf(dir, disc, track, artist, title);
+            string dest = "";
+
+            if (disc != -1 && track != -1)
+                dest = "%s/%d_-_%02d_-_%s_-_%s.mp3".printf(dir, disc, track, artist, title);
+            else
+                dest = "%s/%s_-_%s.mp3".printf(dir, artist, title);
 
             var src = GLib.File.new_for_path(filename);
             var dst = GLib.File.new_for_path(dest);
