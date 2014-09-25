@@ -59,7 +59,7 @@ namespace MLM {
         private Gtk.Button next;
 
         [GtkChild]
-        private Gtk.Button reencode;
+        private Gtk.MenuButton reencode;
 
         [GtkChild]
         private Gtk.Frame frame;
@@ -213,11 +213,13 @@ namespace MLM {
         [GtkChild]
         private Gtk.Label time;
 
-        private ReencodingDialog progress;
+        private Gtk.Popover popover;
+        private Gtk.ProgressBar bar;
 
         private Application app;
         private Player player;
         private Encoder encoder;
+        private string target;
 
         private static const string ICON_NAME_CD = "media-optical-cd-audio-symbolic";
         private static const string ICON_NAME_AVATAR = "avatar-default-symbolic";
@@ -253,6 +255,19 @@ namespace MLM {
 
             _cover_data = null;
             _artist_data = null;
+
+            bar = new Gtk.ProgressBar();
+            bar.text = "Reencoding...";
+            bar.show_text = true;
+            bar.visible = true;
+            bar.margin = 12;
+
+            popover = new Gtk.Popover(reencode);
+            popover.add(bar);
+
+            reencode.bind_property("active", popover, "visible",
+                                   GLib.BindingFlags.BIDIRECTIONAL);
+            popover.notify["visible"].connect(popover_visibility_changed);
         }
 
         [GtkCallback]
@@ -310,32 +325,30 @@ namespace MLM {
                 cover_data = data;
         }
 
-        [GtkCallback]
-        public void on_reencode_clicked() {
+        public void popover_visibility_changed() {
+            if (!popover.visible) {
+                if (target != null && encoder != null) {
+                    encoder.cancel();
+                    GLib.FileUtils.remove(target);
+                    target = null;
+                    encoder = null;
+                }
+                return;
+            }
             int cont = 0;
-            string dest = "";
             do {
                 string d = Path.get_dirname(filename);
                 string s = GLib.Path.DIR_SEPARATOR_S;
                 string a = artist.replace("/", "_");
                 string t = title_.replace("/", "_");
                 string e = (cont == 0) ? ".mp3" : "-%d.mp3".printf(cont);
-                dest = d + s + a + " - " + t + e;
+                target = d + s + a + " - " + t + e;
                 cont++;
-            } while (GLib.FileUtils.test(dest, GLib.FileTest.EXISTS));
-            encoder = new Encoder(filename, dest);
+            } while (GLib.FileUtils.test(target, GLib.FileTest.EXISTS));
+            encoder = new Encoder(filename, target);
             encoder.encode();
-            progress = new ReencodingDialog(GLib.Path.get_basename(filename),
-                                            GLib.Path.get_basename(dest));
+            bar.set_fraction(0.0);
             GLib.Idle.add(upgrade_progressbar);
-            if (progress.run() != Gtk.ResponseType.OK) {
-                encoder.cancel();
-                GLib.FileUtils.remove(dest);
-            } else {
-                app.set_tags_in_file(dest);
-                }
-            progress.destroy();
-            progress = null;
         }
 
         [GtkCallback]
@@ -345,12 +358,16 @@ namespace MLM {
         }
 
         private bool upgrade_progressbar() {
+            if (encoder == null)
+                return false;
             double p = encoder.get_completion();
-            if (progress != null)
-                progress.set_progress(p);
+            bar.set_fraction(p);
             if (p < 1.0)
                 return true;
-            progress.response(Gtk.ResponseType.OK);
+            app.set_tags_in_file(target);
+            encoder = null;
+            target = null;
+            popover.visible = false;
             return false;
         }
 

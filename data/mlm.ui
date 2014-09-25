@@ -716,11 +716,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="reencode">
+          <object class="GtkMenuButton" id="reencode">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="use-popover">True</property>
             <property name="tooltip-text" translatable="yes">Reencode MP3</property>
-            <signal name="clicked" handler="on_reencode_clicked" swapped="no"/>
             <child>
               <object class="GtkImage" id="reencode_image">
                 <property name="visible">True</property>
