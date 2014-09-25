@@ -7,8 +7,6 @@ src/gui/encoder.vala
 src/gui/main.vala
 src/gui/media.vala
 src/gui/player.vala
-src/gui/reencoding-dialog.vala
 src/tags/tags.vala
 src/verify/verify.vala
 [type: gettext/glade]data/mlm.ui
-[type: gettext/glade]data/reencoding-dialog.ui

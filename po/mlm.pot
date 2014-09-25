@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-21 17:43-0500\n"
+"POT-Creation-Date: 2014-09-25 02:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,44 +25,41 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: ../src/gui/application.vala:182
+#: ../src/gui/application.vala:184
 msgid "A Gtk+ based music library maintainer"
 msgstr ""
 
-#: ../src/gui/application-window.vala:275
+#: ../src/gui/application-window.vala:260
+msgid "Reencoding..."
+msgstr ""
+
+#: ../src/gui/application-window.vala:297
 msgid "_Cancel"
 msgstr ""
 
-#: ../src/gui/application-window.vala:276
+#: ../src/gui/application-window.vala:298
 msgid "_Open"
 msgstr ""
 
-#: ../src/gui/application-window.vala:287
+#: ../src/gui/application-window.vala:309
 #, c-format
 msgid "There was an error loading image '%s'"
 msgstr ""
 
-#: ../src/gui/application-window.vala:294
+#: ../src/gui/application-window.vala:316
 msgid "Select image for artist"
 msgstr ""
 
-#: ../src/gui/application-window.vala:301
+#: ../src/gui/application-window.vala:323
 msgid "Select image for cover"
 msgstr ""
 
-#: ../src/gui/application-window.vala:464
+#: ../src/gui/application-window.vala:493
 msgid "Could not set pixbuf from data."
 msgstr ""
 
-#: ../src/gui/application-window.vala:500
+#: ../src/gui/application-window.vala:529
 msgid "Warning"
-msgstr ""
-
-#: ../src/gui/reencoding-dialog.vala:39
-#, c-format
-msgid ""
-"Reencoding '%s'\n"
-"into '%s'... "
 msgstr ""
 
 #: ../data/mlm.ui.h:1
@@ -698,97 +695,97 @@ msgid "Album name"
 msgstr ""
 
 #: ../data/mlm.ui.h:159
-msgid "_Year"
+msgid "Album _band"
 msgstr ""
 
 #: ../data/mlm.ui.h:160
-msgid "Year of release"
+msgid "Album band"
 msgstr ""
 
 #: ../data/mlm.ui.h:161
-msgid "_Disc"
+msgid "_Year"
 msgstr ""
 
 #: ../data/mlm.ui.h:162
-msgid "Disc number"
+msgid "Year of release"
 msgstr ""
 
 #: ../data/mlm.ui.h:163
-msgid "T_rack"
+msgid "_Disc"
 msgstr ""
 
 #: ../data/mlm.ui.h:164
-msgid "Track number"
+msgid "Disc number"
 msgstr ""
 
 #: ../data/mlm.ui.h:165
-msgid "T_otal"
+msgid "T_rack"
 msgstr ""
 
 #: ../data/mlm.ui.h:166
-msgid "Total number of tracks"
+msgid "Track number"
 msgstr ""
 
 #: ../data/mlm.ui.h:167
-msgid "_Genre"
+msgid "T_otal"
 msgstr ""
 
 #: ../data/mlm.ui.h:168
-msgid "Genre of the track"
+msgid "Total number of tracks"
 msgstr ""
 
 #: ../data/mlm.ui.h:169
-msgid "_Comment"
+msgid "_Genre"
 msgstr ""
 
 #: ../data/mlm.ui.h:170
-msgid "Track comment"
+msgid "Genre of the track"
 msgstr ""
 
 #: ../data/mlm.ui.h:171
-msgid "Compo_ser"
+msgid "_Comment"
 msgstr ""
 
 #: ../data/mlm.ui.h:172
-msgid "Track composer"
+msgid "Track comment"
 msgstr ""
 
 #: ../data/mlm.ui.h:173
-msgid "Origi_nal artist"
+msgid "Compo_ser"
 msgstr ""
 
 #: ../data/mlm.ui.h:174
-msgid "Original artist"
+msgid "Track composer"
 msgstr ""
 
 #: ../data/mlm.ui.h:175
-msgid "Front cover"
+msgid "Origi_nal artist"
 msgstr ""
 
 #: ../data/mlm.ui.h:176
-msgid "Open image"
+msgid "Original artist"
 msgstr ""
 
 #: ../data/mlm.ui.h:177
-msgid "Clear image"
+msgid "Front cover"
 msgstr ""
 
 #: ../data/mlm.ui.h:178
-msgid "Artist"
+msgid "Open image"
 msgstr ""
 
 #: ../data/mlm.ui.h:179
-msgid "Reproduce MP3"
+msgid "Clear image"
 msgstr ""
 
 #: ../data/mlm.ui.h:180
+msgid "Artist"
+msgstr ""
+
+#: ../data/mlm.ui.h:181
+msgid "Reproduce MP3"
+msgstr ""
+
+#: ../data/mlm.ui.h:182
 msgid "<b>Filename</b>"
-msgstr ""
-
-#: ../data/reencoding-dialog.ui.h:1
-msgid "Reencoding"
-msgstr ""
-
-#: ../data/reencoding-dialog.ui.h:2
-msgid "Cancel"
 msgstr ""
