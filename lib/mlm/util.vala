@@ -67,7 +67,7 @@ namespace MLM {
         public static string asciize(string str) {
             var s = str.normalize(-1, GLib.NormalizeMode.NFKD);
             try {
-                uint8[] outbuf = new uint8[s.length];
+                uint8[] outbuf = new uint8[s.length + 1]; // '\0' at end.
                 size_t read = s.length;
                 size_t written = 0;
 
@@ -80,14 +80,12 @@ namespace MLM {
                     return "";
 
                 t = t.down();
-                var regex = new GLib.Regex("[\\[\\]#:\\.,?!/)(\\']");
-                t = regex.replace(t, t.length, 0, "");
                 t = t.replace("&", "and");
-                t = t.replace(" ", "_");
-                t = t.replace("/", "_");
-                t = t.replace("-", "_");
-                if (t.has_suffix("mp3"))
-                    t = t.replace("mp3", ".mp3");
+                var regex = new GLib.Regex("[ /-]");
+                t = regex.replace(t, t.length, 0, "_");
+                regex = new GLib.Regex("[^A-Za-z0-9_-]");
+                t = regex.replace(t, t.length, 0, "");
+                t = t.replace("mp3", ".mp3");
                 return t;
             } catch (GLib.Error e) {
                 GLib.warning("%s", e.message);
