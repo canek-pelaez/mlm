@@ -257,7 +257,7 @@ namespace MLM {
             _artist_data = null;
 
             bar = new Gtk.ProgressBar();
-            bar.text = "Reencoding...";
+            bar.text = _("Reencoding...");
             bar.show_text = true;
             bar.visible = true;
             bar.margin = 12;
