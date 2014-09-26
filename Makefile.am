@@ -29,7 +29,6 @@ noinst_LTLIBRARIES += lib/libmlm.la
 
 lib_libmlm_la_SOURCES =				\
 	lib/mlm/genres.vala			\
-	lib/mlm/frame-id.vala			\
 	lib/mlm/file-tags.vala			\
 	lib/mlm/pretty-box.vala			\
 	lib/mlm/util.vala			\
