@@ -42,7 +42,7 @@ namespace MLM {
             try {
                 var file = GLib.File.new_for_path(filename);
                 var info = file.query_info("time::modified",
-                                                     GLib.FileQueryInfoFlags.NONE);
+                                           GLib.FileQueryInfoFlags.NONE);
                 return info.get_modification_time();
             } catch (GLib.Error e) {
                 GLib.warning("There was an error reading from ‘%s’.\n", filename);
