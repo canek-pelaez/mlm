@@ -20,6 +20,7 @@ AM_PROG_VALAC([0.22])
 AC_PROG_INSTALL
 
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
+AC_PATH_PROG([XSLTPROC], [xsltproc])
 
 GDK_PIXBUF_PACKAGES="--pkg gdk-pixbuf-2.0"
 PKG_CHECK_MODULES(GDK_PIXBUF, [ gdk-pixbuf-2.0 ])
