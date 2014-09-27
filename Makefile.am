@@ -306,6 +306,10 @@ HTML_FILES = $(patsubst %.1,%.html,$(man1_MANS))
 .PHONY: man
 man: $(man1_MANS) $(HTML_FILES)
 
+AM_V_XSLT = $(AM_V_XSLT_$(V))
+AM_V_XSLT_ = $(AM_V_XSLT_$(AM_DEFAULT_VERBOSITY))
+AM_V_XSLT_0 = @echo "  XSLT    " $@;
+
 XSLTPROC_FLAGS =					\
 	--nonet						\
 	--xinclude					\
@@ -317,11 +321,12 @@ XSLTPROC_FLAGS =					\
 	$(NULL)
 
 man/%.1: man/%.xml man/custom-man.xsl
-	$(AM_V_XSLT)$(XSLTPROC) -o $@ $(XSLTPROC_FLAGS) \
+	$(AM_V_XSLT)$(XSLTPROC) -o $@ $(XSLTPROC_FLAGS)	\
 		$(srcdir)/man/custom-man.xsl $<
 
+
 man/%.html: man/%.xml man/custom-html.xsl
-	$(AM_V_XSLT)$(XSLTPROC) -o $@ $(XSLTPROC_FLAGS) \
+	$(AM_V_XSLT)$(XSLTPROC) -o $@ $(XSLTPROC_FLAGS)	\
 		$(srcdir)/man/custom-html.xsl $<
 
 CLEANFILES =						\
