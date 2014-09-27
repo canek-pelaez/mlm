@@ -16,6 +16,8 @@ configure
 lib/mlm/*.[ch]
 libtool
 m4
+man/*.1
+man/*.html
 src/*/*.c
 src/mlm*
 stamp-h1
