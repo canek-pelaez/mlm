@@ -296,6 +296,7 @@ DISTCLEANFILES =					\
 SUBDIRS = po
 
 # ====== man pages
+if ENABLE_MANPAGES
 man1_MANS =						\
 	man/mlm-tags.1					\
 	$(NULL)
@@ -335,3 +336,5 @@ CLEANFILES =						\
 	$(NULL)
 
 noinst_DATA += $(HTML_FILES)
+endif
+
