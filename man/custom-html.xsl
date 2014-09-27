@@ -113,6 +113,10 @@
 
   <xsl:template name="user.header.content">
     <style>
+    body {
+      width: 900px;
+    }
+
     a.headerlink {
       color: #c60f0f;
       font-size: 0.8em;

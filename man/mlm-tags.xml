@@ -66,19 +66,57 @@
   <refsect1>
     <title>Options</title>
 
-    <para>The following options are accepted:</para>
+    <para>The following options are accepted. Except explicity
+    noted, all the options apply to all the filenames specified in
+    the command line.</para>
 
     <variablelist>
 
       <varlistentry>
-
         <term><option>-h</option></term>
-        <term><option>--help=</option></term>
-
+        <term><option>--help</option></term>
         <listitem>
           <para>Show help options.</para>
         </listitem>
+      </varlistentry>
 
+      <varlistentry>
+        <term><option>-a</option></term>
+        <term><option>--artist=ARTIST</option></term>
+        <listitem>
+          <para>Set the artist name. If the argument is an empty
+          string ("" or ''), the artist tag will be deleted.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-t</option></term>
+        <term><option>--title=TITLE</option></term>
+        <listitem>
+          <para>Set the track title. If the argument is an empty
+          string ("" or ''), the track title tag will be
+          deleted.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-l</option></term>
+        <term><option>--album=ALBUM</option></term>
+        <listitem>
+          <para>Set the album name. If the argument is an empty
+          string ("" or ''), the album name tag will be
+          deleted.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-b</option></term>
+        <term><option>--band=BAND</option></term>
+        <listitem>
+          <para>Set the album band. If the argument is an empty
+          string ("" or ''), the album band tag will be
+          deleted.</para>
+        </listitem>
       </varlistentry>
 
     </variablelist>
