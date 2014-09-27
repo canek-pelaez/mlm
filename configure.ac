@@ -25,7 +25,7 @@ AC_PATH_PROG([XSLTPROC], [xsltproc])
 have_manpages=no
 AC_ARG_ENABLE(manpages, AS_HELP_STRING([--disable-manpages], [disable manpages]))
 AS_IF([test "x${enable_manpages}" != xno], [have_manpages=yes])
-AM_CONDITIONAL(ENABLE_MANPAGES, [test "x${have_manpages}" = "xyes" -a "x${XSLTPROC}" = x])
+AM_CONDITIONAL(ENABLE_MANPAGES, [test "x${have_manpages}" = "xyes" -a "x${XSLTPROC}" != x])
 
 GDK_PIXBUF_PACKAGES=["--pkg gdk-pixbuf-2.0"]
 PKG_CHECK_MODULES(GDK_PIXBUF, [ gdk-pixbuf-2.0 ])
@@ -80,7 +80,7 @@ IT_PROG_INTLTOOL([0.40])
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The name of the gettext domain])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "${GETTEXT_PACKAGE}", [The name of the gettext domain])
 
 AC_CONFIG_FILES([
 	Makefile
