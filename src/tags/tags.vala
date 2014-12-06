@@ -326,8 +326,6 @@ Format for printing:
                 ft.title = title;
             if (album != null)
                 ft.album = album;
-            if (band != null)
-                ft.band = band;
             if (composer != null)
                 ft.composer = composer;
             if (original != null)
@@ -361,6 +359,8 @@ Format for printing:
                 ft.front_cover_picture = cover_picture_data;
             if (artist_picture != null)
                 ft.artist_picture = artist_picture_data;
+            if (band != null)
+                ft.band = band;
 
             ft.update();
             return ReturnCode.OK;
