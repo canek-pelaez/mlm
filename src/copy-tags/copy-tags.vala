@@ -49,8 +49,6 @@ namespace MLM {
                 target_tags.title = source_tags.title;
             if (source_tags.album != null)
                 target_tags.album = source_tags.album;
-            if (source_tags.band != null)
-                target_tags.band = source_tags.band;
             target_tags.year = source_tags.year;
             if (source_tags.track != -1) {
                 target_tags.track = source_tags.track;
@@ -70,6 +68,8 @@ namespace MLM {
                 target_tags.front_cover_picture = source_tags.front_cover_picture;
             if (source_tags.artist_picture != null)
                 target_tags.artist_picture = source_tags.artist_picture;
+            if (source_tags.band != null)
+                target_tags.band = source_tags.band;
             target_tags.update();
             target_tags = null;
 
