@@ -339,7 +339,6 @@ namespace MLM {
                 }
                 return;
             }
-            stderr.printf("%s\n", "popover_visibility_changed");
             int cont = 0;
             do {
                 string d = Path.get_dirname(filename);
@@ -372,9 +371,7 @@ namespace MLM {
             app.set_tags_in_file(target);
             encoder = null;
             target = null;
-            ignore_popover = true;
             popover.visible = false;
-            ignore_popover = false;
             return false;
         }
 
