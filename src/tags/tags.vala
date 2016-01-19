@@ -222,8 +222,8 @@ Format for printing:
 
             f = f.replace("\\n", "\n");
             f = f.replace("\\t", "\t");
-            if (ft.artist != null);
-            f = f.replace("%a", ft.artist);
+            if (ft.artist != null)
+                f = f.replace("%a", ft.artist);
             if (ft.title != null)
                 f = f.replace("%t", ft.title);
             if (ft.album != null)
