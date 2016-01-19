@@ -19,7 +19,7 @@
 
 namespace MLM {
 
-    public class Encoder : Media{
+    public class Encoder : Media {
 
         private string source;
         private string target;
