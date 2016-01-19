@@ -371,7 +371,9 @@ namespace MLM {
             app.set_tags_in_file(target);
             encoder = null;
             target = null;
+            ignore_popover = true;
             popover.visible = false;
+            ignore_popover = false;
             return false;
         }
 
