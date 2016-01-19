@@ -427,6 +427,16 @@ Format for printing:
                 return ReturnCode.OK;
             }
 
+            if (out_cover_picture != null || out_artist_picture != null) {
+                if (args.length > 2)
+                    return error("Save image requested for more than one file",
+                                 ReturnCode.IMAGE_FOR_MANY, args[0], true);
+                if (out_cover_picture != null)
+                    return save_picture(args[1], out_cover_picture, PictureType.COVER);
+                else
+                    return save_picture(args[1], out_artist_picture, PictureType.ARTIST);
+            }
+
             bool edit = edit_file();
 
             if (!edit) {
@@ -436,15 +446,6 @@ Format for printing:
                     else
                         print_tags(args[i], format);
                 return ReturnCode.OK;
-            }
-
-            if (out_cover_picture != null || out_artist_picture != null) {
-                if (args.length > 2)
-                    return error("Save image requested for more than one file",
-                                 ReturnCode.IMAGE_FOR_MANY, args[0], true);
-                if (out_cover_picture != null)
-                    return save_picture(args[1], out_cover_picture, PictureType.COVER);
-                return save_picture(args[1], out_artist_picture, PictureType.ARTIST);
             }
 
             if (s_year != null) {
