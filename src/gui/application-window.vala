@@ -215,6 +215,7 @@ namespace MLM {
 
         private Gtk.Popover popover;
         private Gtk.ProgressBar bar;
+        private bool ignore_popover;
 
         private Application app;
         private Player player;
@@ -268,6 +269,7 @@ namespace MLM {
             reencode.bind_property("active", popover, "visible",
                                    GLib.BindingFlags.INVERT_BOOLEAN);
             popover.notify["visible"].connect(popover_visibility_changed);
+            ignore_popover = false;
         }
 
         [GtkCallback]
@@ -326,6 +328,8 @@ namespace MLM {
         }
 
         public void popover_visibility_changed() {
+            if (ignore_popover)
+                return;
             if (!popover.visible) {
                 if (target != null && encoder != null) {
                     encoder.cancel();
@@ -335,6 +339,7 @@ namespace MLM {
                 }
                 return;
             }
+            stderr.printf("%s\n", "popover_visibility_changed");
             int cont = 0;
             do {
                 string d = Path.get_dirname(filename);
@@ -358,7 +363,7 @@ namespace MLM {
         }
 
         private bool upgrade_progressbar() {
-            if (encoder == null)
+            if (encoder == null || target == null)
                 return false;
             double p = encoder.get_completion();
             bar.set_fraction(p);
@@ -367,7 +372,9 @@ namespace MLM {
             app.set_tags_in_file(target);
             encoder = null;
             target = null;
+            ignore_popover = true;
             popover.visible = false;
+            ignore_popover = false;
             return false;
         }
 
