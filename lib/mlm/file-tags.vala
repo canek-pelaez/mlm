@@ -381,8 +381,7 @@ namespace MLM {
                     ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
                 }
                 _artist_picture = value;
-                ap_frame.set_picture(_artist_picture,
-                                     artist != null ? artist + " cover" : "");
+                ap_frame.set_picture(_artist_picture, artist != null ? artist : "");
             }
         }
 
