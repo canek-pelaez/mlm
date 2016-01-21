@@ -32,8 +32,10 @@ namespace MLM {
 
     public class Util {
 
+        private static bool colorize = GLib.Environment.get_variable("MLM_DONT_COLORIZE") == "1";
+
         public static string color(string s, Color c) {
-            if (c == Color.NONE)
+            if (!colorize || c == Color.NONE)
                 return s;
             return "\033[1m\033[9%dm%s\033[0m".printf(c, s);
         }
