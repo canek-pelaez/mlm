@@ -32,7 +32,7 @@ namespace MLM {
 
     public class Util {
 
-        private static bool colorize = GLib.Environment.get_variable("MLM_DONT_COLORIZE") != "1";
+        private static bool colorize = true;
 
         public static string color(string s, Color c) {
             if (!colorize || c == Color.NONE)
@@ -93,6 +93,12 @@ namespace MLM {
                 GLib.warning("%s", e.message);
             }
             return "";
+        }
+
+        static construct {
+            var mlm_dont_colorize = GLib.Environment.get_variable("MLM_DONT_COLORIZE");
+            if (mlm_dont_colorize != null && mlm_dont_colorize == "1")
+                colorize = false;
         }
     }
 }
