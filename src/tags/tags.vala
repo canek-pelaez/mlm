@@ -437,9 +437,7 @@ Format for printing:
                     return save_picture(args[1], out_artist_picture, PictureType.ARTIST);
             }
 
-            bool edit = edit_file();
-
-            if (!edit) {
+            if (!edit_file()) {
                 for (int i = 1; i < args.length; i++)
                     if (format == null)
                         print_standard_tags(args[i]);
