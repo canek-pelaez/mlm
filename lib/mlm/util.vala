@@ -32,10 +32,12 @@ namespace MLM {
 
     public class Util {
 
-        private static bool colorize = true;
+        private static bool get_should_colorize_called = false;
+        private static bool should_colorize = true;
+        private static const string MLM_DONT_COLORIZE = "MLM_DONT_COLORIZE";
 
         public static string color(string s, Color c) {
-            if (!colorize || c == Color.NONE)
+            if (!get_should_colorize() || c == Color.NONE)
                 return s;
             return "\033[1m\033[9%dm%s\033[0m".printf(c, s);
         }
@@ -95,10 +97,12 @@ namespace MLM {
             return "";
         }
 
-        static construct {
-            var mlm_dont_colorize = GLib.Environment.get_variable("MLM_DONT_COLORIZE");
-            if (mlm_dont_colorize != null && mlm_dont_colorize == "1")
-                colorize = false;
+        private static bool get_should_colorize() {
+            if (get_should_colorize_called)
+                return should_colorize;
+            get_should_colorize_called = true;
+            should_colorize = GLib.Environment.get_variable(MLM_DONT_COLORIZE) != "1";
+            return should_colorize;
         }
     }
 }
