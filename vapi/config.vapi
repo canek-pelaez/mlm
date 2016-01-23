@@ -17,7 +17,7 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-[CCode (prefix = "", lower_case_cprefix = "", cheader_filename = "config.h")]
+[CCode (lower_case_cprefix = "", cheader_filename = "config.h")]
 namespace Config {
 	/* Package information */
 	public const string PACKAGE_NAME;
