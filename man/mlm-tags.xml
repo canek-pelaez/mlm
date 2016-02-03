@@ -55,6 +55,7 @@
   </refsynopsisdiv>
 
   <refsect1>
+
     <title>Description</title>
 
     <para><filename>mlm-tags</filename> is a command line tool to
@@ -62,11 +63,11 @@
 
   </refsect1>
 
-
   <refsect1>
+
     <title>Options</title>
 
-    <para>The following options are accepted. Except explicity
+    <para>The following options are accepted. Except explicitly
     noted, all the options apply to all the filenames specified in
     the command line.</para>
 
@@ -159,9 +160,95 @@
         <term><option>-g</option></term>
         <term><option>--genre=GENRE</option></term>
         <listitem>
-          <para>Set the track genre. Only a set of predefined genres
-          are valid: you can see the list of supported genres with
-          the <option>--genres</option> option.</para>
+          <para>Set the track genre. Only a set of predefined genres are valid:
+          you can see the list of supported genres with the
+          <option>--genres</option> option, and in the
+          <citetitle><replaceable>GENRES</replaceable></citetitle> section
+          below.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-c</option></term>
+        <term>--comment=COMMENT</term>
+        <listitem>
+          <para>Set the comment.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-s</option></term>
+        <term>--composer=COMPOSER</term>
+        <listitem>
+          <para>Set the composer.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-o</option></term>
+        <term>--original-artist=ARTIST</term>
+        <listitem>
+          <para>Set the original artist.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-f</option></term>
+        <term>--cover-picture=FILENAME</term>
+        <listitem>
+          <para>Set the album cover picture. It can be a PNG or a JPG
+          file.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-u</option></term>
+        <term>--artist-picture=FILENAME</term>
+        <listitem>
+          <para>Set the artist picture. It can be a PNG or a JPG file.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-r</option></term>
+        <term>--remove</term>
+        <listitem>
+          <para>Remove all tags from the MP3 files.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-p</option></term>
+        <term>--print=FORMAT</term>
+        <listitem>
+          <para>Formated print; see the <citetitle><replaceable>FORMAT
+          FLAGS</replaceable></citetitle> section below.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-G</option></term>
+        <term>--genres</term>
+        <listitem>
+          <para>Printa all the standard genres.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-F</option></term>
+        <term>--output-cover-picture=FILENAME</term>
+        <listitem>
+          <para>Saves the album cover picture in the specified filename. This
+          option cannot be used with multiple MP3 files.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-A</option></term>
+        <term>--output-artist-picture=FILENAME</term>
+        <listitem>
+          <para>Saves the artist picture in the specified filename. This option
+          cannot be used with multiple MP3 files.</para>
         </listitem>
       </varlistentry>
 
@@ -170,8 +257,713 @@
   </refsect1>
 
   <refsect1>
+
+    <title>Format flags</title>
+
+    <para>The following flags can be used to format the output:</para>
+
+    <table>
+      <title>Format flags</title>
+
+      <tgroup cols='2'>
+        <thead>
+          <row>
+            <entry>Flag</entry>
+            <entry>Meaning</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>%a</literal></entry>
+            <entry>Artist name.</entry>
+          </row>
+          <row>
+            <entry><literal>%t</literal></entry>
+            <entry>Track title.</entry>
+          </row>
+          <row>
+            <entry><literal>%l</literal></entry>
+            <entry>Album name.</entry>
+          </row>
+          <row>
+            <entry><literal>%b</literal></entry>
+            <entry>Album band.</entry>
+          </row>
+          <row>
+            <entry><literal>%y</literal></entry>
+            <entry>Release year.</entry>
+          </row>
+          <row>
+            <entry><literal>%n</literal></entry>
+            <entry>Track number.</entry>
+          </row>
+          <row>
+            <entry><literal>%N</literal></entry>
+            <entry>Track number (zero padded).</entry>
+          </row>
+          <row>
+            <entry><literal>%#</literal></entry>
+            <entry>Track total.</entry>
+          </row>
+          <row>
+            <entry><literal>%C</literal></entry>
+            <entry>Track total (zero padded).</entry>
+          </row>
+          <row>
+            <entry><literal>%d</literal></entry>
+            <entry>Disc number.</entry>
+          </row>
+          <row>
+            <entry><literal>%D</literal></entry>
+            <entry>Disc number (zero padded).</entry>
+          </row>
+          <row>
+            <entry><literal>%g</literal></entry>
+            <entry>Genre.</entry>
+          </row>
+          <row>
+            <entry><literal>%c</literal></entry>
+            <entry>Comment.</entry>
+          </row>
+          <row>
+            <entry><literal>%s</literal></entry>
+            <entry>Composer.</entry>
+          </row>
+          <row>
+            <entry><literal>%o</literal></entry>
+            <entry>Original artist.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>
+      Also, any standard C escape character can be used: <literal>\n</literal>
+      for new line, <literal>\t</literal> for tab, etc.
+    </para>
+
+  </refsect1>
+
+  <refsect1>
+
+    <title>Genres</title>
+
+    <para>The following genres are used by default by MLM; it's the same 148
+    genres specified in IDv1:</para>
+
+    <table>
+      <title>Genres</title>
+
+      <tgroup cols='2'>
+        <thead>
+          <row>
+            <entry>Id</entry>
+            <entry>Genre</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>000</entry>
+            <entry>Blues</entry>
+          </row>
+          <row>
+            <entry>001</entry>
+            <entry>Classic Rock</entry>
+          </row>
+          <row>
+            <entry>002</entry>
+            <entry>Country</entry>
+          </row>
+          <row>
+            <entry>003</entry>
+            <entry>Dance</entry>
+          </row>
+          <row>
+            <entry>004</entry>
+            <entry>Disco</entry>
+          </row>
+          <row>
+            <entry>005</entry>
+            <entry>Funk</entry>
+          </row>
+          <row>
+            <entry>006</entry>
+            <entry>Grunge</entry>
+          </row>
+          <row>
+            <entry>007</entry>
+            <entry>Hip-Hop</entry>
+          </row>
+          <row>
+            <entry>008</entry>
+            <entry>Jazz</entry>
+          </row>
+          <row>
+            <entry>009</entry>
+            <entry>Metal</entry>
+          </row>
+          <row>
+            <entry>010</entry>
+            <entry>New Age</entry>
+          </row>
+          <row>
+            <entry>011</entry>
+            <entry>Oldies</entry>
+          </row>
+          <row>
+            <entry>012</entry>
+            <entry>Other</entry>
+          </row>
+          <row>
+            <entry>013</entry>
+            <entry>Pop</entry>
+          </row>
+          <row>
+            <entry>014</entry>
+            <entry>R&amp;B</entry>
+          </row>
+          <row>
+            <entry>015</entry>
+            <entry>Rap</entry>
+          </row>
+          <row>
+            <entry>016</entry>
+            <entry>Reggae</entry>
+          </row>
+          <row>
+            <entry>017</entry>
+            <entry>Rock</entry>
+          </row>
+          <row>
+            <entry>018</entry>
+            <entry>Techno</entry>
+          </row>
+          <row>
+            <entry>019</entry>
+            <entry>Industrial</entry>
+          </row>
+          <row>
+            <entry>020</entry>
+            <entry>Alternative</entry>
+          </row>
+          <row>
+            <entry>021</entry>
+            <entry>Ska</entry>
+          </row>
+          <row>
+            <entry>022</entry>
+            <entry>Death Metal</entry>
+          </row>
+          <row>
+            <entry>023</entry>
+            <entry>Pranks</entry>
+          </row>
+          <row>
+            <entry>024</entry>
+            <entry>Soundtrack</entry>
+          </row>
+          <row>
+            <entry>025</entry>
+            <entry>Euro-Techno</entry>
+          </row>
+          <row>
+            <entry>026</entry>
+            <entry>Ambient</entry>
+          </row>
+          <row>
+            <entry>027</entry>
+            <entry>Trip-Hop</entry>
+          </row>
+          <row>
+            <entry>028</entry>
+            <entry>Vocal</entry>
+          </row>
+          <row>
+            <entry>029</entry>
+            <entry>Jazz+Funk</entry>
+          </row>
+          <row>
+            <entry>030</entry>
+            <entry>Fusion</entry>
+          </row>
+          <row>
+            <entry>031</entry>
+            <entry>Trance</entry>
+          </row>
+          <row>
+            <entry>032</entry>
+            <entry>Classical</entry>
+          </row>
+          <row>
+            <entry>033</entry>
+            <entry>Instrumental</entry>
+          </row>
+          <row>
+            <entry>034</entry>
+            <entry>Acid</entry>
+          </row>
+          <row>
+            <entry>035</entry>
+            <entry>House</entry>
+          </row>
+          <row>
+            <entry>036</entry>
+            <entry>Game</entry>
+          </row>
+          <row>
+            <entry>037</entry>
+            <entry>Sound Clip</entry>
+          </row>
+          <row>
+            <entry>038</entry>
+            <entry>Gospel</entry>
+          </row>
+          <row>
+            <entry>039</entry>
+            <entry>Noise</entry>
+          </row>
+          <row>
+            <entry>040</entry>
+            <entry>AlternRock</entry>
+          </row>
+          <row>
+            <entry>041</entry>
+            <entry>Bass</entry>
+          </row>
+          <row>
+            <entry>042</entry>
+            <entry>Soul</entry>
+          </row>
+          <row>
+            <entry>043</entry>
+            <entry>Punk</entry>
+          </row>
+          <row>
+            <entry>044</entry>
+            <entry>Space</entry>
+          </row>
+          <row>
+            <entry>045</entry>
+            <entry>Meditative</entry>
+          </row>
+          <row>
+            <entry>046</entry>
+            <entry>Instrumental Pop</entry>
+          </row>
+          <row>
+            <entry>047</entry>
+            <entry>Instrumental Rock</entry>
+          </row>
+          <row>
+            <entry>048</entry>
+            <entry>Ethnic</entry>
+          </row>
+          <row>
+            <entry>049</entry>
+            <entry>Gothic</entry>
+          </row>
+          <row>
+            <entry>050</entry>
+            <entry>Darkwave</entry>
+          </row>
+          <row>
+            <entry>051</entry>
+            <entry>Techno-Industrial</entry>
+          </row>
+          <row>
+            <entry>052</entry>
+            <entry>Electronic</entry>
+          </row>
+          <row>
+            <entry>053</entry>
+            <entry>Pop-Folk</entry>
+          </row>
+          <row>
+            <entry>054</entry>
+            <entry>Eurodance</entry>
+          </row>
+          <row>
+            <entry>055</entry>
+            <entry>Dream</entry>
+          </row>
+          <row>
+            <entry>056</entry>
+            <entry>Southern Rock</entry>
+          </row>
+          <row>
+            <entry>057</entry>
+            <entry>Comedy</entry>
+          </row>
+          <row>
+            <entry>058</entry>
+            <entry>Cult</entry>
+          </row>
+          <row>
+            <entry>059</entry>
+            <entry>Gangsta</entry>
+          </row>
+          <row>
+            <entry>060</entry>
+            <entry>Top 40</entry>
+          </row>
+          <row>
+            <entry>061</entry>
+            <entry>Christian Rap</entry>
+          </row>
+          <row>
+            <entry>062</entry>
+            <entry>Pop/Funk</entry>
+          </row>
+          <row>
+            <entry>063</entry>
+            <entry>Jungle</entry>
+          </row>
+          <row>
+            <entry>064</entry>
+            <entry>Native American</entry>
+          </row>
+          <row>
+            <entry>065</entry>
+            <entry>Cabaret</entry>
+          </row>
+          <row>
+            <entry>066</entry>
+            <entry>New Wave</entry>
+          </row>
+          <row>
+            <entry>067</entry>
+            <entry>Psychadelic</entry>
+          </row>
+          <row>
+            <entry>068</entry>
+            <entry>Rave</entry>
+          </row>
+          <row>
+            <entry>069</entry>
+            <entry>Showtunes</entry>
+          </row>
+          <row>
+            <entry>070</entry>
+            <entry>Trailer</entry>
+          </row>
+          <row>
+            <entry>071</entry>
+            <entry>Lo-Fi</entry>
+          </row>
+          <row>
+            <entry>072</entry>
+            <entry>Tribal</entry>
+          </row>
+          <row>
+            <entry>073</entry>
+            <entry>Acid Punk</entry>
+          </row>
+          <row>
+            <entry>074</entry>
+            <entry>Acid Jazz</entry>
+          </row>
+          <row>
+            <entry>075</entry>
+            <entry>Polka</entry>
+          </row>
+          <row>
+            <entry>076</entry>
+            <entry>Retro</entry>
+          </row>
+          <row>
+            <entry>077</entry>
+            <entry>Musical</entry>
+          </row>
+          <row>
+            <entry>078</entry>
+            <entry>Rock &amp; Roll</entry>
+          </row>
+          <row>
+            <entry>079</entry>
+            <entry>Hard Rock</entry>
+          </row>
+          <row>
+            <entry>080</entry>
+            <entry>Folk</entry>
+          </row>
+          <row>
+            <entry>081</entry>
+            <entry>Folk-Rock</entry>
+          </row>
+          <row>
+            <entry>082</entry>
+            <entry>National Folk</entry>
+          </row>
+          <row>
+            <entry>083</entry>
+            <entry>Swing</entry>
+          </row>
+          <row>
+            <entry>084</entry>
+            <entry>Fast Fusion</entry>
+          </row>
+          <row>
+            <entry>085</entry>
+            <entry>Bebob</entry>
+          </row>
+          <row>
+            <entry>086</entry>
+            <entry>Latin</entry>
+          </row>
+          <row>
+            <entry>087</entry>
+            <entry>Revival</entry>
+          </row>
+          <row>
+            <entry>088</entry>
+            <entry>Celtic</entry>
+          </row>
+          <row>
+            <entry>089</entry>
+            <entry>Bluegrass</entry>
+          </row>
+          <row>
+            <entry>090</entry>
+            <entry>Avantgarde</entry>
+          </row>
+          <row>
+            <entry>091</entry>
+            <entry>Gothic Rock</entry>
+          </row>
+          <row>
+            <entry>092</entry>
+            <entry>Progressive Rock</entry>
+          </row>
+          <row>
+            <entry>093</entry>
+            <entry>Psychedelic Rock</entry>
+          </row>
+          <row>
+            <entry>094</entry>
+            <entry>Symphonic Rock</entry>
+          </row>
+          <row>
+            <entry>095</entry>
+            <entry>Slow Rock</entry>
+          </row>
+          <row>
+            <entry>096</entry>
+            <entry>Big Band</entry>
+          </row>
+          <row>
+            <entry>097</entry>
+            <entry>Chorus</entry>
+          </row>
+          <row>
+            <entry>098</entry>
+            <entry>Easy Listening</entry>
+          </row>
+          <row>
+            <entry>099</entry>
+            <entry>Acoustic</entry>
+          </row>
+          <row>
+            <entry>100</entry>
+            <entry>Humour</entry>
+          </row>
+          <row>
+            <entry>101</entry>
+            <entry>Speech</entry>
+          </row>
+          <row>
+            <entry>102</entry>
+            <entry>Chanson</entry>
+          </row>
+          <row>
+            <entry>103</entry>
+            <entry>Opera</entry>
+          </row>
+          <row>
+            <entry>104</entry>
+            <entry>Chamber Music</entry>
+          </row>
+          <row>
+            <entry>105</entry>
+            <entry>Sonata</entry>
+          </row>
+          <row>
+            <entry>106</entry>
+            <entry>Symphony</entry>
+          </row>
+          <row>
+            <entry>107</entry>
+            <entry>Booty Bass</entry>
+          </row>
+          <row>
+            <entry>108</entry>
+            <entry>Primus</entry>
+          </row>
+          <row>
+            <entry>109</entry>
+            <entry>Porn Groove</entry>
+          </row>
+          <row>
+            <entry>110</entry>
+            <entry>Satire</entry>
+          </row>
+          <row>
+            <entry>111</entry>
+            <entry>Slow Jam</entry>
+          </row>
+          <row>
+            <entry>112</entry>
+            <entry>Club</entry>
+          </row>
+          <row>
+            <entry>113</entry>
+            <entry>Tango</entry>
+          </row>
+          <row>
+            <entry>114</entry>
+            <entry>Samba</entry>
+          </row>
+          <row>
+            <entry>115</entry>
+            <entry>Folklore</entry>
+          </row>
+          <row>
+            <entry>116</entry>
+            <entry>Ballad</entry>
+          </row>
+          <row>
+            <entry>117</entry>
+            <entry>Power Ballad</entry>
+          </row>
+          <row>
+            <entry>118</entry>
+            <entry>Rhythmic Soul</entry>
+          </row>
+          <row>
+            <entry>119</entry>
+            <entry>Freestyle</entry>
+          </row>
+          <row>
+            <entry>120</entry>
+            <entry>Duet</entry>
+          </row>
+          <row>
+            <entry>121</entry>
+            <entry>Punk Rock</entry>
+          </row>
+          <row>
+            <entry>122</entry>
+            <entry>Drum Solo</entry>
+          </row>
+          <row>
+            <entry>123</entry>
+            <entry>A capella</entry>
+          </row>
+          <row>
+            <entry>124</entry>
+            <entry>Euro-House</entry>
+          </row>
+          <row>
+            <entry>125</entry>
+            <entry>Dance Hall</entry>
+          </row>
+          <row>
+            <entry>126</entry>
+            <entry>Goa</entry>
+          </row>
+          <row>
+            <entry>127</entry>
+            <entry>Drum &amp; Bass</entry>
+          </row>
+          <row>
+            <entry>128</entry>
+            <entry>Club-House</entry>
+          </row>
+          <row>
+            <entry>129</entry>
+            <entry>Hardcore</entry>
+          </row>
+          <row>
+            <entry>130</entry>
+            <entry>Terror</entry>
+          </row>
+          <row>
+            <entry>131</entry>
+            <entry>Indie</entry>
+          </row>
+          <row>
+            <entry>132</entry>
+            <entry>BritPop</entry>
+          </row>
+          <row>
+            <entry>133</entry>
+            <entry>Negerpunk</entry>
+          </row>
+          <row>
+            <entry>134</entry>
+            <entry>Polsk Punk</entry>
+          </row>
+          <row>
+            <entry>135</entry>
+            <entry>Beat</entry>
+          </row>
+          <row>
+            <entry>136</entry>
+            <entry>Christian Gangsta Rap</entry>
+          </row>
+          <row>
+            <entry>137</entry>
+            <entry>Heavy Metal</entry>
+          </row>
+          <row>
+            <entry>138</entry>
+            <entry>Black Metal</entry>
+          </row>
+          <row>
+            <entry>139</entry>
+            <entry>Crossover</entry>
+          </row>
+          <row>
+            <entry>140</entry>
+            <entry>Contemporary Christian</entry>
+          </row>
+          <row>
+            <entry>141</entry>
+            <entry>Christian Rock</entry>
+          </row>
+          <row>
+            <entry>142</entry>
+            <entry>Merengue</entry>
+          </row>
+          <row>
+            <entry>143</entry>
+            <entry>Salsa</entry>
+          </row>
+          <row>
+            <entry>144</entry>
+            <entry>Trash Metal</entry>
+          </row>
+          <row>
+            <entry>145</entry>
+            <entry>Anime</entry>
+          </row>
+          <row>
+            <entry>146</entry>
+            <entry>JPop</entry>
+          </row>
+          <row>
+            <entry>147</entry>
+            <entry>Synthpop</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+  </refsect1>
+
+  <refsect1>
     <title>See Also</title>
     <para>
+      <citerefentry><refentrytitle>mlm-analyze</refentrytitle><manvolnum>1</manvolnum></citerefentry>,
       <citerefentry><refentrytitle>mlm-copy</refentrytitle><manvolnum>1</manvolnum></citerefentry>.
     </para>
   </refsect1>
