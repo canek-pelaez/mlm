@@ -115,6 +115,7 @@
     <style>
     body {
       width: 900px;
+      font-family: sans-serif;
     }
 
     a.headerlink {
