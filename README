@@ -46,7 +46,7 @@ The utilities are:
 * mlm-tags: Command line tool to modify or print the standard tags
   of a file or group of files.
 
-* mlm-verify: Command lin tool to verify that an MP3 file follows
+* mlm-verify: Command line tool to verify that an MP3 file follows
   the MLM standard.
 
 All the command line utilities accept a `--help` argument that
