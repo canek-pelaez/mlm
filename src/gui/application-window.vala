@@ -267,7 +267,7 @@ namespace MLM {
             popover.add(bar);
 
             reencode.bind_property("active", popover, "visible",
-                                   GLib.BindingFlags.INVERT_BOOLEAN);
+                                   GLib.BindingFlags.BIDIRECTIONAL);
             popover.notify["visible"].connect(popover_visibility_changed);
             ignore_popover = false;
         }
