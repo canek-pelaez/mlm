@@ -9,4 +9,4 @@ src/gui/media.vala
 src/gui/player.vala
 src/tags/tags.vala
 src/verify/verify.vala
-[type: gettext/glade]data/mlm.ui
+data/mlm.ui

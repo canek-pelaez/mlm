@@ -3,64 +3,63 @@
 # This file is distributed under the same license as the mlm package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: mlm 0.1\n"
-"Report-Msgid-Bugs-To: https://github.com/canek-pelaez/mlm/issues\n"
-"POT-Creation-Date: 2016-11-11 16:05-0600\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Report-Msgid-Bugs-To: canek@ciencias.unam.mx\n"
+"POT-Creation-Date: 2016-08-05 18:12-0500\n"
+"PO-Revision-Date: 2016-08-05 18:26-0500\n"
+"Last-Translator: Canek Peláez <canek@ciencias.unam.mx>\n"
+"Language-Team: Spanish <canek@ciencias.unam.mx>\n"
+"Language: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/gui/application.vala:49
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: src/gui/application.vala:50
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
 #: src/gui/application.vala:184
 msgid "A Gtk+ based music library maintainer"
-msgstr ""
+msgstr "Un administrador de bibliotecas musicales basado en Gtk+"
 
 #: src/gui/application-window.vala:261
 msgid "Reencoding..."
-msgstr ""
+msgstr "Reencodeando..."
 
 #: src/gui/application-window.vala:299
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: src/gui/application-window.vala:300
 msgid "_Open"
-msgstr ""
+msgstr "_Abrir"
 
 #: src/gui/application-window.vala:311
 #, c-format
 msgid "There was an error loading image '%s'"
-msgstr ""
+msgstr "Ocurrió un arror al cargar la imagen '%s'"
 
 #: src/gui/application-window.vala:318
 msgid "Select image for artist"
-msgstr ""
+msgstr "Seleccione la imagen para el artista"
 
 #: src/gui/application-window.vala:325
 msgid "Select image for cover"
-msgstr ""
+msgstr "Seleccione la imagen para la portada"
 
 #: src/gui/application-window.vala:499
 msgid "Could not set pixbuf from data."
-msgstr ""
+msgstr "No se pudo definir el pixbuf de los datos."
 
 #: src/gui/application-window.vala:535
 msgid "Warning"
-msgstr ""
+msgstr "Advertencia"
 
 #: data/mlm.ui:13
 msgid "Blues"
@@ -656,136 +655,136 @@ msgstr ""
 
 #: data/mlm.ui:666
 msgid "Previous MP3"
-msgstr ""
+msgstr "Anterior MP3"
 
 #: data/mlm.ui:682
 msgid "Next MP3"
-msgstr ""
+msgstr "Siguiente MP3"
 
 #: data/mlm.ui:703
 msgid "Save tags to MP3"
-msgstr ""
+msgstr "Guardar etiquetas al MP3"
 
 #: data/mlm.ui:723
 msgid "Reencode MP3"
-msgstr ""
+msgstr "Reencodear MP3"
 
 #: data/mlm.ui:771
 msgid "_Artist"
-msgstr ""
+msgstr "_Artista"
 
 #: data/mlm.ui:785
 msgid "Main artist name"
-msgstr ""
+msgstr "Nombre del artista principal"
 
 #: data/mlm.ui:799
 msgid "_Title"
-msgstr ""
+msgstr "_Título"
 
 #: data/mlm.ui:813
 msgid "Title of the track"
-msgstr ""
+msgstr "Título de la pista"
 
 #: data/mlm.ui:827
 msgid "A_lbum"
-msgstr ""
+msgstr "Á_lbum"
 
 #: data/mlm.ui:841
 msgid "Album name"
-msgstr ""
+msgstr "Nombre del álbum"
 
 #: data/mlm.ui:855
 msgid "Album _band"
-msgstr ""
+msgstr "_Banda del álbum"
 
 #: data/mlm.ui:869
 msgid "Album band"
-msgstr ""
+msgstr "Banda del álbum"
 
 #: data/mlm.ui:883
 msgid "_Year"
-msgstr ""
+msgstr "_Año"
 
 #: data/mlm.ui:899
 msgid "Year of release"
-msgstr ""
+msgstr "Año de lanzamiento"
 
 #: data/mlm.ui:912
 msgid "_Disc"
-msgstr ""
+msgstr "_Disco"
 
 #: data/mlm.ui:928
 msgid "Disc number"
-msgstr ""
+msgstr "Número de disco"
 
 #: data/mlm.ui:941
 msgid "T_rack"
-msgstr ""
+msgstr "_Pista"
 
 #: data/mlm.ui:957
 msgid "Track number"
-msgstr ""
+msgstr "Número de pista"
 
 #: data/mlm.ui:970
 msgid "T_otal"
-msgstr ""
+msgstr "T_otal"
 
 #: data/mlm.ui:986
 msgid "Total number of tracks"
-msgstr ""
+msgstr "Número total de pistas"
 
 #: data/mlm.ui:999
 msgid "_Genre"
-msgstr ""
+msgstr "_Género"
 
 #: data/mlm.ui:1022
 msgid "Genre of the track"
-msgstr ""
+msgstr "Género de la pista"
 
 #: data/mlm.ui:1038
 msgid "_Comment"
-msgstr ""
+msgstr "_Comentario"
 
 #: data/mlm.ui:1052
 msgid "Track comment"
-msgstr ""
+msgstr "Comentario de la pista"
 
 #: data/mlm.ui:1066
 msgid "Compo_ser"
-msgstr ""
+msgstr "Compo_sitor"
 
 #: data/mlm.ui:1069 data/mlm.ui:1081
 msgid "Track composer"
-msgstr ""
+msgstr "Compositor de la pista"
 
 #: data/mlm.ui:1095
 msgid "Origi_nal artist"
-msgstr ""
+msgstr "Artista origi_nal"
 
 #: data/mlm.ui:1109
 msgid "Original artist"
-msgstr ""
+msgstr "Artista original"
 
 #: data/mlm.ui:1141 data/mlm.ui:1163
 msgid "Front cover"
-msgstr ""
+msgstr "Portada frontal"
 
 #: data/mlm.ui:1186 data/mlm.ui:1300
 msgid "Open image"
-msgstr ""
+msgstr "Abrir imagen"
 
 #: data/mlm.ui:1208 data/mlm.ui:1322
 msgid "Clear image"
-msgstr ""
+msgstr "Limpiar imagen"
 
 #: data/mlm.ui:1256 data/mlm.ui:1278
 msgid "Artist"
-msgstr ""
+msgstr "Artista"
 
 #: data/mlm.ui:1376
 msgid "Reproduce MP3"
-msgstr ""
+msgstr "Reproducir MP3"
 
 #: data/mlm.ui:1417
 msgid "<b>Filename</b>"
-msgstr ""
+msgstr "<b>Nombre de archivo</b>"
