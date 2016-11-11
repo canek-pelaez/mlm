@@ -145,6 +145,11 @@ namespace MLM {
                 GLib.DirUtils.create(directory, 0755);
 
             for (int i = 1; i < args.length; i++) {
+                if (!GLib.FileUtils.test(args[i], GLib.FileTest.EXISTS)) {
+                    GLib.warning("The file “%s” does not exists. Skipping.",
+                                 args[i]);
+                    continue;
+                }
                 var accommodator = new Accommodator(args[i]);
                 int r = accommodator.accommodate();
                 if (r != ReturnCode.OK)
