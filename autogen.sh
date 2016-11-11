@@ -8,7 +8,6 @@ test -z "${srcdir}" && srcdir=.
 mkdir -p m4
 
 autoreconf -v --force --install
-intltoolize -f -c
 
 if [ -z "${NOCONFIGURE}" ]; then
     "${srcdir}"/configure $@

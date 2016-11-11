@@ -6,6 +6,7 @@
 .deps
 .dirstamp
 .libs
+ABOUT-NLS
 Makefile
 Makefile.in
 aclocal.m4
