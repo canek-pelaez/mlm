@@ -429,6 +429,8 @@ namespace MLM {
                     _year = int.parse(frame.get_text());
                 } else if (frame.id == FrameId.TRACK) {
                     string track = frame.get_text();
+                    if (track == null)
+                        continue;
                     if (track.index_of("/") != -1) {
                         string[] t = track.split("/");
                         _track = int.parse(t[0]);
@@ -441,6 +443,8 @@ namespace MLM {
                     _disc = int.parse(frame.get_text());
                 } else if (frame.id == FrameId.GENRE) {
                     var g = frame.get_text();
+                    if (g == null)
+                        continue;
                     var genres = Genre.all();
                     for (int j = 0; j < genres.length; j++)
                         if (g == genres[j].to_string())
