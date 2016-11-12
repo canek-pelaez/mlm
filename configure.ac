@@ -1,7 +1,7 @@
 # Initialization
 AC_INIT([mlm], [0.1], [https://github.com/canek-pelaez/mlm/issues],
         [mlm], [https://github.com/canek-pelaez/mlm])
-AC_CONFIG_SRCDIR([src/gui/main.vala])
+AC_CONFIG_SRCDIR([src/application/main.vala])
 
 # Directories and files
 AC_CONFIG_MACRO_DIR([m4])

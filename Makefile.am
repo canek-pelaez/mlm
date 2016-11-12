@@ -59,13 +59,13 @@ lib_libmlm_la_LIBADD =						\
 bin_PROGRAMS = src/mlm
 
 src_mlm_SOURCES =						\
-	src/gui/application-window.vala				\
-	src/gui/application.vala				\
-	src/gui/encoder.vala					\
-	src/gui/main.vala					\
-	src/gui/media.vala					\
-	src/gui/player.vala					\
-	src/gui/resources.c					\
+	src/application/application-window.vala			\
+	src/application/application.vala			\
+	src/application/encoder.vala				\
+	src/application/main.vala				\
+	src/application/media.vala				\
+	src/application/player.vala				\
+	src/application/resources.c				\
 	vapi/mlm.vapi
 
 src_mlm_VALAFLAGS =						\
@@ -232,7 +232,7 @@ resource_files = 						\
 	$(top_srcdir)/data/mlm.css				\
 	$(top_srcdir)/data/mlm.ui
 
-src/gui/resources.c: $(gresource_file) $(resource_files)
+src/application/resources.c: $(gresource_file) $(resource_files)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) 			\
 		--target=$@					\
 		--sourcedir=$(top_srcdir)/data			\
