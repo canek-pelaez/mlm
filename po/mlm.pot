@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mlm 0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/canek-pelaez/mlm/issues\n"
-"POT-Creation-Date: 2016-11-11 16:05-0600\n"
+"POT-Creation-Date: 2016-11-11 20:14-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,48 +17,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gui/application.vala:49
+#: src/application/application.vala:49
 msgid "About"
 msgstr ""
 
-#: src/gui/application.vala:50
+#: src/application/application.vala:50
 msgid "Quit"
 msgstr ""
 
-#: src/gui/application.vala:184
+#: src/application/application.vala:184
 msgid "A Gtk+ based music library maintainer"
 msgstr ""
 
-#: src/gui/application-window.vala:261
+#: src/application/application-window.vala:261
 msgid "Reencoding..."
 msgstr ""
 
-#: src/gui/application-window.vala:299
+#: src/application/application-window.vala:299
 msgid "_Cancel"
 msgstr ""
 
-#: src/gui/application-window.vala:300
+#: src/application/application-window.vala:300
 msgid "_Open"
 msgstr ""
 
-#: src/gui/application-window.vala:311
+#: src/application/application-window.vala:311
 #, c-format
 msgid "There was an error loading image '%s'"
 msgstr ""
 
-#: src/gui/application-window.vala:318
+#: src/application/application-window.vala:318
 msgid "Select image for artist"
 msgstr ""
 
-#: src/gui/application-window.vala:325
+#: src/application/application-window.vala:325
 msgid "Select image for cover"
 msgstr ""
 
-#: src/gui/application-window.vala:499
+#: src/application/application-window.vala:499
 msgid "Could not set pixbuf from data."
 msgstr ""
 
-#: src/gui/application-window.vala:535
+#: src/application/application-window.vala:535
 msgid "Warning"
 msgstr ""
 

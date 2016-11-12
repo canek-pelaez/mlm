@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mlm 0.1\n"
-"Report-Msgid-Bugs-To: canek@ciencias.unam.mx\n"
-"POT-Creation-Date: 2016-08-05 18:12-0500\n"
+"Report-Msgid-Bugs-To: https://github.com/canek-pelaez/mlm/issues\n"
+"POT-Creation-Date: 2016-11-11 20:14-0600\n"
 "PO-Revision-Date: 2016-08-05 18:26-0500\n"
 "Last-Translator: Canek Peláez <canek@ciencias.unam.mx>\n"
 "Language-Team: Spanish <canek@ciencias.unam.mx>\n"
@@ -16,48 +16,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gui/application.vala:49
+#: src/application/application.vala:49
 msgid "About"
 msgstr "Acerca de"
 
-#: src/gui/application.vala:50
+#: src/application/application.vala:50
 msgid "Quit"
 msgstr "Salir"
 
-#: src/gui/application.vala:184
+#: src/application/application.vala:184
 msgid "A Gtk+ based music library maintainer"
 msgstr "Un administrador de bibliotecas musicales basado en Gtk+"
 
-#: src/gui/application-window.vala:261
+#: src/application/application-window.vala:261
 msgid "Reencoding..."
 msgstr "Reencodeando..."
 
-#: src/gui/application-window.vala:299
+#: src/application/application-window.vala:299
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: src/gui/application-window.vala:300
+#: src/application/application-window.vala:300
 msgid "_Open"
 msgstr "_Abrir"
 
-#: src/gui/application-window.vala:311
+#: src/application/application-window.vala:311
 #, c-format
 msgid "There was an error loading image '%s'"
 msgstr "Ocurrió un arror al cargar la imagen '%s'"
 
-#: src/gui/application-window.vala:318
+#: src/application/application-window.vala:318
 msgid "Select image for artist"
 msgstr "Seleccione la imagen para el artista"
 
-#: src/gui/application-window.vala:325
+#: src/application/application-window.vala:325
 msgid "Select image for cover"
 msgstr "Seleccione la imagen para la portada"
 
-#: src/gui/application-window.vala:499
+#: src/application/application-window.vala:499
 msgid "Could not set pixbuf from data."
 msgstr "No se pudo definir el pixbuf de los datos."
 
-#: src/gui/application-window.vala:535
+#: src/application/application-window.vala:535
 msgid "Warning"
 msgstr "Advertencia"
 
