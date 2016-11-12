@@ -29,7 +29,7 @@ namespace MLM {
             INVALID_OUTPUT_DIR  = 4,
             INVALID_DESTINATION = 5,
             NOT_ENOUGH_INFO     = 6,
-            COPY_ERROR          = 7
+            COPY_ERROR          = 7;
         }
 
         private static string directory;
