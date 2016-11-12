@@ -24,7 +24,7 @@ namespace MLM {
         private enum ReturnCode {
             OK               = 0,
             INVALID_ARGUMENT = 1,
-            MISSING_FILES    = 2
+            MISSING_FILES    = 2;
         }
 
         private Id3Tag.Tag tag;
