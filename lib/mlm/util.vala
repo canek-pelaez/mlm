@@ -27,7 +27,7 @@ namespace MLM {
         BLUE   = 4,
         PURPLE = 5,
         CYAN   = 6,
-        NONE   = 999
+        NONE   = 999;
     }
 
     public class Util {
