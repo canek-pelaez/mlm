@@ -25,7 +25,7 @@ namespace MLM {
             OK               = 0,
             INVALID_ARGUMENT = 1,
             MISSING_ARGUMENT = 2,
-            NO_SUCH_FILE     = 3
+            NO_SUCH_FILE     = 3;
         }
 
         private string source;
