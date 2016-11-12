@@ -1,3 +1,4 @@
+*.gmo
 Makevars.template
 Rules-quot
 boldquot.sed

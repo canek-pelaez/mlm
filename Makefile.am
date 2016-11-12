@@ -1,4 +1,5 @@
 AUTOMAKE_OPTIONS = subdir-objects
+SUBDIRS = po
 
 # ===== global
 
@@ -261,8 +262,6 @@ EXTRA_DIST =							\
 DISTCLEANFILES =						\
 	src/mlm.h						\
 	vapi/mlm.vapi
-
-SUBDIRS = po
 
 # ====== man pages
 
