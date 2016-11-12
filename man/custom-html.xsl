@@ -134,6 +134,10 @@
     h1:hover > a.headerlink, h2:hover > a.headerlink, h3:hover > a.headerlink, dt:hover > a.headerlink {
       visibility: visible;
     }
+
+    table {
+      border-collapse: collapse;
+    }
     </style>
     <span style="float:right">
       <xsl:text>mlm </xsl:text>
