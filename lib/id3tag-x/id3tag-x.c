@@ -22,6 +22,7 @@
 #include <string.h>
 #include "id3tag-x.h"
 
+/* Searches a frame by id. */
 struct id3_frame*
 id3_tag_search_frame(struct id3_tag* tag,
                      const char*     id)
@@ -35,6 +36,7 @@ id3_tag_search_frame(struct id3_tag* tag,
         return NULL;
 }
 
+/* Searches a picture frame by type. */
 struct id3_frame*
 id3_tag_search_picture_frame(struct id3_tag*       tag,
                              enum id3_picture_type ptype)
@@ -55,6 +57,7 @@ id3_tag_search_picture_frame(struct id3_tag*       tag,
         return NULL;
 }
 
+/* Creates a text frame.*/
 struct id3_frame*
 id3_tag_create_text_frame(struct id3_tag* tag,
                           const char*     id)
@@ -69,6 +72,7 @@ id3_tag_create_text_frame(struct id3_tag* tag,
         return frame;
 }
 
+/* Creates a comment frame. */
 struct id3_frame*
 id3_tag_create_comment_frame(struct id3_tag* tag,
                              const char*     lang)
@@ -85,6 +89,7 @@ id3_tag_create_comment_frame(struct id3_tag* tag,
         return frame;
 }
 
+/* Creates a picture frame. */
 struct id3_frame*
 id3_tag_create_picture_frame(struct id3_tag*       tag,
                              enum id3_picture_type ptype)
@@ -108,6 +113,7 @@ id3_tag_create_picture_frame(struct id3_tag*       tag,
         return frame;
 }
 
+/* Returns the text of a id3 frame. */
 char*
 id3_frame_get_text(struct id3_frame* frame)
 {
@@ -125,6 +131,7 @@ id3_frame_get_text(struct id3_frame* frame)
         return NULL;
 }
 
+/* Sets the text of an id3 frame. */
 void
 id3_frame_set_text(struct id3_frame* frame,
                    const char*       text)
@@ -144,6 +151,7 @@ id3_frame_set_text(struct id3_frame* frame,
         }
 }
 
+/* Returns the comment text of an id3 frame. */
 char*
 id3_frame_get_comment_text(struct id3_frame* frame)
 {
@@ -159,6 +167,7 @@ id3_frame_get_comment_text(struct id3_frame* frame)
         return NULL;
 }
 
+/* Sets the comment text of an id3 frame. */
 void
 id3_frame_set_comment_text(struct id3_frame* frame,
                            const char*       text)
@@ -174,6 +183,7 @@ id3_frame_set_comment_text(struct id3_frame* frame,
         }
 }
 
+/* Returns the picture data of an id3 frame. */
 unsigned char*
 id3_frame_get_picture(struct id3_frame*     frame,
                       enum id3_picture_type ptype,
@@ -198,6 +208,7 @@ id3_frame_get_picture(struct id3_frame*     frame,
         return NULL;
 }
 
+/* Sets the picture data of an id3 frame. */
 void
 id3_frame_set_picture(struct id3_frame* frame,
                       unsigned char*    bytes,
@@ -217,6 +228,7 @@ id3_frame_set_picture(struct id3_frame* frame,
         }
 }
 
+/* Returns the picture description of an id3 frame. */
 char*
 id3_frame_get_picture_description(struct id3_frame* frame)
 {
@@ -230,6 +242,7 @@ id3_frame_get_picture_description(struct id3_frame* frame)
         return NULL;
 }
 
+/* Sets the picture description of an id3 frame. */
 void
 id3_frame_set_picture_description(struct id3_frame* frame,
                                   const char*       desc)
@@ -245,6 +258,7 @@ id3_frame_set_picture_description(struct id3_frame* frame,
         }
 }
 
+/* Returns the binary data of an id3 frame. */
 union id3_field*
 id3_frame_get_binary_field(struct id3_frame* frame)
 {
@@ -258,6 +272,7 @@ id3_frame_get_binary_field(struct id3_frame* frame)
         return NULL;
 }
 
+/* Returns the picture type of an id3 frame. */
 enum id3_picture_type
 id3_frame_get_picture_type(struct id3_frame* frame)
 {

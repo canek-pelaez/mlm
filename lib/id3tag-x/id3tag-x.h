@@ -22,7 +22,10 @@
 #ifndef _ID3TAG_EXTRA_H
 #define _ID3TAG_EXTRA_H
 
-/* http://id3lib.sourceforge.net/id3/id3v2.4.0-structure.txt */
+/**
+ * Enumeration of types of picture.
+ * http://id3lib.sourceforge.net/id3/id3v2.4.0-structure.txt
+ */
 enum id3_picture_type {
         ID3_PICTURETYPE_OTHER         = 0,  /* Other */
         ID3_PICTURETYPE_PNG32ICON     = 1,  /* 32x32 pixels 'file icon' (PNG only) */
@@ -47,33 +50,130 @@ enum id3_picture_type {
         ID3_PICTURETYPE_PUBLISHERLOGO = 20  /* Publisher/Studio logotype */
 };
 
+/**
+ * Searches a frame by id.
+ * @param tag the id3 tag.
+ * @param id the id of the frame.
+ * @return the frame with the given id, or NULL if not found.
+ */
 struct id3_frame*     id3_tag_search_frame               (struct id3_tag*       tag,
                                                           const char*           id);
+
+/**
+ * Searches a picture frame by type.
+ * @param tag the id3 tag.
+ * @param ptype the picture type.
+ * @return the frame with the given type, or NULL if not found.
+ */
 struct id3_frame*     id3_tag_search_picture_frame       (struct id3_tag*       tag,
                                                           enum id3_picture_type ptype);
+
+/**
+ * Creates a text frame.
+ * @param tag the id3 tag.
+ * @param id the id of the new text frame.
+ * @return a newly created text frame with the given id.
+ */
 struct id3_frame*     id3_tag_create_text_frame          (struct id3_tag*       tag,
                                                           const char*           id);
+
+/**
+ * Creates a comment frame.
+ * @param tag the id3 tag.
+ * @param lang the language of the new comment frame.
+ * @return a newly created comment frame with the given language.
+ */
 struct id3_frame*     id3_tag_create_comment_frame       (struct id3_tag*       tag,
                                                           const char*           lang);
+
+/**
+ * Creates a picture frame.
+ * @param tag the id3 tag.
+ * @param ptype the picture type of the new picture frame.
+ * @return a newly created picture frame with the given picture type.
+ */
 struct id3_frame*     id3_tag_create_picture_frame       (struct id3_tag*       tag,
                                                           enum id3_picture_type ptype);
+
+/**
+ * Returns the text of an id3 frame.
+ * @param frame the id3 frame.
+ * @return the text of the id3 frame, or NULL if the frame has no text.
+ */
 char*                 id3_frame_get_text                 (struct id3_frame*     frame);
+
+/**
+ * Sets the text of an id3 frame.
+ * @param frame the id3 frame.
+ * @param text the new text of the id3 frame.
+ */
 void                  id3_frame_set_text                 (struct id3_frame*     frame,
                                                           const char*           text);
+
+/**
+ * Returns the comment text of an id3 frame.
+ * @param frame the id3 frame.
+ * @return the comment text of the id3 frame, or NULL if the frame is not text.
+ */
 char*                 id3_frame_get_comment_text         (struct id3_frame*     frame);
+
+/**
+ * Sets the comment text of an id3 frame.
+ * @param frame the id3 frame.
+ * @param text the new comment text of the id3 frame.
+ */
 void                  id3_frame_set_comment_text         (struct id3_frame*     frame,
                                                           const char*           text);
+
+/**
+ * Returns the picture data of an id3 frame.
+ * @param frame the id3 frame.
+ * @param ptype the picture type.
+ * @param[out] length the picture data length.
+ * @return the picture data, or NULL if there is no picture data.
+ */
 unsigned char*        id3_frame_get_picture              (struct id3_frame*     frame,
                                                           enum id3_picture_type ptype,
                                                           int*                  length);
+
+/**
+ * Sets the picture data of an id3 frame.
+ * @param frame the id3 frame.
+ * @param bytes the new picture data.
+ * @param length the new picture data length.
+ */
 void                  id3_frame_set_picture              (struct id3_frame*     frame,
                                                           unsigned char*        bytes,
                                                           unsigned int          length,
                                                           const char*           desc);
+
+/**
+ * Returns the picture description of an id3 frame.
+ * @param frame the id3 frame.
+ * @return the picture description, or NULL if there is no picture description.
+ */
 char*                 id3_frame_get_picture_description  (struct id3_frame*     frame);
+
+/**
+ * Sets the picture description of an id3 frame.
+ * @param frame the id3 frame.
+ * @param desc the new picture description.
+ */
 void                  id3_frame_set_picture_description  (struct id3_frame*     frame,
                                                           const char*           desc);
+
+/**
+ * Returns the binary data of an id3 frame.
+ * @param frame the id3 frame.
+ * @return the binary data of an id3 frame, or NULL if there is no binary data.
+ */
 union id3_field*      id3_frame_get_binary_data          (struct id3_frame*     frame);
+
+/**
+ * Returns the picture type of an id3 frame.
+ * @param frame the id3 frame.
+ * @return the picture type of the frame.
+ */
 enum id3_picture_type id3_frame_get_picture_type         (struct id3_frame*     frame);
 
 #endif /* _ID3TAG_EXTRA_H */
