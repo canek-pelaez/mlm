@@ -2,9 +2,9 @@
 Name=MLM
 GenericName=Music Library Maintainer
 Comment=Edit, Normalize and Encode MP3 so the music library is consistent
-Exec=mlm %F
+Exec=mlm-gui %F
 Terminal=false
 Type=Application
-Icon=mlm-gui
+Icon=mlm
 Categories=GNOME;GTK;AudioVideo;
 MimeType=audio/x-mp3;audio/x-mpeg;audio/mpeg;
