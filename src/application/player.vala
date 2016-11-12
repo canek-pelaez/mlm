@@ -24,7 +24,7 @@ namespace MLM {
         public enum Status {
             RESET,
             PLAYING,
-            PAUSED
+            PAUSED;
         }
 
         public signal void status_changed(Player.Status status);
