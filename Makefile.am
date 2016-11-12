@@ -57,9 +57,9 @@ lib_libmlm_la_LIBADD =						\
 
 # ====== mlm
 
-bin_PROGRAMS = src/mlm
+bin_PROGRAMS = src/mlm-gui
 
-src_mlm_SOURCES =						\
+src_mlm_gui_SOURCES =						\
 	src/application/application-window.vala			\
 	src/application/application.vala			\
 	src/application/encoder.vala				\
@@ -69,7 +69,7 @@ src_mlm_SOURCES =						\
 	src/application/resources.c				\
 	vapi/mlm.vapi
 
-src_mlm_VALAFLAGS =						\
+src_mlm_gui_VALAFLAGS =						\
 	$(COMMON_VALAFLAGS)					\
 	@GEE_PACKAGES@						\
 	@GSTREAMER_PACKAGES@					\
@@ -78,14 +78,14 @@ src_mlm_VALAFLAGS =						\
 	--pkg config						\
 	--gresources $(gresource_file)
 
-src_mlm_CFLAGS =						\
+src_mlm_gui_CFLAGS =						\
 	@GEE_CFLAGS@						\
 	@GSTREAMER_CFLAGS@					\
 	@GTK_CFLAGS@						\
 	-I$(srcdir)/lib/mlm					\
 	-w
 
-src_mlm_LDADD =							\
+src_mlm_gui_LDADD =						\
 	@GEE_LIBS@						\
 	@GSTREAMER_LIBS@					\
 	@GTK_LIBS@						\

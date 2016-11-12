@@ -123,7 +123,9 @@ namespace MLM {
             { null }
         };
 
-        private static const string desc =
+        private static const string CONTEXT =
+            "[FILES...] - Edit and show MP3 files tags";
+        private static const string DESCRIPTION =
             """With no flags the standard tags are printed. An empty string as parameter
 removes an individual tag. You can only use the -F or -A flags with one MP3
 file.
@@ -405,10 +407,10 @@ Format for printing:
         public static int main(string[] args) {
             GLib.Intl.setlocale(GLib.LocaleCategory.ALL, "");
             try {
-                var opt = new GLib.OptionContext("FILES... - Edit and show MP3 files tags");
+                var opt = new GLib.OptionContext(CONTEXT);
                 opt.set_help_enabled(true);
                 opt.add_main_entries(options, null);
-                opt.set_description(desc);
+                opt.set_description(DESCRIPTION);
                 opt.parse(ref args);
             } catch (GLib.Error e) {
                 return error(e.message, ReturnCode.INVALID_ARGUMENT);

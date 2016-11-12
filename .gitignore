@@ -20,7 +20,7 @@ m4
 man/*.1
 man/*.html
 src/*/*.c
-src/mlm*
+src/mlm-*
 stamp-h1
 stamp-it
 vapi/mlm.vapi
