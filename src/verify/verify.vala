@@ -25,7 +25,7 @@ namespace MLM {
         NONE             = 0,
         FIXIT            = 1,
         MISSING_PICTURES = 1 << 1,
-        SMALL_PICTURES   = 1 << 2
+        SMALL_PICTURES   = 1 << 2;
     }
 
     public class Verifier {
