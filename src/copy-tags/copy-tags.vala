@@ -21,11 +21,11 @@ namespace MLM {
 
     public class CopyTags {
 
-        private enum ReturnCode {
-            OK               = 0,
-            INVALID_ARGUMENT = 1,
-            MISSING_ARGUMENT = 2,
-            NO_SUCH_FILE     = 3;
+        private enum ExitCode {
+            OK,
+            INVALID_ARGUMENT,
+            MISSING_ARGUMENT,
+            NO_SUCH_FILE;
         }
 
         private string source;
@@ -76,45 +76,44 @@ namespace MLM {
             Util.set_file_time(source, time);
         }
 
-        public static int error(string message,
-                                int    return_code,
-                                string command = "mlm-copy-tags",
-                                bool   help = false) {
-            stderr.printf("%s\n", message);
-            if (help)
-                stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
-            return return_code;
-        }
+        private static const string CONTEXT =
+            "SOURCE TARGET - Copy Id3v2.4.0 tags";
+
+        private static const string DESCRIPTION =
+            "The SOURCE and TARGET MP3 files need to exist.\n";
 
         public static int main(string[] args) {
             try {
-                var opt = new GLib.OptionContext("SOURCE TARGET - Copy Id3v2.4.0 tags");
+                var opt = new GLib.OptionContext(CONTEXT);
                 opt.set_help_enabled(true);
+                opt.set_description(DESCRIPTION);
                 opt.parse(ref args);
             } catch (GLib.OptionError e) {
-                return error(e.message, ReturnCode.INVALID_ARGUMENT,
-                             args[0], true);
+                Util.error(true, ExitCode.INVALID_ARGUMENT, args[0],
+                           e.message);
             }
 
             if (args.length != 3)
-                return error("Missing SOURCE and/or TARGET",
-                             ReturnCode.MISSING_ARGUMENT, args[0], true);
+                Util.error(true, ExitCode.MISSING_ARGUMENT, args[0],
+                           "Missing SOURCE and/or TARGET MP3 files");
 
             string source = args[1];
             string target = args[2];
 
             if (!FileUtils.test(source, FileTest.EXISTS))
-                return error("The source file ‘%s’ does not exists.".printf(source),
-                             ReturnCode.NO_SUCH_FILE);
+                Util.error(false, ExitCode.NO_SUCH_FILE, args[0],
+                           "The source file ‘%s’ does not exists.",
+                           source);
 
             if (!FileUtils.test(target, FileTest.EXISTS))
-                return error("The target file ‘%s’ does not exists.".printf(target),
-                             ReturnCode.NO_SUCH_FILE);
+                Util.error(false, ExitCode.NO_SUCH_FILE, args[0],
+                           "The target file ‘%s’ does not exists.",
+                           target);
 
             var ct = new CopyTags(source, target);
             ct.copy();
 
-            return ReturnCode.OK;
+            return ExitCode.OK;
         }
     }
 }

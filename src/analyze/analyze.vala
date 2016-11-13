@@ -21,7 +21,7 @@ namespace MLM {
 
     public class Analyzer {
 
-        private enum ReturnCode {
+        private enum ExitCode {
             OK               = 0,
             INVALID_ARGUMENT = 1,
             MISSING_FILES    = 2;
@@ -228,7 +228,7 @@ namespace MLM {
             case Id3Tag.FieldType.BINARYDATA:
                 stdout.printf("\t%s: %s bytes\n",
                               Util.color("Binary data", Color.BLUE),
-                              Util.color("%d".printf(field.binary_data.length),
+                              Util.color("%'d".printf(field.binary_data.length),
                                          Color.YELLOW));
                 break;
             default:
@@ -241,9 +241,8 @@ namespace MLM {
                           Util.color("Frame", Color.BLUE),
                           Util.color(frame.id, Color.YELLOW),
                           Util.color(frame.description, Color.CYAN));
-            for (int i = 0; i < frame.fields.length; i++) {
+            for (int i = 0; i < frame.fields.length; i++)
                 analyze_field(frame, frame.field(i));
-            }
         }
 
         public void analyze() {
@@ -251,50 +250,49 @@ namespace MLM {
                 stderr.printf("%s: No such file.\n", filename);
                 return;
             }
-            Id3Tag.File file = new Id3Tag.File(filename, Id3Tag.FileMode.READONLY);
+            Id3Tag.File file = new Id3Tag.File(filename,
+                                               Id3Tag.FileMode.READONLY);
             if (file == null) {
                 stderr.printf("%s: Could not link to file.\n", filename);
                 return;
             }
             tag = file.tag();
             if (tag == null) {
-                stderr.printf("%s: Could not extract tags from file.\n", filename);
+                stderr.printf("%s: Could not extract tags from file.\n",
+                              filename);
                 return;
             }
             if (tag.frames.length == 0)
                 stderr.printf("%s: File has no frames.\n", filename);
-            for (int i = 0; i < tag.frames.length; i++) {
+            for (int i = 0; i < tag.frames.length; i++)
                 analyze_frame(tag.frames[i]);
-            }
             file.close();
         }
 
-        public static int error(string message,
-                                int    return_code,
-                                string command) {
-            stderr.printf("error: %s\n", message);
-            stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
-            return return_code;
-        }
+        private static const string CONTEXT =
+            "[FILE...] - Analyze Id3v2.4.0 tags";
 
         public static int main(string[] args) {
+            Util.set_locale(GLib.LocaleCategory.NUMERIC);
             try {
-                var opt_context = new OptionContext("FILE... - Analyze Id3v2.4.0 tags");
+                var opt_context = new OptionContext(CONTEXT);
                 opt_context.set_help_enabled(true);
                 opt_context.parse(ref args);
             } catch (GLib.OptionError e) {
-                return error(e.message, ReturnCode.INVALID_ARGUMENT, args[0]);
+                Util.error(true, ExitCode.INVALID_ARGUMENT, args[0],
+                           e.message);
             }
 
             if (args.length < 2)
-                return error("Missing MP3 file(s)", ReturnCode.MISSING_FILES, args[0]);
+                Util.error(true, ExitCode.MISSING_FILES, args[0],
+                           "Missing MP3 file(s)");
 
             for (int i = 1; i < args.length; i++) {
                 Analyzer a = new Analyzer(args[i]);
                 a.analyze();
             }
 
-            return ReturnCode.OK;
+            return ExitCode.OK;
         }
     }
 }

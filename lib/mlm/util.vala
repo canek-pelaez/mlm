@@ -104,5 +104,37 @@ namespace MLM {
             should_colorize = GLib.Environment.get_variable(MLM_DONT_COLORIZE) != "1";
             return should_colorize;
         }
+
+        public static void set_locale(GLib.LocaleCategory category) {
+            switch (category) {
+            case GLib.LocaleCategory.ALL:      break;
+            case GLib.LocaleCategory.COLLATE:  break;
+            case GLib.LocaleCategory.CTYPE:    break;
+            case GLib.LocaleCategory.MESSAGES: break;
+            case GLib.LocaleCategory.MONETARY: break;
+            case GLib.LocaleCategory.NUMERIC:
+                var NUMERIC = GLib.Environment.get_variable("LC_NUMERIC");
+                if (NUMERIC == null)
+                    NUMERIC = GLib.Environment.get_variable("LANG");
+                GLib.Intl.setlocale(GLib.LocaleCategory.NUMERIC, NUMERIC);
+                break;
+            case GLib.LocaleCategory.TIME:     break;
+            }
+        }
+
+        [PrintfFormat]
+        public static void error(bool   help,
+                                 int    code,
+                                 string command,
+                                 string format,
+                                 ...) {
+            string full_format = "error: " + format + "\n";
+            var list = va_list();
+            stdout.vprintf(full_format, list);
+            if (help)
+                stderr.printf("Run ‘%s --help’ for a list of options.\n",
+                              command);
+            Process.exit(code);
+        }
     }
 }

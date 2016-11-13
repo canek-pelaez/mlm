@@ -17,45 +17,50 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
-extern void exit(int exit_code);
-
 namespace MLM {
 
-    public enum Options {
-        NONE             = 0,
-        FIXIT            = 1,
-        MISSING_PICTURES = 1 << 1,
-        SMALL_PICTURES   = 1 << 2;
-    }
-
     public class Verifier {
+
+        private enum ExitCode {
+            OK,
+            INVALID_ARGUMENT,
+            NO_SUCH_FILE;
+        }
+
+        private static bool fixit;
+        private static bool missing_pictures;
+        private static bool small_pictures;
+
+        private const GLib.OptionEntry[] options = {
+            { "fixit", 'f', 0, GLib.OptionArg.NONE, ref fixit,
+              "Automatically fix what is fixable", null },
+            { "missing-pictures", 'm', 0, GLib.OptionArg.NONE,
+              ref missing_pictures, "Warn about missing pictures", null },
+            { "small-pictures", 's', 0, GLib.OptionArg.NONE,
+              ref small_pictures, "Warn about small pictures", null },
+            { null }
+        };
 
         private Id3Tag.Tag tag;
         private string filename;
         private string report;
         private bool anomalies;
-        private bool fixit;
-        private bool missing_pictures;
-        private bool small_pictures;
         private int current_year;
 
-        public Verifier(string filename, int options) {
+        public Verifier(string filename) {
             this.filename = filename;
             report = "";
             anomalies = false;
 
-            if ((options & Options.FIXIT) != 0)
-                fixit = true;
-            if ((options & Options.MISSING_PICTURES) != 0)
-                missing_pictures = true;
-            if ((options & Options.SMALL_PICTURES) != 0)
-                small_pictures = true;
             var dt = new DateTime.now_local();
             current_year = dt.get_year();
         }
 
-        private void add_to_report(string s) {
+        [PrintfFormat]
+        private void add_to_report(string format, ...) {
             anomalies = true;
+            var list = va_list();
+            string s = format.vprintf(list);
             report += Util.color(s, Color.RED);
         }
 
@@ -95,7 +100,8 @@ namespace MLM {
                 var field = frame.field(i);
                 if (field.type == Id3Tag.FieldType.TEXTENCODING &&
                     field.gettextencoding() != te) {
-                    add_to_report("\tThe %s encoding is not %s.\n".printf(fid, tedesc));
+                    add_to_report("\tThe %s encoding is not %s.\n",
+                                  fid, tedesc);
                     if (fixit) {
                         field.settextencoding(te);
                         add_to_report("\t\t...fixed.\n");
@@ -109,21 +115,21 @@ namespace MLM {
                                        bool         check_empty) {
             verify_frame_textencoding(frame, fid);
             if (check_empty && frame.get_text() == "")
-                add_to_report("\nThe %s frame is empty.\n".printf(fid));
+                add_to_report("\nThe %s frame is empty.\n", fid);
         }
 
         private void verify_year_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "year");
             int year = int.parse(frame.get_text());
             if (year < 1900 || year > current_year)
-                add_to_report("\tThe year %d is out of range.\n".printf(year));
+                add_to_report("\tThe year %d is out of range.\n", year);
         }
 
         private int verify_disc_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "disc");
             int disc = int.parse(frame.get_text());
             if (disc < 1 || disc > 99)
-                add_to_report("\tThe disc %d is out of range.\n".printf(disc));
+                add_to_report("\tThe disc %d is out of range.\n", disc);
             return disc;
         }
 
@@ -141,18 +147,19 @@ namespace MLM {
                     if (g == genres[i].to_string())
                         n = i;
                 if (n != -1) {
-                    add_to_report("\tThe genre %s is not in numerical format.\n".printf(g));
+                    add_to_report("\tThe genre %s is not in numerical " +
+                                  "format.\n", g);
                     if (fixit) {
                         frame.set_text("%d".printf(n));
                         add_to_report("\t\t...fixed.\n");
                     }
                 } else {
-                    add_to_report("\tThe genre %s is not valid.\n".printf(g));
+                    add_to_report("\tThe genre %s is not valid.\n", g);
                 }
             } else {
                 n = int.parse(g);
                 if (n < 0 || n >= genres.length)
-                    add_to_report("\tThe genre %s is invalid.\n".printf(g));
+                    add_to_report("\tThe genre %s is invalid.\n", g);
             }
         }
 
@@ -195,15 +202,18 @@ namespace MLM {
                 var field = frame.field(i);
                 if (field.type == Id3Tag.FieldType.TEXTENCODING &&
                     field.gettextencoding() != Id3Tag.FieldTextEncoding.UTF_8)
-                    add_to_report("\tThe picture text encoding is not UTF-8.\n");
+                    add_to_report("\tThe picture text encoding is not " +
+                                  "UTF-8.\n");
                 if (field.type == Id3Tag.FieldType.LATIN1 &&
                     (string)field.getlatin1() != "image/jpeg")
-                    add_to_report("\tThe picture mime type is not 'image/jpeg'.\n");
+                    add_to_report("\tThe picture mime type is not " +
+                                  "'image/jpeg'.\n");
                 if (field.type == Id3Tag.FieldType.INT8) {
                     pt = (Id3Tag.PictureType)field.getint();
                     if (pt != Id3Tag.PictureType.COVERFRONT &&
                         pt != Id3Tag.PictureType.ARTIST) {
-                        add_to_report("\tThe picture type is neither cover front nor artist.\n");
+                        add_to_report("\tThe picture type is neither cover " +
+                                      "front nor artist.\n");
                         if (fixit)
                             detach = true;
                     }
@@ -229,8 +239,9 @@ namespace MLM {
                 if (pixbuf != null) {
                     int max = int.max(pixbuf.width, pixbuf.height);
                     if (max < 500)
-                        add_to_report("\tThe %s longest side is ".printf(ptype) +
-                                      "less than 500 pixels (%d).\n".printf(max));
+                        add_to_report("\tThe %s longest side is " +
+                                      "less than 500 pixels (%d).\n",
+                                      ptype, max);
                 }
             }
             var desc = frame.get_picture_description();
@@ -238,7 +249,8 @@ namespace MLM {
                 add_to_report("\tThe picture description is empty.\n");
             }
             if (desc.has_prefix("(No Disc)") && desc == "(No Disc) cover") {
-                add_to_report("\tThe picture description '%s' is redundant.\n".printf(desc));
+                add_to_report("\tThe picture description '%s' is redundant.\n",
+                              desc);
                 if (fixit) {
                     frame.set_picture_description("(No Disc)");
                     add_to_report("\t\t...fixed.\n");
@@ -250,8 +262,10 @@ namespace MLM {
             if (album_frame == null)
                 return;
             var album = album_frame.get_text();
-            if (pt == Id3Tag.PictureType.COVERFRONT && desc != album + " cover") {
-                add_to_report("\tThe front cover description is not correct.\n");
+            if (pt == Id3Tag.PictureType.COVERFRONT && desc !=
+                album + " cover") {
+                add_to_report("\tThe front cover description is " +
+                              "not correct.\n");
                 if (fixit) {
                     frame.set_picture_description(album + " cover");
                     add_to_report("\t\t...fixed.\n");
@@ -267,17 +281,21 @@ namespace MLM {
                 add_to_report("\tTrack count missing.\n");
                 tn = int.parse(t);
                 if (tn < 1 || tn > 99)
-                    add_to_report("\tThe track number %d is out of range.\n".printf(tn));
+                    add_to_report("\tThe track number %d is out of range.\n",
+                                  tn);
             } else {
                 var tt = t.split("/");
                 tn = int.parse(tt[0]);
                 tc = int.parse(tt[1]);
                 if (tn < 1 || tn > 99)
-                    add_to_report("\tThe track number %d is out of range.\n".printf(tn));
+                    add_to_report("\tThe track number %d is out of range.\n",
+                                  tn);
                 if (tc < 1 || tc > 99)
-                    add_to_report("\tThe track count %d is out of range.\n".printf(tc));
+                    add_to_report("\tThe track count %d is out of range.\n",
+                                  tc);
                 if (tc < tn)
-                    add_to_report("\tThe track count %d is less than the track number.\n".printf(tn));
+                    add_to_report("\tThe track count %d is less than the " +
+                                  "track number.\n", tn);
             }
             return tn;
         }
@@ -294,7 +312,8 @@ namespace MLM {
             }
             tag = file.tag();
             if (tag == null) {
-                stderr.printf("%s: Could not extract tags from file.\n", filename);
+                stderr.printf("%s: Could not extract tags from file.\n",
+                              filename);
                 return;
             }
             report = "%s:\n".printf(Util.color(filename, Color.CYAN));
@@ -321,7 +340,8 @@ namespace MLM {
                     title = frame.get_text();
                     var tt = to_title(title);
                     if (tt != title) {
-                        add_to_report("\tThe title %s is not in title format.\n".printf(title));
+                        add_to_report("\tThe title %s is not in title " +
+                                      "format.\n", title);
                         if (fixit) {
                             title = tt;
                             frame.set_text(title);
@@ -361,7 +381,7 @@ namespace MLM {
                 }
             }
             foreach (var frame in invalid) {
-                add_to_report("\tThe frame '%s' is invalid.\n".printf(frame.id));
+                add_to_report("\tThe frame '%s' is invalid.\n", frame.id);
                 if (fixit) {
                     tag.detachframe(frame);
                     add_to_report("\t\t...fixed.\n");
@@ -374,7 +394,8 @@ namespace MLM {
             if (title == "")
                 add_to_report("\tThe file has no title defined.\n");
             if (fcp > 1)
-                add_to_report("\tFile has more than one front cover picture.\n");
+                add_to_report("\tFile has more than one front cover " +
+                              "picture.\n");
             if (ap > 1)
                 add_to_report("\tFile has more than one artist picture.\n");
             if (missing_pictures && fcp < 1)
@@ -396,14 +417,17 @@ namespace MLM {
             string cn2 = artist + " - " + title + ".mp3";
             string cn3 = disc + " - " + track + " - " + artist + " - " + title + ".mp3";
             if (bn != cn1 && bn != cn2 && bn != cn3) {
-                add_to_report("\tFile it's not called '%s' nor '%s' nor '%s'.\n".printf(cn1, cn2, cn3));
+                add_to_report("\tFile it's not called '%s' nor '%s' nor '%s'.\n", cn1, cn2, cn3);
                 if (fixit) {
                     if (bn.data[0] >= (int)'0' && bn.data[0] <= (int)'9')
-                        FileUtils.rename(filename, dn + Path.DIR_SEPARATOR_S + cn1);
+                        FileUtils.rename(filename, dn +
+                                         Path.DIR_SEPARATOR_S + cn1);
                     else if (bn.has_prefix("Disc"))
-                        FileUtils.rename(filename, dn + Path.DIR_SEPARATOR_S + cn3);
+                        FileUtils.rename(filename, dn +
+                                         Path.DIR_SEPARATOR_S + cn3);
                     else
-                        FileUtils.rename(filename, dn + Path.DIR_SEPARATOR_S + cn2);
+                        FileUtils.rename(filename, dn +
+                                         Path.DIR_SEPARATOR_S + cn2);
                     add_to_report("\t\t...fixed.\n");
                 }
             }
@@ -411,48 +435,30 @@ namespace MLM {
                 stdout.printf(report);
         }
 
-        private static void use() {
-            stdout.printf(
-"""Use: mlm-verify [OPTIONS] FILE ...
-
-OPTIONS:
-    --help              Print this help.
-    --fix               Automatically fix what is fixable.
-    --missing-pictures  Warn about missing pictures.
-    --small-pictures    Warn about small pictures.
-""");
-            exit(1);
-        }
+        private static const string CONTEXT =
+            "[FILE...] - Verify MP3 files";
 
         public static int main(string[] args) {
-            int options = Options.NONE;
-            var files = new Gee.ArrayList<string>();
-
-            if (args.length < 2)
-                use();
-
-            for (int i = 1; i < args.length; i++) {
-                if (args[i].has_prefix("--")) {
-                    if (args[i] == "--fix") {
-                        options |= Options.FIXIT;
-                    } else if (args[i] == "--missing-pictures") {
-                        options |= Options.MISSING_PICTURES;
-                    } else if (args[i] == "--small-pictures") {
-                        options |= Options.SMALL_PICTURES;
-                    } else {
-                        use();
-                    }
-                    continue;
-                }
-                files.add(args[i]);
+            try {
+                var opt = new GLib.OptionContext(CONTEXT);
+                opt.set_help_enabled(true);
+                opt.add_main_entries(options, null);
+                opt.parse(ref args);
+            } catch (GLib.OptionError e) {
+                Util.error(true, ExitCode.INVALID_ARGUMENT, args[0],
+                           e.message);
             }
 
-            foreach (string file in files) {
-                Verifier v = new Verifier(file, options);
+            if (args.length < 2)
+                Util.error(true, ExitCode.NO_SUCH_FILE, args[0],
+                           "Missing MP3 file(s)");
+
+            for (int i = 1; i < args.length; i++) {
+                Verifier v = new Verifier(args[i]);
                 v.verify();
             }
 
-            return 0;
+            return ExitCode.OK;
         }
     }
 }

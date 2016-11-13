@@ -21,18 +21,20 @@ namespace MLM {
 
     public class Accommodator {
 
-        private enum ReturnCode {
-            OK                  = 0,
-            INVALID_ARGUMENT    = 1,
-            MISSING_OUTPUT_DIR  = 2,
-            MISSING_FILES       = 3,
-            INVALID_OUTPUT_DIR  = 4,
-            INVALID_DESTINATION = 5,
-            NOT_ENOUGH_INFO     = 6,
-            COPY_ERROR          = 7;
+        private enum ExitCode {
+            OK,
+            INVALID_ARGUMENT,
+            MISSING_OUTPUT_DIR,
+            MISSING_FILES,
+            INVALID_OUTPUT_DIR,
+            INVALID_DESTINATION,
+            NOT_ENOUGH_INFO,
+            COPY_ERROR,
+            NO_SUCH_FILE;
         }
 
         private static string directory;
+        private static string prog_name;
 
         private const GLib.OptionEntry[] options = {
             { "output", 'o', 0, GLib.OptionArg.FILENAME, ref directory,
@@ -49,6 +51,9 @@ namespace MLM {
         private int track = -1;
 
         public Accommodator(string filename) {
+            if (!FileUtils.test(filename, FileTest.EXISTS))
+                Util.error(false, ExitCode.NO_SUCH_FILE, prog_name,
+                           "The file ‘%s’ does not exist.", filename);
             this.filename = filename;
             var tags = new FileTags(filename);
             if (tags.artist != null)
@@ -65,10 +70,11 @@ namespace MLM {
             track = tags.track;
         }
 
-        public int accommodate() {
+        public void accommodate() {
             if (artist == null || title == null || album == null)
-                return error("Not enough information to accomodate ‘%s’".printf(filename),
-                             ReturnCode.NOT_ENOUGH_INFO);
+                Util.error(false, ExitCode.NOT_ENOUGH_INFO, prog_name,
+                           "Not enough information to accomodate ‘%s’",
+                           filename);
             var letter = band.get_char(0).to_string();
 
             string[] subdirs = { letter, band, album };
@@ -78,15 +84,16 @@ namespace MLM {
                 if (!GLib.FileUtils.test(dir, GLib.FileTest.EXISTS)) {
                     GLib.DirUtils.create(dir, 0755);
                 } else if (!GLib.FileUtils.test(dir, GLib.FileTest.IS_DIR)) {
-                    return error("Invalid destination",
-                                 ReturnCode.INVALID_DESTINATION);
+                    Util.error(false, ExitCode.INVALID_DESTINATION, prog_name,
+                               "Invalid destination");
                 }
             }
 
             string dest = "";
 
             if (disc != -1 && track != -1)
-                dest = "%s/%d_-_%02d_-_%s_-_%s.mp3".printf(dir, disc, track, artist, title);
+                dest = "%s/%d_-_%02d_-_%s_-_%s.mp3".printf(dir, disc, track,
+                                                           artist, title);
             else
                 dest = "%s/%s_-_%s.mp3".printf(dir, artist, title);
 
@@ -97,66 +104,55 @@ namespace MLM {
                 src.copy(dst, GLib.FileCopyFlags.OVERWRITE);
                 Util.set_file_time(dest, time);
             } catch (GLib.Error e) {
-                return error(e.message, ReturnCode.COPY_ERROR);
+                Util.error(false, ExitCode.COPY_ERROR, prog_name, e.message);
             }
             stdout.printf("Copied\t‘%s’\ninto\t‘%s’\n",
                           Util.color(src.get_basename(), Color.RED),
                           Util.color(dst.get_basename(), Color.GREEN));
-            return 0;
         }
 
-        private static int error(string error,
-                                 int    return_code,
-                                 string command = "mlm-accommodator",
-                                 bool   help = false) {
-            stderr.printf("error: %s\n", error);
-            if (help)
-                stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
-            return return_code;
-        }
+        private static const string CONTEXT =
+            "[FILE...] - Accommodate MP3 files";
 
         public static int main(string[] args) {
+            prog_name = args[0];
             try {
-                var opt = new GLib.OptionContext("FILE... - Accommodate MP3 files");
+                var opt = new GLib.OptionContext(CONTEXT);
                 opt.set_help_enabled(true);
                 opt.add_main_entries(options, null);
                 opt.parse(ref args);
             } catch (GLib.OptionError e) {
-                return error(e.message, ReturnCode.INVALID_ARGUMENT);
+                Util.error(true, ExitCode.INVALID_ARGUMENT, prog_name,
+                           e.message);
             }
 
             if (directory == null)
-                return error("Missing output directory",
-                             ReturnCode.MISSING_OUTPUT_DIR,
-                             args[0], true);
+                Util.error(true, ExitCode.MISSING_OUTPUT_DIR, prog_name,
+                           "Missing output directory");
 
             if (args.length < 2)
-                return error("Missing MP3 file(s)",
-                             ReturnCode.MISSING_FILES,
-                             args[0], true);
+                Util.error(true, ExitCode.MISSING_FILES, prog_name,
+                    "Missing MP3 file(s)");
 
             if (GLib.FileUtils.test(directory, GLib.FileTest.EXISTS) &&
                 !GLib.FileUtils.test(directory, GLib.FileTest.IS_DIR))
-                return error("Invalid output directory",
-                             ReturnCode.INVALID_OUTPUT_DIR,
-                             args[0], true);
+                Util.error(true, ExitCode.INVALID_OUTPUT_DIR, prog_name,
+                           "Invalid output directory: %s", directory);
 
             if (!GLib.FileUtils.test(directory, GLib.FileTest.EXISTS))
                 GLib.DirUtils.create(directory, 0755);
 
             for (int i = 1; i < args.length; i++) {
                 if (!GLib.FileUtils.test(args[i], GLib.FileTest.EXISTS)) {
-                    GLib.warning("The file “%s” does not exists. Skipping.",
-                                 args[i]);
+                    stderr.printf("The file “%s” does not exists. Skipping.",
+                                  prog_name);
                     continue;
                 }
                 var accommodator = new Accommodator(args[i]);
-                int r = accommodator.accommodate();
-                if (r != ReturnCode.OK)
-                    return r;
+                accommodator.accommodate();
             }
 
-            return ReturnCode.OK;
+            return ExitCode.OK;
         }
     }
 }

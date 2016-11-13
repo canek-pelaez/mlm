@@ -1,42 +1,44 @@
-/*
- * This file is part of mlm.
+/* tags.vala - This file is part of mlm.
  *
- * Copyright 2013-2014 Canek Peláez Valdés
+ * Copyright © 2013 - 2016 Canek Peláez Valdés
  *
- * mlm is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * mlm is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with mlm. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *    Canek Peláez Valdés <canek@ciencias.unam.mx>
  */
 
 namespace MLM {
 
     public class Tags {
 
-        private enum ReturnCode {
-            OK                  = 0,
-            IMAGE_FOR_MANY      = 1,
-            INVALID_ARGUMENT    = 2,
-            INVALID_DISC        = 3,
-            INVALID_GENRE       = 4,
-            INVALID_IMAGE_FILE  = 5,
-            INVALID_TRACK       = 6,
-            INVALID_YEAR        = 7,
-            MISSING_FILES       = 8,
-            NO_ID3_PICTURE      = 9,
-            NO_ID3_TAGS         = 10,
-            NO_IMAGE_FILE       = 11,
-            NO_SUCH_FILE        = 12,
-            READING_ERROR       = 13,
-            WRITING_ERROR       = 14;
+        private enum ExitCode {
+            OK,
+            IMAGE_FOR_MANY,
+            INVALID_ARGUMENT,
+            INVALID_DISC,
+            INVALID_GENRE,
+            INVALID_IMAGE_FILE,
+            INVALID_TRACK,
+            INVALID_YEAR,
+            MISSING_FILES,
+            NO_ID3_PICTURE,
+            NO_ID3_TAGS,
+            NO_IMAGE_FILE,
+            NO_SUCH_FILE,
+            READING_ERROR,
+            WRITING_ERROR;
         }
 
         private enum PictureType {
@@ -49,6 +51,8 @@ namespace MLM {
         private static const int MAX_TRACK = 99;
         private static const int MIN_DISC  = 1;
         private static const int MAX_DISC  = 99;
+
+        private static string prog_name = null;
 
         private static string  artist;
         private static string  title;
@@ -124,9 +128,9 @@ namespace MLM {
         };
 
         private static const string CONTEXT =
-            "[FILES...] - Edit and show MP3 files tags";
+            "[FILE...] - Edit and show MP3 files tags";
         private static const string DESCRIPTION =
-            """With no flags the standard tags are printed. An empty string as parameter
+"""With no flags the standard tags are printed. An empty string as parameter
 removes an individual tag. You can only use the -F or -A flags with one MP3
 file.
 
@@ -149,14 +153,14 @@ Format for printing:
   %o: Original artist
 """;
 
-        private static int print_genres() {
+        private static void print_genres() {
             var genres = Genre.all();
             stdout.printf("Supported genres:\n");
             for (int i = 0; i < genres.length; i++)
                 stdout.printf("   %s %s\n",
                               Util.color("%03d".printf(i), Color.BLUE),
                               Util.color(genres[i].to_string(), Color.YELLOW));
-            return ReturnCode.OK;
+            Process.exit(ExitCode.OK);
         }
 
         private static void print_standard_tags(string filename) {
@@ -275,22 +279,21 @@ Format for printing:
             ft.remove_tags();
         }
 
-        private static int save_picture(string      filename,
-                                        string      picture,
-                                        PictureType picture_type) {
-            if (!FileUtils.test(filename, FileTest.EXISTS)) {
-                return error("No such file: ‘%s’".printf(filename),
-                             ReturnCode.NO_IMAGE_FILE);
-            }
-            if (!picture.has_suffix(".jpg")) {
-                var m = "The file ‘%s’ does not have a ‘.jpg’ extension.".printf(picture);
-                return error(m, ReturnCode.INVALID_IMAGE_FILE);
-            }
+        private static void save_picture(string      filename,
+                                         string      picture,
+                                         PictureType picture_type) {
+            if (!FileUtils.test(filename, FileTest.EXISTS))
+                Util.error(false, ExitCode.NO_IMAGE_FILE, prog_name,
+                           "No such file: ‘%s’", filename);
+            if (!picture.has_suffix(".jpg"))
+                Util.error(false, ExitCode.INVALID_IMAGE_FILE, prog_name,
+                           "The file ‘%s’ does not have a ‘.jpg’ extension.",
+                           picture);
             var file_tags = new FileTags(filename);
-            if (!file_tags.has_tags) {
-                var m = "The file ‘%s’ has no ID3 v2.4.0 tags.".printf(filename);
-                return error(m, ReturnCode.NO_ID3_TAGS);
-            }
+            if (!file_tags.has_tags)
+                Util.error(false, ExitCode.NO_ID3_TAGS, prog_name,
+                           "The file ‘%s’ has no ID3 v2.4.0 tags.",
+                           filename);
             unowned uint8[] data = null;
             string type = null;
             switch (picture_type) {
@@ -303,26 +306,21 @@ Format for printing:
                 type = "artist";
                 break;
             }
-
-            if (data == null) {
-                var m = "The file ‘%s’ has no %s picture.".printf(filename, type);
-                return error(m, ReturnCode.NO_ID3_PICTURE);
-            }
+            if (data == null)
+                Util.error(false, ExitCode.NO_ID3_PICTURE, prog_name,
+                           "The file ‘%s’ has no %s picture.", filename, type);
             GLib.FileStream file = GLib.FileStream.open(picture, "w");
-            if (file == null) {
-                var m = "There was an error writing to ‘%s’.".printf(picture);
-                return error(m, ReturnCode.WRITING_ERROR);
-            }
+            if (file == null)
+                Util.error(false, ExitCode.WRITING_ERROR, prog_name,
+                           "There was an error writing to ‘%s’.", picture);
             file.write(data);
             file = null;
-            return ReturnCode.OK;
         }
 
-        private static int update_tags(string filename) {
-            if (!FileUtils.test(filename, FileTest.EXISTS)) {
-                var m = "No such file: ‘%s’".printf(filename);
-                return error(m, ReturnCode.NO_SUCH_FILE);
-            }
+        private static void update_tags(string filename) {
+            if (!FileUtils.test(filename, FileTest.EXISTS))
+                Util.error(false, ExitCode.NO_SUCH_FILE, prog_name,
+                           "No such file: ‘%s’", filename);
             var ft = new FileTags(filename);
             if (artist != null)
                 ft.artist = artist;
@@ -343,16 +341,16 @@ Format for printing:
                 ft.total = total;
             } else if (s_track != null) {
                 if (ft.total != -1 && track > ft.total)
-                    return error("The track cannot be greater than the total",
-                                 ReturnCode.INVALID_TRACK);
+                    Util.error(false, ExitCode.INVALID_TRACK, prog_name,
+                               "The track cannot be greater than the total");
                 ft.track = track;
             } else if (s_total != null) {
                 if (ft.track == -1)
-                    return error("The total cannot be set if the track is not",
-                                 ReturnCode.INVALID_TRACK);
+                    Util.error(false, ExitCode.INVALID_TRACK, prog_name,
+                               "The total cannot be set if the track is not");
                 if (total != -1 && ft.track > total)
-                    return error("The total cannot be less than the track",
-                                 ReturnCode.INVALID_TRACK);
+                    Util.error(false, ExitCode.INVALID_TRACK, prog_name,
+                               "The total cannot be less than the track");
                 ft.total = total;
             }
             if (s_disc != null)
@@ -367,24 +365,14 @@ Format for printing:
                 ft.band = band;
 
             ft.update();
-            return ReturnCode.OK;
-        }
-
-        private static int error(string error,
-                                 int    return_code,
-                                 string command      = "mlm-tags",
-                                 bool   help         = false) {
-            stderr.printf("error: %s\n", error);
-            if (help)
-                stderr.printf("Run ‘%s --help’ for a list of options.\n".printf(command));
-            return return_code;
         }
 
         private static bool edit_file() {
-            return (artist != null || title != null || album != null || band != null ||
-                    comment != null || composer != null || original != null ||
-                    cover_picture != null || artist_picture != null ||
-                    s_year != null || s_track != null || s_total != null ||
+            return (artist != null || title != null || album != null ||
+                    band != null || comment != null || composer != null ||
+                    original != null || cover_picture != null ||
+                    artist_picture != null || s_year != null ||
+                    s_track != null || s_total != null ||
                     s_disc != null || s_genre != null);
         }
 
@@ -405,7 +393,8 @@ Format for printing:
         }
 
         public static int main(string[] args) {
-            GLib.Intl.setlocale(GLib.LocaleCategory.ALL, "");
+            prog_name = args[0];
+            Util.set_locale(GLib.LocaleCategory.NUMERIC);
             try {
                 var opt = new GLib.OptionContext(CONTEXT);
                 opt.set_help_enabled(true);
@@ -413,32 +402,37 @@ Format for printing:
                 opt.set_description(DESCRIPTION);
                 opt.parse(ref args);
             } catch (GLib.Error e) {
-                return error(e.message, ReturnCode.INVALID_ARGUMENT);
+                Util.error(false, ExitCode.INVALID_ARGUMENT, prog_name,
+                           e.message);
             }
 
             DateTime dt = new DateTime.now_local();
             current_year = dt.get_year();
 
             if (genres)
-                return print_genres();
+                print_genres();
 
             if (args.length < 2)
-                return error("Missing file(s)", ReturnCode.MISSING_FILES, args[0], true);
+                Util.error(true, ExitCode.MISSING_FILES, prog_name,
+                           "Missing file(s)");
 
             if (remove) {
                 for (int i = 1; i < args.length; i++)
                     remove_tags(args[i]);
-                return ReturnCode.OK;
+                Process.exit(ExitCode.OK);
             }
 
             if (out_cover_picture != null || out_artist_picture != null) {
                 if (args.length > 2)
-                    return error("Save image requested for more than one file",
-                                 ReturnCode.IMAGE_FOR_MANY, args[0], true);
+                    Util.error(true, ExitCode.IMAGE_FOR_MANY, prog_name,
+                               "Save image requested for more than one file");
                 if (out_cover_picture != null)
-                    return save_picture(args[1], out_cover_picture, PictureType.COVER);
+                    save_picture(args[1], out_cover_picture,
+                                 PictureType.COVER);
                 else
-                    return save_picture(args[1], out_artist_picture, PictureType.ARTIST);
+                    save_picture(args[1], out_artist_picture,
+                                 PictureType.ARTIST);
+                Process.exit(ExitCode.OK);
             }
 
             if (!edit_file()) {
@@ -447,39 +441,39 @@ Format for printing:
                         print_standard_tags(args[i]);
                     else
                         print_tags(args[i], format);
-                return ReturnCode.OK;
+                Process.exit(ExitCode.OK);
             }
 
             if (s_year != null) {
                 year = parse_int(s_year);
                 if (year != -1 && (year < MIN_YEAR || year > current_year))
-                    return error("The year ‘%s’ is invalid".printf(s_year),
-                                 ReturnCode.INVALID_YEAR);
+                    Util.error(false, ExitCode.INVALID_YEAR, prog_name,
+                               "The year ‘%s’ is invalid", s_year);
             }
 
             if (s_track != null) {
                 track = parse_int(s_track);
                 if (track != -1 && (track < MIN_TRACK || track > MAX_TRACK))
-                    return error("The track ‘%s’ is invalid".printf(s_track),
-                                 ReturnCode.INVALID_TRACK);
+                    Util.error(false, ExitCode.INVALID_TRACK, prog_name,
+                               "The track ‘%s’ is invalid", s_track);
             }
 
             if (s_total != null) {
                 total = parse_int(s_total);
                 if (total != -1 && (total < MIN_TRACK || total > MAX_TRACK))
-                    return error("The total ‘%s’ is invalid".printf(s_total),
-                                 ReturnCode.INVALID_TRACK);
+                    Util.error(false, ExitCode.INVALID_TRACK, prog_name,
+                               "The total ‘%s’ is invalid", s_total);
             }
 
             if (s_track != null && s_total != null && track > total)
-                return error("The track cannot be greater than the total",
-                             ReturnCode.INVALID_TRACK);
+                Util.error(false, ExitCode.INVALID_TRACK, prog_name,
+                           "The track cannot be greater than the total");
 
             if (s_disc != null) {
                 disc = parse_int(s_disc);
                 if (disc != -1 && (disc < MIN_DISC || disc > MAX_DISC))
-                    return error("The disc ‘%s’ is invalid".printf(s_disc),
-                                 ReturnCode.INVALID_DISC);
+                    Util.error(false, ExitCode.INVALID_DISC, prog_name,
+                               "The disc ‘%s’ is invalid", s_disc);
             }
 
             if (s_genre == "") {
@@ -487,35 +481,32 @@ Format for printing:
             } else if (s_genre != null) {
                 genre = Genre.index_of(s_genre);
                 if (genre == -1)
-                    return error("Invalid genre ‘%s’".printf(s_genre),
-                                 ReturnCode.INVALID_GENRE);
+                    Util.error(false, ExitCode.INVALID_GENRE, prog_name,
+                               "Invalid genre ‘%s’", s_genre);
             }
 
             if (cover_picture != null && cover_picture != "") {
                 var bytes = get_picture_data(cover_picture);
-                if (bytes == null) {
-                    var m = "There was an error reading from ‘%s’.".printf(cover_picture);
-                    return error(m, ReturnCode.READING_ERROR);
-                }
+                if (bytes == null)
+                    Util.error(false, ExitCode.READING_ERROR, prog_name,
+                               "There was an error reading from ‘%s’",
+                               cover_picture);
                 cover_picture_data = bytes;
             }
 
             if (artist_picture != null && artist_picture != "") {
                 var bytes = get_picture_data(artist_picture);
-                if (bytes == null) {
-                    var m = "There was an error reading from ‘%s’.".printf(artist_picture);
-                    return error(m, ReturnCode.READING_ERROR);
-                }
+                if (bytes == null)
+                    Util.error(false, ExitCode.READING_ERROR, prog_name,
+                               "There was an error reading from ‘%s’",
+                               cover_picture);
                 artist_picture_data = bytes;
             }
 
-            for (int i = 1; i < args.length; i++) {
-                int r = update_tags(args[i]);
-                if (r != ReturnCode.OK)
-                    return r;
-            }
+            for (int i = 1; i < args.length; i++)
+                update_tags(args[i]);
 
-            return ReturnCode.OK;
+            return ExitCode.OK;
         }
     }
 }
