@@ -270,7 +270,7 @@ namespace MLM {
         }
 
         private static const string CONTEXT =
-            "[FILE...] - Analyze Id3v2.4.0 tags";
+            "[FILENAME...] - Analyze Id3v2.4.0 tags";
 
         public static int main(string[] args) {
             Util.set_locale(GLib.LocaleCategory.NUMERIC);

@@ -128,7 +128,7 @@ namespace MLM {
         };
 
         private static const string CONTEXT =
-            "[FILE...] - Edit and show MP3 files tags";
+            "[FILENAME...] - Edit and show MP3 files tags";
         private static const string DESCRIPTION =
 """With no flags the standard tags are printed. An empty string as parameter
 removes an individual tag. You can only use the -F or -A flags with one MP3

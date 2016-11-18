@@ -436,7 +436,7 @@ namespace MLM {
         }
 
         private static const string CONTEXT =
-            "[FILE...] - Verify MP3 files";
+            "[FILENAME...] - Verify MP3 files";
 
         public static int main(string[] args) {
             try {

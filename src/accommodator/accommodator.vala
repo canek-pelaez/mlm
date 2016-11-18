@@ -112,7 +112,7 @@ namespace MLM {
         }
 
         private static const string CONTEXT =
-            "[FILE...] - Accommodate MP3 files";
+            "[FILENAME...] - Accommodate MP3 files";
 
         public static int main(string[] args) {
             prog_name = args[0];
