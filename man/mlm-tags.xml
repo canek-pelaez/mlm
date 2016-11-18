@@ -963,8 +963,14 @@
   <refsect1>
     <title>See Also</title>
     <para>
-      <citerefentry><refentrytitle>mlm-analyze</refentrytitle><manvolnum>1</manvolnum></citerefentry>,
-      <citerefentry><refentrytitle>mlm-copy</refentrytitle><manvolnum>1</manvolnum></citerefentry>.
+      <citerefentry>
+        <refentrytitle>mlm-analyze</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>,
+      <citerefentry>
+        <refentrytitle>mlm-copy</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>.
     </para>
   </refsect1>
 
