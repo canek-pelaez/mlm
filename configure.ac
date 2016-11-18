@@ -30,7 +30,7 @@ AC_PATH_PROG([XSLTPROC], [xsltproc])
 have_manpages=no
 AC_ARG_ENABLE(manpages,
               AS_HELP_STRING([--disable-manpages],
-              [disable manpages]))
+                             [disable manpages]))
 AS_IF([test "${enable_manpages}" != no],
       [have_manpages=yes])
 AM_CONDITIONAL(ENABLE_MANPAGES,

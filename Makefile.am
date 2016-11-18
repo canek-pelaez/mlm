@@ -292,7 +292,6 @@ man/%.1: man/%.xml man/custom-man.xsl
 	$(AM_V_XSLT)$(XSLTPROC) -o $@ $(XSLTPROC_FLAGS)		\
 		$(srcdir)/man/custom-man.xsl $<
 
-
 man/%.html: man/%.xml man/custom-html.xsl
 	$(AM_V_XSLT)$(XSLTPROC) -o $@ $(XSLTPROC_FLAGS)		\
 		$(srcdir)/man/custom-html.xsl $<
