@@ -17,19 +17,47 @@
  * along with mlm. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Namespace for configuration time variables.
+ */
 [CCode (lower_case_cprefix = "", cheader_filename = "config.h")]
 namespace Config {
-	/* Package information */
+
+	/**
+     * The package name.
+     */
 	public const string PACKAGE_NAME;
+
+	/**
+     * The package name string.
+     */
 	public const string PACKAGE_STRING;
+
+	/**
+     * The package version.
+     */
 	public const string PACKAGE_VERSION;
 
-	/* Gettext package */
+	/**
+     * The gettext package.
+     */
 	public const string GETTEXT_PACKAGE;
 
 	/* Configured paths - these variables are not present in config.h, they are
 	 * passed to underlying C code as cmd line macros. */
-	public const string LOCALEDIR;  /* /usr/local/share/locale */
-	public const string PKGDATADIR; /* /usr/local/share/quick-photo-editor */
-	public const string PKGLIBDIR;  /* /usr/local/lib/quick-photo-editor   */
+
+    /**
+     * The locale dir.
+     */
+	public const string LOCALEDIR;
+
+    /**
+     * The package data dir.
+     */
+	public const string PKGDATADIR;
+
+    /**
+     * The package library dir.
+     */
+    public const string PKGLIBDIR;
 }
