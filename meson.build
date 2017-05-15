@@ -113,3 +113,6 @@ executable('src/mlm-gui', mlm_gui_sources + [ gresources ],
            dependencies: mlm_gui_dependencies,
            include_directories: [ id3tagx_includes, mlm_includes ],
            link_with: [ id3tagx, mlm ])
+
+subdir('data')
+subdir('po')

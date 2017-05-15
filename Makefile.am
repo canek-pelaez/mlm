@@ -239,14 +239,25 @@ src/application/resources.c: $(gresource_file) $(resource_files)
 		--sourcedir=$(top_srcdir)/data			\
 		--generate-source $<
 
-# ====== Desktop files
+# ====== Desktop file
+MSGFMT_DESKTOP_OPTIONS =						\
+	--keyword=GenericName						\
+	--keyword=Comment
 
-data_desktopdir = $(datadir)/applications
-data_desktop_DATA = data/mlm.desktop
+mlm_desktop_in_file = $(top_srcdir)/data/mlm.desktop.in
+data/mlm.desktop: $(mlm_desktop_in_file)
+	$(AM_V_GEN)$(MSGFMT) $(MSGFMT_DESKTOP_OPTIONS) 			\
+		--desktop --template $< 				\
+		-d $(top_srcdir)/po -o $@
 
+desktopdir = $(datadir)/applications
+desktop_DATA = data/mlm.desktop
+
+# ====== Icons
 data_iconsdir = $(datadir)/icons/hicolor/scalable/apps
 data_icons_DATA = data/mlm.svg
 
+# ====== Extra files
 noinst_DATA =							\
 	vapi/config.vapi					\
 	vapi/id3tag.vapi					\

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mlm 0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/canek-pelaez/mlm/issues\n"
-"POT-Creation-Date: 2016-11-11 20:14-0600\n"
+"POT-Creation-Date: 2017-05-14 19:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,51 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: src/application/application.vala:49
-msgid "About"
-msgstr ""
-
-#: src/application/application.vala:50
-msgid "Quit"
-msgstr ""
-
-#: src/application/application.vala:184
-msgid "A Gtk+ based music library maintainer"
-msgstr ""
-
-#: src/application/application-window.vala:261
-msgid "Reencoding..."
-msgstr ""
-
-#: src/application/application-window.vala:299
-msgid "_Cancel"
-msgstr ""
-
-#: src/application/application-window.vala:300
-msgid "_Open"
-msgstr ""
-
-#: src/application/application-window.vala:311
-#, c-format
-msgid "There was an error loading image '%s'"
-msgstr ""
-
-#: src/application/application-window.vala:318
-msgid "Select image for artist"
-msgstr ""
-
-#: src/application/application-window.vala:325
-msgid "Select image for cover"
-msgstr ""
-
-#: src/application/application-window.vala:499
-msgid "Could not set pixbuf from data."
-msgstr ""
-
-#: src/application/application-window.vala:535
-msgid "Warning"
-msgstr ""
 
 #: data/mlm.ui:13
 msgid "Blues"
@@ -788,4 +743,65 @@ msgstr ""
 
 #: data/mlm.ui:1417
 msgid "<b>Filename</b>"
+msgstr ""
+
+#: data/mlm.desktop.in:3
+msgid "MLM"
+msgstr ""
+
+#: data/mlm.desktop.in:4
+msgid "Music Library Maintainer"
+msgstr ""
+
+#: data/mlm.desktop.in:5
+msgid "Edit, Normalize and Encode MP3 so the music library is consistent"
+msgstr ""
+
+#: data/mlm.desktop.in:7
+msgid "mlm"
+msgstr ""
+
+#: src/application/application-window.vala:261
+msgid "Reencoding..."
+msgstr ""
+
+#: src/application/application-window.vala:299
+msgid "_Cancel"
+msgstr ""
+
+#: src/application/application-window.vala:300
+msgid "_Open"
+msgstr ""
+
+#: src/application/application-window.vala:311
+#, c-format
+msgid "There was an error loading image '%s'"
+msgstr ""
+
+#: src/application/application-window.vala:318
+msgid "Select image for artist"
+msgstr ""
+
+#: src/application/application-window.vala:325
+msgid "Select image for cover"
+msgstr ""
+
+#: src/application/application-window.vala:499
+msgid "Could not set pixbuf from data."
+msgstr ""
+
+#: src/application/application-window.vala:535
+msgid "Warning"
+msgstr ""
+
+#: src/application/application.vala:49
+msgid "About"
+msgstr ""
+
+#: src/application/application.vala:50
+msgid "Quit"
+msgstr ""
+
+#: src/application/application.vala:184
+msgid "A Gtk+ based music library maintainer"
 msgstr ""
