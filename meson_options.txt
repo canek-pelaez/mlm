@@ -1,0 +1,3 @@
+option('enable-doc', type: 'boolean',
+       value: true,
+       description: 'Enable generating the manual pages')

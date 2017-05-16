@@ -114,7 +114,7 @@ executable('src/mlm-gui', mlm_gui_sources + [ gresources ],
            include_directories: [ id3tagx_includes, mlm_includes ],
            link_with: [ id3tagx, mlm ])
 
-if xsltproc.found()
+if xsltproc.found() and get_option('enable-doc')
   subdir('man')
 endif
 
