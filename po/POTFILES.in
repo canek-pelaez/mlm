@@ -1,12 +1,13 @@
+data/mlm.ui
+data/mlm.desktop.in
 src/accommodator/accommodator.vala
 src/analyze/analyze.vala
-src/copy-tags/copy-tags.vala
-src/application/application.vala
 src/application/application-window.vala
+src/application/application.vala
 src/application/encoder.vala
 src/application/main.vala
 src/application/media.vala
 src/application/player.vala
+src/copy-tags/copy-tags.vala
 src/tags/tags.vala
 src/verify/verify.vala
-data/mlm.ui
