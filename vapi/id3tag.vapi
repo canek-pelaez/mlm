@@ -19,6 +19,9 @@
 
 namespace Id3Tag {
 
+    /**
+     * The file opening mode.
+     */
     [CCode(cheader_filename = "id3tag.h",
            cname            = "enum id3_file_mode",
            cprefix          = "ID3_FILE_MODE_")]
@@ -27,6 +30,9 @@ namespace Id3Tag {
           READWRITE = 1
     }
 
+    /**
+     * The tag option.
+     */
     [CCode(cheader_filename = "id3tag.h",
            cname            = "enum id3_file_mode",
            cprefix          = "ID3_TAG_OPTION_")]
@@ -39,6 +45,9 @@ namespace Id3Tag {
         ID3V1             = 0x0100  /* render ID3v1/ID3v1.1 tag */
     }
 
+    /**
+     * The file text encoding.
+     */
     [CCode(cheader_filename = "id3tag.h",
            cname            = "enum id3_field_textencoding",
            cprefix          = "ID3_FIELD_TEXTENCODING_")]
@@ -49,6 +58,9 @@ namespace Id3Tag {
         UTF_8      = 0x03
     }
 
+    /**
+     * The field type.
+     */
     [CCode(cheader_filename = "id3tag.h",
            cname            = "enum id3_field_type",
            cprefix          = "ID3_FIELD_TYPE_")]
@@ -71,6 +83,10 @@ namespace Id3Tag {
         BINARYDATA
     }
 
+    /**
+     * Enumeration of types of picture.
+     * http://id3lib.sourceforge.net/id3/id3v2.4.0-structure.txt
+     */
     [CCode(cheader_filename = "id3tag-x.h",
            cname            = "enum id3_picture_type",
            cprefix          = "ID3_PICTURETYPE_")]
@@ -98,6 +114,9 @@ namespace Id3Tag {
         PUBLISHERLOGO = 20  /* Publisher/Studio logotype */
     }
 
+    /**
+     * Class for files with ID3 tags.
+     */
     [CCode(cheader_filename = "id3tag.h",
            cname            = "struct id3_file",
            cprefix          = "id3_file_",
@@ -105,13 +124,35 @@ namespace Id3Tag {
            unref_function   = "")]
     [Compact]
     public class File {
+
+        /**
+         * Constructs a new file.
+         * @param filename the file name.
+         * @param mode the file mode.
+         */
         [CCode(cname = "id3_file_open")]
         public File(string filename, FileMode mode);
+
+        /**
+         * Closes the file.
+         */
         public void close();
+
+        /**
+         * Returns the tag instance for the file.
+         * @return the tag instance for the file.
+         */
         public Tag tag();
+
+        /**
+         * Updates the tags of the file.
+         */
         public void update();
     }
 
+    /**
+     * Class for ID3 tags.
+     */
     [CCode(cheader_filename = "id3tag.h",
            cname            = "struct id3_tag",
            cprefix          = "id3_tag_",
@@ -119,9 +160,24 @@ namespace Id3Tag {
            unref_function   = "")]
     [Compact]
     public class Tag {
+
+        /**
+         * Construct a new tag instance.
+         */
         [CCode(cname = "id3_tag_new")]
         public Tag();
+
+        /**
+         * Returns the version of the tag.
+         * @return the version of the tag.
+         */
         public uint32 version();
+
+        /**
+         * Returns the options of the tag.
+         * @param options
+         * @return the options of the tag.
+         */
         public int32 options(int options, int b);
         public void clearframes();
         public int attachframe(Frame frame);
@@ -131,7 +187,9 @@ namespace Id3Tag {
         public Frame? findframe(string id, uint32 index);
         [CCode (array_length_cname = "nframes", array_length_type = "int32")]
         public unowned Frame[] frames;
+
         /* Extra API added with id3tag-x */
+
         [CCode(cheader_filename = "id3tag-x.h")]
         public Frame? search_picture_frame(PictureType picture_type);
         [CCode(cheader_filename = "id3tag-x.h")]
@@ -201,14 +259,22 @@ namespace Id3Tag {
         public void setlanguage(string lang);
         public void setint(long n);
         public void setstring(uint32* s);
+
         /* Union fields as properties */
+
         [CCode (cname = "number.value")]
         public long number_value;
-        [CCode (cname = "stringlist.strings", array_length_cname = "stringlist.nstrings", array_length_type = "int32")]
+        [CCode (cname = "stringlist.strings",
+                array_length_cname = "stringlist.nstrings",
+                array_length_type = "int32")]
         public unowned  uint32*[] stringlist;
-        [CCode (cname = "binary.data", array_length_cname = "binary.length", array_length_type = "int32")]
+        [CCode (cname = "binary.data",
+                array_length_cname = "binary.length",
+                array_length_type = "int32")]
         public unowned  uint8[] binary_data;
-        [CCode (cname = "immediate.value", array_length = "9", array_length_type = "int32")]
+        [CCode (cname = "immediate.value",
+                array_length = "9",
+                array_length_type = "int32")]
         public unowned  char[] immediate_value;
     }
 
