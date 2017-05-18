@@ -3,22 +3,22 @@
         "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
 <!--
-  This file is part of mlm.
+  mlm-tags.xml - This file is part of mlm.
 
-  Copyright 2013-2014 Canek Peláez Valdés
+  Copyright © 2013-2017 Canek Peláez Valdés
 
-  mlm is free software; you can redistribute it and/or modify it
+  This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation; either version 2.1 of the License, or
   (at your option) any later version.
 
-  mlm is distributed in the hope that it will be useful, but
+  This program is distributed in the hope that it will be useful, but
   WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
   Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public License
-  along with mlm; If not, see <http://www.gnu.org/licenses/>.
+  along with this program; If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <refentry id="mlm-tags">
@@ -49,7 +49,7 @@
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>mlm-tags</command>
-      <arg choice="opt" rep="repeat">OPTIONS</arg>
+      <arg choice="opt" rep="repeat">OPTION</arg>
       <arg choice="opt" rep="repeat">FILENAME</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -58,8 +58,8 @@
 
     <title>Description</title>
 
-    <para><filename>mlm-tags</filename> is a command line tool to
-    show and edit the standard tags of one or more MP3 files.</para>
+    <para><filename>mlm-tags</filename> is a command line tool to show and edit
+    the standard tags of one or more MP3 files.</para>
 
   </refsect1>
 
@@ -67,9 +67,8 @@
 
     <title>Options</title>
 
-    <para>The following options are accepted. Except explicitly
-    noted, all the options apply to all the filenames specified in
-    the command line.</para>
+    <para>The following options are accepted. Except explicitly noted, all the
+    options apply to all the filenames specified in the command line.</para>
 
     <variablelist>
 
@@ -117,8 +116,8 @@
         <term><option>-y</option></term>
         <term><option>--year=YEAR</option></term>
         <listitem>
-          <para>Set the release year for the album. Valid values:
-          from 1900 to the current year, inclusive.</para>
+          <para>Set the release year for the album. Valid values: from 1900 to
+          the current year, inclusive.</para>
         </listitem>
       </varlistentry>
 
@@ -126,11 +125,10 @@
         <term><option>-n</option></term>
         <term><option>--track=TRACK</option></term>
         <listitem>
-          <para>Set the track number. Valid values: from 1 to 99,
-          inclusive. The track number cannot be greater than the
-          track total, unless both are set at the same time, in
-          which case the track total will be adjusted to be equal to
-          the track number.</para>
+          <para>Set the track number. Valid values: from 1 to 99, inclusive. The
+          track number cannot be greater than the track total, unless both are
+          set at the same time, in which case the track total will be adjusted
+          to be equal to the track number.</para>
         </listitem>
       </varlistentry>
 
@@ -138,13 +136,11 @@
         <term><option>-#</option></term>
         <term><option>--total=TOTAL</option></term>
         <listitem>
-          <para>Set the track total; the number of tracks on the
-          album. Valid values: from 1 to 99, inclusive. The track
-          total cannot be less than the track number, unless both
-          are set at the same time, in which case the track total
-          will be adjusted to be equal to the track number. The
-          track total cannot be set if there is no track
-          number.</para>
+          <para>Set the track total; the number of tracks on the album. Valid
+          values: from 1 to 99, inclusive. The track total cannot be less than
+          the track number, unless both are set at the same time, in which case
+          the track total will be adjusted to be equal to the track number. The
+          track total cannot be set if there is no track number.</para>
         </listitem>
       </varlistentry>
 

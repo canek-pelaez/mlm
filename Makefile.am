@@ -278,6 +278,7 @@ DISTCLEANFILES =						\
 
 if ENABLE_MANPAGES
 man1_MANS =							\
+	man/mlm-analyze.1					\
 	man/mlm-tags.1
 
 XML_FILES = $(patsubst %.1,%.xml,$(man1_MANS))
