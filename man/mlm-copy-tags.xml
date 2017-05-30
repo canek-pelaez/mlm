@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?> <!--*-nxml-*-->
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+        "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<!--
+  This file is part of mlm.
+
+  Copyright © 2013-2017 Canek Peláez Valdés
+
+  This program is free software; you can redistribute it and/or modify it
+  under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation; either version 2.1 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with this program; If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<refentry id="mlm-copy-tags">
+
+  <refentryinfo>
+    <title>mlm-copy-tags</title>
+    <productname>mlm</productname>
+    <authorgroup>
+      <author>
+        <contrib>Developer</contrib>
+        <firstname>Canek</firstname>
+        <surname>Peláez Valdés</surname>
+        <email>canek@ciencias.unam.mx</email>
+      </author>
+    </authorgroup>
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>mlm-copy-tags</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>mlm-copy-tags</refname>
+    <refpurpose>Copy-Tags Id3v2.4.0 tags</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>mlm-copy-tags</command>
+      <arg choice="plain">SOURCE</arg>
+      <arg choice="plain">TARGET</arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+
+    <title>Description</title>
+
+    <para><filename>mlm-copy-tags</filename> is a command line tool to copy the
+    Id3v2.4.0 tags from a source file to a target file.</para>
+
+  </refsect1>
+
+  <refsect1>
+
+    <title>Options</title>
+
+    <para>The following options are accepted.</para>
+
+    <variablelist>
+
+      <varlistentry>
+        <term><option>-h</option></term>
+        <term><option>--help</option></term>
+        <listitem>
+          <para>Show help options.</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </refsect1>
+
+  <refsect1>
+    <title>See Also</title>
+    <para>
+      <citerefentry>
+        <refentrytitle>mlm-analyze</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>,
+      <citerefentry>
+        <refentrytitle>mlm-tags</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>.
+    </para>
+  </refsect1>
+
+</refentry>
