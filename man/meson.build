@@ -8,8 +8,8 @@ commonargs = [
   '--nonet',
   '--xinclude',
   '--stringparam', 'man.output.quietly', '1',
-  '--stringparam', 'man.authors.section.enabled', '0',
-  '--stringparam',  'man.copyright.section.enabled', '0',
+  '--stringparam', 'man.authors.section.enabled', '1',
+  '--stringparam',  'man.copyright.section.enabled', '1',
   '--stringparam', 'mlm.version', meson.project_version(),
   '--path', meson.current_source_dir(),
   '-o', '@OUTPUT@'
