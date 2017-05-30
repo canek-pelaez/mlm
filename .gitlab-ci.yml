@@ -1,0 +1,8 @@
+configure:
+  script:
+    - meson build
+
+compile:
+  script:
+    - meson build
+    - ninja -C build
