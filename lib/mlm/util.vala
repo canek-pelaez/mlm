@@ -34,7 +34,7 @@ namespace MLM {
 
         private static bool get_should_colorize_called = false;
         private static bool should_colorize = true;
-        private static const string MLM_DONT_COLORIZE = "MLM_DONT_COLORIZE";
+        private const string MLM_DONT_COLORIZE = "MLM_DONT_COLORIZE";
 
         public static string color(string s, Color c) {
             if (!get_should_colorize() || c == Color.NONE)

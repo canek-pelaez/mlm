@@ -76,10 +76,10 @@ namespace MLM {
             Util.set_file_time(source, time);
         }
 
-        private static const string CONTEXT =
+        private const string CONTEXT =
             "SOURCE TARGET - Copy Id3v2.4.0 tags";
 
-        private static const string DESCRIPTION =
+        private const string DESCRIPTION =
             "The SOURCE and TARGET MP3 files need to exist.\n";
 
         public static int main(string[] args) {

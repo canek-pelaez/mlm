@@ -269,7 +269,7 @@ namespace MLM {
             file.close();
         }
 
-        private static const string CONTEXT =
+        private const string CONTEXT =
             "[FILENAME...] - Analyze Id3v2.4.0 tags";
 
         public static int main(string[] args) {

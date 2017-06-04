@@ -46,11 +46,11 @@ namespace MLM {
             ARTIST;
         }
 
-        private static const int MIN_YEAR  = 1900;
-        private static const int MIN_TRACK = 1;
-        private static const int MAX_TRACK = 99;
-        private static const int MIN_DISC  = 1;
-        private static const int MAX_DISC  = 99;
+        private const int MIN_YEAR  = 1900;
+        private const int MIN_TRACK = 1;
+        private const int MAX_TRACK = 99;
+        private const int MIN_DISC  = 1;
+        private const int MAX_DISC  = 99;
 
         private static string prog_name = null;
 
@@ -127,9 +127,9 @@ namespace MLM {
             { null }
         };
 
-        private static const string CONTEXT =
+        private const string CONTEXT =
             "[FILENAME...] - Edit and show MP3 files tags";
-        private static const string DESCRIPTION =
+        private const string DESCRIPTION =
 """With no flags the standard tags are printed. An empty string as parameter
 removes an individual tag. You can only use the -F or -A flags with one MP3
 file.

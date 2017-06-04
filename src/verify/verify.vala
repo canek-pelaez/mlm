@@ -435,7 +435,7 @@ namespace MLM {
                 stdout.printf(report);
         }
 
-        private static const string CONTEXT =
+        private const string CONTEXT =
             "[FILENAME...] - Verify MP3 files";
 
         public static int main(string[] args) {

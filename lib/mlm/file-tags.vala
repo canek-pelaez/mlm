@@ -20,21 +20,21 @@
 namespace MLM {
 
     namespace FrameId {
-        public static const string ARTIST   = "TPE1";
-        public static const string TITLE    = "TIT2";
-        public static const string ALBUM    = "TALB";
-        public static const string BAND     = "TPE2";
-        public static const string YEAR     = "TDRC";
-        public static const string TRACK    = "TRCK";
-        public static const string DISC     = "TPOS";
-        public static const string GENRE    = "TCON";
-        public static const string COMMENT  = "COMM";
-        public static const string COMPOSER = "TCOM";
-        public static const string ORIGINAL = "TOPE";
-        public static const string PICTURE  = "APIC";
+        public const string ARTIST   = "TPE1";
+        public const string TITLE    = "TIT2";
+        public const string ALBUM    = "TALB";
+        public const string BAND     = "TPE2";
+        public const string YEAR     = "TDRC";
+        public const string TRACK    = "TRCK";
+        public const string DISC     = "TPOS";
+        public const string GENRE    = "TCON";
+        public const string COMMENT  = "COMM";
+        public const string COMPOSER = "TCOM";
+        public const string ORIGINAL = "TOPE";
+        public const string PICTURE  = "APIC";
         /* The following are added for completeness, but are not
          * really used by the suite. */
-        public static const string POPULARIMETER  = "POPM";
+        public const string POPULARIMETER  = "POPM";
     }
 
     public class FileTags {

@@ -222,11 +222,11 @@ namespace MLM {
         private Encoder encoder;
         private string target;
 
-        private static const string ICON_NAME_CD = "media-optical-cd-audio-symbolic";
-        private static const string ICON_NAME_AVATAR = "avatar-default-symbolic";
-        private static const string ICON_NAME_PLAY = "media-playback-start-symbolic";
-        private static const string ICON_NAME_PAUSE = "media-playback-pause-symbolic";
-        private static const Gtk.IconSize ICON_SIZE = Gtk.IconSize.SMALL_TOOLBAR;
+        private const string ICON_NAME_CD = "media-optical-cd-audio-symbolic";
+        private const string ICON_NAME_AVATAR = "avatar-default-symbolic";
+        private const string ICON_NAME_PLAY = "media-playback-start-symbolic";
+        private const string ICON_NAME_PAUSE = "media-playback-pause-symbolic";
+        private const Gtk.IconSize ICON_SIZE = Gtk.IconSize.SMALL_TOOLBAR;
 
         public ApplicationWindow(Gtk.Application application) {
             GLib.Object(application: application);

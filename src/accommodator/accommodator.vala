@@ -111,7 +111,7 @@ namespace MLM {
                           Util.color(dst.get_basename(), Color.GREEN));
         }
 
-        private static const string CONTEXT =
+        private const string CONTEXT =
             "[FILENAME...] - Accommodate MP3 files";
 
         public static int main(string[] args) {
