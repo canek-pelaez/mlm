@@ -58,30 +58,30 @@ mlm = static_library('mlm', mlm_sources,
 
 mlm_includes = include_directories('lib/mlm')
 
-executable('src/mlm-accommodator', 'src/accommodator/accommodator.vala',
+executable('mlm-accommodator', 'src/accommodator/accommodator.vala',
            dependencies: [ gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           link_with: [ id3tagx, mlm ])
+           install: true, link_with: [ id3tagx, mlm ])
 
-executable('src/mlm-analyze', 'src/analyze/analyze.vala',
+executable('mlm-analyze', 'src/analyze/analyze.vala',
            dependencies: [ id3tag, gdkpixbuf, gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           link_with: [ id3tagx, mlm ])
+           install: true, link_with: [ id3tagx, mlm ])
 
-executable('src/mlm-copy-tags', 'src/copy-tags/copy-tags.vala',
+executable('mlm-copy-tags', 'src/copy-tags/copy-tags.vala',
            dependencies: [ id3tag, gdkpixbuf, gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           link_with: [ id3tagx, mlm ])
+           install: true, link_with: [ id3tagx, mlm ])
 
-executable('src/mlm-tags', 'src/tags/tags.vala',
+executable('mlm-tags', 'src/tags/tags.vala',
            dependencies: [ gee ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           link_with: [ id3tagx, mlm ])
+           install: true, link_with: [ id3tagx, mlm ])
 
-executable('src/mlm-verify', 'src/verify/verify.vala',
+executable('mlm-verify', 'src/verify/verify.vala',
            dependencies: [ id3tag, gdkpixbuf, gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           link_with: [ id3tagx, mlm ])
+           install: true, link_with: [ id3tagx, mlm ])
 
 gnome = import('gnome')
 
@@ -109,10 +109,10 @@ mlm_gui_dependencies = [
   id3tag
 ]
 
-executable('src/mlm-gui', mlm_gui_sources + [ gresources ],
+executable('mlm-gui', mlm_gui_sources + [ gresources ],
            dependencies: mlm_gui_dependencies,
            include_directories: [ id3tagx_includes, mlm_includes ],
-           link_with: [ id3tagx, mlm ])
+           install: true, link_with: [ id3tagx, mlm ])
 
 if xsltproc.found() and get_option('enable-doc')
   subdir('man')
