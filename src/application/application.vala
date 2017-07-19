@@ -182,14 +182,15 @@ namespace MLM {
             string[] authors = { "Canek Peláez Valdés <canek@ciencias.unam.mx>" };
             Gtk.show_about_dialog(
                 window,
-                "authors", authors,
-                "comments", _("A Gtk+ based music library maintainer"),
-                "copyright", "Copyright 2014 Canek Peláez Valdés",
-                "license-type", Gtk.License.GPL_3_0,
+                "authors",        authors,
+                "comments",       _("A Gtk+ based music library maintainer"),
+                "copyright",      "Copyright 2014 Canek Peláez Valdés",
+                "license-type",   Gtk.License.GPL_3_0,
                 "logo-icon-name", "mlm",
-                "version", Config.PACKAGE_VERSION,
-                "website", "http://github.com/canek-pelaez/mlm",
-                "wrap-license", true);
+                "version",        Config.PACKAGE_VERSION,
+                "website",        ("https://canek@aztlan.fciencias.unam.mx/" +
+                                   "gitlab/canek/mlm.git"),
+                "wrap-license",   true);
         }
     }
 }
