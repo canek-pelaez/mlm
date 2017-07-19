@@ -93,14 +93,16 @@ namespace MLM {
                 this.files.add(file);
             }
             total = this.files.size;
-            this.files.sort((a, b) => {
-                    if (a.get_path() < b.get_path())
-                        return -1;
-                    if (a.get_path() > b.get_path())
-                        return 1;
-                    return 0;
-                });
+            this.files.sort(compare_files);
             activate();
+        }
+
+        private int compare_files(GLib.File a, GLib.File b) {
+            if (a.get_path() < b.get_path())
+                return -1;
+            if (a.get_path() > b.get_path())
+                return 1;
+            return 0;
         }
 
         private void update_mp3() {

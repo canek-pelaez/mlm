@@ -246,13 +246,11 @@ namespace MLM {
             year_adjustment.upper = date_time.get_year();
 
             /* Stupid GtkBuilder */
-            genre_widget.completion = new Gtk.EntryCompletion();
-            genre_widget.completion.model = genre_model;
-            genre_widget.completion.text_column = 0;
-            genre_widget.completion.match_selected.connect((m, i) => {
-                    genre_combobox.set_active_iter(i);
-                    return true;
-                });
+            var completion = genre_widget.completion;
+            completion = new Gtk.EntryCompletion();
+            completion.model = genre_model;
+            completion.text_column = 0;
+            completion.match_selected.connect(match_selected);
 
             _cover_data = null;
             _artist_data = null;
@@ -270,6 +268,11 @@ namespace MLM {
                                    GLib.BindingFlags.BIDIRECTIONAL);
             popover.notify["visible"].connect(popover_visibility_changed);
             ignore_popover = false;
+        }
+
+        private bool match_selected(Gtk.TreeModel m, Gtk.TreeIter i) {
+            genre_combobox.set_active_iter(i);
+            return true;
         }
 
         [GtkCallback]
