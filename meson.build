@@ -28,6 +28,10 @@ conf.set_quoted('VERSION', meson.project_version())
 configure_file(output: 'config.h',
                configuration: conf)
 
+prefixdir = get_option('prefix')
+datadir = join_paths(prefixdir, get_option('datadir'))
+docdir = join_paths(datadir, 'doc/mlm')
+
 id3tagx_sources = [
   'lib/id3tag-x/id3tag-x.c',
   'lib/id3tag-x/id3tag-x.h'
@@ -114,9 +118,6 @@ executable('mlm-gui', mlm_gui_sources + [ gresources ],
            include_directories: [ id3tagx_includes, mlm_includes ],
            install: true, link_with: [ id3tagx, mlm ])
 
-if xsltproc.found() and get_option('enable-doc')
-  subdir('man')
-endif
-
+subdir('man')
 subdir('data')
 subdir('po')
