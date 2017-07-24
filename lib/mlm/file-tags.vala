@@ -39,33 +39,11 @@ namespace MLM {
 
     public class FileTags {
 
-        private string _artist;
         public string artist {
             get { return _artist; }
-            set {
-                if (value == "" && _artist == null)
-                    return;
-                Id3Tag.Frame artist_frame;
-                if (value == "") {
-                    artist_frame = tag.search_frame(FrameId.ARTIST);
-                    tag.detachframe(artist_frame);
-                    _artist = null;
-                    return;
-                }
-                if (_artist == null) {
-                    artist_frame = tag.create_text_frame(FrameId.ARTIST);
-                    tag.attachframe(artist_frame);
-                } else {
-                    artist_frame = tag.search_frame(FrameId.ARTIST);
-                }
-                _artist = value;
-                artist_frame.set_text(_artist);
-                if (artist_picture != null) {
-                    var ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
-                    ap_frame.set_picture_description(_artist);
-                }
-            }
+            set { define_artist(value); }
         }
+        private string _artist;
 
         private string _band;
         public string band {
@@ -534,6 +512,31 @@ namespace MLM {
             } else {
                 tag.options(Id3Tag.TagOption.COMPRESSION, 0);
                 file.update();
+            }
+        }
+
+        private void define_artist(string a) {
+            if (a == "" && _artist == null)
+                return;
+            Id3Tag.Frame artist_frame;
+            if (a == "") {
+                artist_frame = tag.search_frame(FrameId.ARTIST);
+                tag.detachframe(artist_frame);
+                _artist = null;
+                return;
+            }
+            if (_artist == null) {
+                artist_frame = tag.create_text_frame(FrameId.ARTIST);
+                tag.attachframe(artist_frame);
+            } else {
+                artist_frame = tag.search_frame(FrameId.ARTIST);
+            }
+            _artist = a;
+            artist_frame.set_text(_artist);
+            if (artist_picture != null) {
+                var ap_frame =
+                    tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
+                ap_frame.set_picture_description(_artist);
             }
         }
 
