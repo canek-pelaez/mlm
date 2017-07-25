@@ -48,25 +48,7 @@ namespace MLM {
         private string _band;
         public string band {
             get { return _band; }
-            set {
-                if (value == "" && _band == null)
-                    return;
-                Id3Tag.Frame band_frame;
-                if (value == "") {
-                    band_frame = tag.search_frame(FrameId.BAND);
-                    tag.detachframe(band_frame);
-                    _band = null;
-                    return;
-                }
-                if (_band == null) {
-                    band_frame = tag.create_text_frame(FrameId.BAND);
-                    tag.attachframe(band_frame);
-                } else {
-                    band_frame = tag.search_frame(FrameId.BAND);
-                }
-                _band = value;
-                band_frame.set_text(_band);
-            }
+            set { define_band(value); }
         }
 
         private string _title;
@@ -538,6 +520,26 @@ namespace MLM {
                     tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
                 ap_frame.set_picture_description(_artist);
             }
+        }
+
+        private void define_band(string b) {
+            if (b == "" && _band == null)
+                return;
+            Id3Tag.Frame band_frame;
+            if (b == "") {
+                band_frame = tag.search_frame(FrameId.BAND);
+                tag.detachframe(band_frame);
+                _band = null;
+                return;
+            }
+            if (_band == null) {
+                band_frame = tag.create_text_frame(FrameId.BAND);
+                tag.attachframe(band_frame);
+            } else {
+                band_frame = tag.search_frame(FrameId.BAND);
+            }
+            _band = b;
+            band_frame.set_text(_band);
         }
 
         ~FileTags() {
