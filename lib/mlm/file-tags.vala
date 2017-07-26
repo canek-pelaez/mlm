@@ -54,25 +54,7 @@ namespace MLM {
         private string _title;
         public string title {
             get { return _title; }
-            set {
-                if (value == "" && _title == null)
-                    return;
-                Id3Tag.Frame title_frame;
-                if (value == "") {
-                    title_frame = tag.search_frame(FrameId.TITLE);
-                    tag.detachframe(title_frame);
-                    _title = null;
-                    return;
-                }
-                if (_title == null) {
-                    title_frame = tag.create_text_frame(FrameId.TITLE);
-                    tag.attachframe(title_frame);
-                } else {
-                    title_frame = tag.search_frame(FrameId.TITLE);
-                }
-                _title = value;
-                title_frame.set_text(_title);
-            }
+            set { define_title(value); }
         }
 
         private string _album;
@@ -547,6 +529,26 @@ namespace MLM {
                 file.close();
                 Util.set_file_time(filename, time);
             }
+        }
+
+        private void define_title(string t) {
+            if (t == "" && _title == null)
+                return;
+            Id3Tag.Frame title_frame;
+            if (t == "") {
+                title_frame = tag.search_frame(FrameId.TITLE);
+                tag.detachframe(title_frame);
+                _title = null;
+                return;
+            }
+            if (_title == null) {
+                title_frame = tag.create_text_frame(FrameId.TITLE);
+                tag.attachframe(title_frame);
+            } else {
+                title_frame = tag.search_frame(FrameId.TITLE);
+            }
+            _title = t;
+            title_frame.set_text(_title);
         }
     }
 }
