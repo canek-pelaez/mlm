@@ -1,4 +1,4 @@
-if xsltproc.found() and get_option('enable-doc')
+if xsltproc.found() and not get_option('disable_doc')
   customman = files('custom-man.xsl')
   customhtml = files('custom-html.xsl')
 
@@ -15,33 +15,33 @@ if xsltproc.found() and get_option('enable-doc')
 
   command = [ xsltproc, '-o', '@OUTPUT@' ] + flags
 
-  manpages = [ 'analyze', 'copy-tags', 'tags' ]
+  pages = [ 'analyze', 'copy-tags', 'tags' ]
   man_pages = []
   html_pages = []
 
-  foreach manpage : manpages
-    stem = 'mlm-' + manpage
+  foreach page : pages
+    stem = 'mlm-' + page
     xml = stem + '.xml'
     html = stem + '.html'
     man = stem + '.1'
     mandir = join_paths(get_option('mandir'), 'man1')
     htmldir = join_paths(docdir, 'html')
 
-    p1 = custom_target(man,
+    mp = custom_target(man,
                        input : xml,
                        output : man,
                        command : command + [ customman, '@INPUT@' ],
                        install : true,
                        install_dir : mandir )
-    man_pages += [ p1 ]
+    man_pages += [ mp ]
 
-    p2 = custom_target(html,
+    hp = custom_target(html,
                        input : xml,
                        output : html,
                        command : command + [ customhtml, '@INPUT@' ],
                        install : true,
                        install_dir : htmldir )
-    html_pages += [ p2 ]
+    html_pages += [ hp ]
 
   endforeach
 

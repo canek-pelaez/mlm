@@ -65,27 +65,32 @@ mlm_includes = include_directories('lib/mlm')
 executable('mlm-accommodator', 'src/accommodator/accommodator.vala',
            dependencies: [ gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           install: true, link_with: [ id3tagx, mlm ])
+           link_with: [ id3tagx, mlm ],
+           install: true)
 
 executable('mlm-analyze', 'src/analyze/analyze.vala',
            dependencies: [ id3tag, gdkpixbuf, gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           install: true, link_with: [ id3tagx, mlm ])
+           link_with: [ id3tagx, mlm ],
+           install: true)
 
 executable('mlm-copy-tags', 'src/copy-tags/copy-tags.vala',
            dependencies: [ id3tag, gdkpixbuf, gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           install: true, link_with: [ id3tagx, mlm ])
+           link_with: [ id3tagx, mlm ],
+           install: true)
 
 executable('mlm-tags', 'src/tags/tags.vala',
            dependencies: [ gee ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           install: true, link_with: [ id3tagx, mlm ])
+           link_with: [ id3tagx, mlm ],
+           install: true)
 
 executable('mlm-verify', 'src/verify/verify.vala',
            dependencies: [ id3tag, gdkpixbuf, gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
-           install: true, link_with: [ id3tagx, mlm ])
+           link_with: [ id3tagx, mlm ],
+           install: true)
 
 gnome = import('gnome')
 
