@@ -45,287 +45,84 @@ namespace MLM {
         }
         private string _artist;
 
-        private string _band;
         public string band {
             get { return _band; }
             set { define_band(value); }
         }
+        private string _band;
 
-        private string _title;
         public string title {
             get { return _title; }
             set { define_title(value); }
         }
+        private string _title;
 
-        private string _album;
         public string album {
             get { return _album; }
-            set {
-                if (value == "" && _album == null)
-                    return;
-                Id3Tag.Frame album_frame;
-                if (value == "") {
-                    album_frame = tag.search_frame(FrameId.ALBUM);
-                    tag.detachframe(album_frame);
-                    _album = null;
-                    return;
-                }
-                if (_album == null) {
-                    album_frame = tag.create_text_frame(FrameId.ALBUM);
-                    tag.attachframe(album_frame);
-                } else {
-                    album_frame = tag.search_frame(FrameId.ALBUM);
-                }
-                _album = value;
-                album_frame.set_text(_album);
-                if (front_cover_picture != null) {
-                    var fcp_frame = tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
-                    fcp_frame.set_picture_description(_album + " cover");
-                }
-            }
+            set { define_album(value); }
         }
+        private string _album;
 
-        private int _year;
         public int year {
             get { return _year; }
-            set {
-                if (value == _year)
-                    return;
-                Id3Tag.Frame year_frame;
-                if (value == -1) {
-                    year_frame = tag.search_frame(FrameId.YEAR);
-                    tag.detachframe(year_frame);
-                    _year = -1;
-                    return;
-                }
-                if (_year == -1) {
-                    year_frame = tag.create_text_frame(FrameId.YEAR);
-                    tag.attachframe(year_frame);
-                } else {
-                    year_frame = tag.search_frame(FrameId.YEAR);
-                }
-                _year = value;
-                year_frame.set_text("%d".printf(_year));
+            set { define_year(value);
             }
         }
+        private int _year;
 
-        private int _track;
         public int track {
             get { return _track; }
-            set {
-                if (value == _track)
-                    return;
-                Id3Tag.Frame track_frame;
-                if (value == -1) {
-                    track_frame = tag.search_frame(FrameId.TRACK);
-                    tag.detachframe(track_frame);
-                    _track = -1;
-                    _total = -1;
-                    return;
-                }
-                if (_track == -1) {
-                    track_frame = tag.create_text_frame(FrameId.TRACK);
-                    tag.attachframe(track_frame);
-                } else {
-                    track_frame = tag.search_frame(FrameId.TRACK);
-                }
-                _track = value;
-                if (_total == -1)
-                    track_frame.set_text("%02d".printf(_track));
-                else
-                    track_frame.set_text("%02d/%02d".printf(_track, _total));
-            }
+            set { define_track(value); }
         }
+        private int _track;
 
-        private int _total;
         public int total {
             get { return _total; }
-            set {
-                if (value == _total)
-                    return;
-                Id3Tag.Frame track_frame;
-                if (value == -1 && _track != -1) {
-                    track_frame = tag.search_frame(FrameId.TRACK);
-                    track_frame.set_text("%02d".printf(_track));
-                    _total = -1;
-                    return;
-                }
-                if (_track == -1)
-                    return;
-                _total = value;
-                track_frame = tag.search_frame(FrameId.TRACK);
-                track_frame.set_text("%02d/%02d".printf(_track, _total));
-            }
+            set { define_total(value); }
         }
+        private int _total;
 
-        private int _disc;
         public int disc {
             get { return _disc; }
-            set {
-                if (value == _disc)
-                    return;
-                Id3Tag.Frame disc_frame;
-                if (value == -1) {
-                    disc_frame = tag.search_frame(FrameId.DISC);
-                    tag.detachframe(disc_frame);
-                    _disc = -1;
-                    return;
-                }
-                if (_disc == -1) {
-                    disc_frame = tag.create_text_frame(FrameId.DISC);
-                    tag.attachframe(disc_frame);
-                } else {
-                    disc_frame = tag.search_frame(FrameId.DISC);
-                }
-                _disc = value;
-                disc_frame.set_text("%d".printf(_disc));
-            }
+            set { define_disc(value); }
         }
+        private int _disc;
 
-        private int _genre;
         public int genre {
             get { return _genre; }
-            set {
-                if (value == _genre)
-                    return;
-                Id3Tag.Frame genre_frame;
-                if (value == -1) {
-                    genre_frame = tag.search_frame(FrameId.GENRE);
-                    tag.detachframe(genre_frame);
-                    _genre = -1;
-                    return;
-                }
-                if (_genre == -1) {
-                    genre_frame = tag.create_text_frame(FrameId.GENRE);
-                    tag.attachframe(genre_frame);
-                } else {
-                    genre_frame = tag.search_frame(FrameId.GENRE);
-                }
-                _genre = value;
-                genre_frame.set_text("%d".printf(_genre));
-            }
+            set { define_genre(value); }
         }
+        private int _genre;
 
-        private string _comment;
         public string comment {
             get { return _comment; }
-            set {
-                if (value == "" && _comment == null)
-                    return;
-                Id3Tag.Frame comment_frame;
-                if (value == "") {
-                    comment_frame = tag.search_frame(FrameId.COMMENT);
-                    tag.detachframe(comment_frame);
-                    _comment = null;
-                    return;
-                }
-                if (_comment == null) {
-                    comment_frame = tag.create_comment_frame("eng");
-                    tag.attachframe(comment_frame);
-                } else {
-                    comment_frame = tag.search_frame(FrameId.COMMENT);
-                }
-                _comment = value;
-                comment_frame.set_comment_text(value);
-            }
+            set { define_comment(value); }
         }
+        private string _comment;
 
-        private string _composer;
         public string composer {
             get { return _composer; }
-            set {
-                if (value == "" && _composer == null)
-                    return;
-                Id3Tag.Frame composer_frame;
-                if (value == "") {
-                    composer_frame = tag.search_frame(FrameId.COMPOSER);
-                    tag.detachframe(composer_frame);
-                    _composer = null;
-                    return;
-                }
-                if (_composer == null) {
-                    composer_frame = tag.create_text_frame(FrameId.COMPOSER);
-                    tag.attachframe(composer_frame);
-                } else {
-                    composer_frame = tag.search_frame(FrameId.COMPOSER);
-                }
-                _composer = value;
-                composer_frame.set_text(_composer);
-            }
+            set { define_composer(value); }
         }
+        private string _composer;
 
-        private string _original;
         public string original {
             get { return _original; }
-            set {
-                if (value == "" && _original == null)
-                    return;
-                Id3Tag.Frame original_artist_frame;
-                if (value == "") {
-                    original_artist_frame = tag.search_frame(FrameId.ORIGINAL);
-                    tag.detachframe(original_artist_frame);
-                    _original = null;
-                    return;
-                }
-                if (_original == null) {
-                    original_artist_frame = tag.create_text_frame(FrameId.ORIGINAL);
-                    tag.attachframe(original_artist_frame);
-                } else {
-                    original_artist_frame = tag.search_frame(FrameId.ORIGINAL);
-                }
-                _original = value;
-                original_artist_frame.set_text(_original);
-            }
+            set { define_original(value); }
         }
+        private string _original;
 
-        private uint8[] _front_cover_picture;
         public uint8[] front_cover_picture {
             get { return _front_cover_picture; }
-            set {
-                if (_front_cover_picture == null && value == null)
-                    return;
-                Id3Tag.Frame fcp_frame;
-                if (value == null) {
-                    fcp_frame = tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
-                    tag.detachframe(fcp_frame);
-                    _front_cover_picture = null;
-                    return;
-                }
-                if (_front_cover_picture == null) {
-                    fcp_frame = tag.create_picture_frame(Id3Tag.PictureType.COVERFRONT);
-                    tag.attachframe(fcp_frame);
-                } else {
-                    fcp_frame = tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
-                }
-                _front_cover_picture = value;
-                fcp_frame.set_picture(_front_cover_picture,
-                                      album != null ? album + " cover" : "");
-            }
+            set { define_front_cover_picture(value); }
         }
+        private uint8[] _front_cover_picture;
 
-        private uint8[] _artist_picture;
         public uint8[] artist_picture {
             get { return _artist_picture; }
-            set {
-                if (_artist_picture == null && value == null)
-                    return;
-                Id3Tag.Frame ap_frame;
-                if (value == null) {
-                    ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
-                    tag.detachframe(ap_frame);
-                    _artist_picture = null;
-                    return;
-                }
-                if (_artist_picture == null) {
-                    ap_frame = tag.create_picture_frame(Id3Tag.PictureType.ARTIST);
-                    tag.attachframe(ap_frame);
-                } else {
-                    ap_frame = tag.search_picture_frame(Id3Tag.PictureType.ARTIST);
-                }
-                _artist_picture = value;
-                ap_frame.set_picture(_artist_picture, artist != null ? artist : "");
-            }
+            set { define_artist_picture(value); }
         }
+        private uint8[] _artist_picture;
 
         public string front_cover_picture_description { get; private set; }
         public string artist_picture_description { get; private set; }
@@ -342,10 +139,12 @@ namespace MLM {
         }
 
         private void read_tags() {
-            _artist = _title = _album = _band = _comment = _composer = _original = null;
+            _artist = _title = _album = _band = _comment = null;
+            _composer = _original = null;
             _year = _track = _total = _disc = _genre = -1;
             _front_cover_picture = _artist_picture = null;
-            front_cover_picture_description = artist_picture_description = null;
+            front_cover_picture_description = null;
+            artist_picture_description = null;
             has_tags = false;
 
             time = Util.get_file_time(filename);
@@ -438,7 +237,8 @@ namespace MLM {
             try {
                 FileUtils.get_data(filename, out bytes);
             } catch (GLib.Error e) {
-                GLib.warning("There was an error reading from ‘%s’.\n", filename);
+                GLib.warning("There was an error reading from ‘%s’.\n",
+                             filename);
                 return;
             }
 
@@ -456,7 +256,8 @@ namespace MLM {
             GLib.FileStream file = GLib.FileStream.open(filename, "w");
             size_t r = file.write(new_bytes);
             if (r != new_bytes.length)
-                GLib.warning("There was an error removing tags from ‘%s’.\n", filename);
+                GLib.warning("There was an error removing tags from ‘%s’.\n",
+                             filename);
             file = null;
 
             Util.set_file_time(filename, time);
@@ -549,6 +350,235 @@ namespace MLM {
             }
             _title = t;
             title_frame.set_text(_title);
+        }
+
+        private void define_album(string a) {
+            if (a == "" && _album == null)
+                return;
+            Id3Tag.Frame album_frame;
+            if (a == "") {
+                album_frame = tag.search_frame(FrameId.ALBUM);
+                tag.detachframe(album_frame);
+                _album = null;
+                return;
+            }
+            if (_album == null) {
+                album_frame = tag.create_text_frame(FrameId.ALBUM);
+                tag.attachframe(album_frame);
+            } else {
+                album_frame = tag.search_frame(FrameId.ALBUM);
+            }
+            _album = a;
+            album_frame.set_text(_album);
+            if (front_cover_picture != null) {
+                var fcp_frame = tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
+                fcp_frame.set_picture_description(_album + " cover");
+            }
+        }
+
+        private void define_year(int y) {
+            if (y == _year)
+                return;
+            Id3Tag.Frame year_frame;
+            if (y == -1) {
+                year_frame = tag.search_frame(FrameId.YEAR);
+                tag.detachframe(year_frame);
+                _year = -1;
+                return;
+            }
+            if (_year == -1) {
+                year_frame = tag.create_text_frame(FrameId.YEAR);
+                tag.attachframe(year_frame);
+            } else {
+                year_frame = tag.search_frame(FrameId.YEAR);
+            }
+            _year = y;
+            year_frame.set_text("%d".printf(_year));
+        }
+
+        private void define_track(int t) {
+            if (t == _track)
+                return;
+            Id3Tag.Frame track_frame;
+            if (t == -1) {
+                track_frame = tag.search_frame(FrameId.TRACK);
+                tag.detachframe(track_frame);
+                _track = -1;
+                _total = -1;
+                return;
+            }
+            if (_track == -1) {
+                track_frame = tag.create_text_frame(FrameId.TRACK);
+                tag.attachframe(track_frame);
+            } else {
+                track_frame = tag.search_frame(FrameId.TRACK);
+            }
+            _track = t;
+            if (_total == -1)
+                track_frame.set_text("%02d".printf(_track));
+            else
+                track_frame.set_text("%02d/%02d".printf(_track, _total));
+        }
+
+        private void define_total(int t) {
+            if (t == _total)
+                return;
+            Id3Tag.Frame track_frame;
+            if (t == -1 && _track != -1) {
+                track_frame = tag.search_frame(FrameId.TRACK);
+                track_frame.set_text("%02d".printf(_track));
+                _total = -1;
+                return;
+            }
+            if (_track == -1)
+                return;
+            _total = t;
+            track_frame = tag.search_frame(FrameId.TRACK);
+            track_frame.set_text("%02d/%02d".printf(_track, _total));
+        }
+
+        private void define_disc(int d) {
+            if (d == _disc)
+                return;
+            Id3Tag.Frame disc_frame;
+            if (d == -1) {
+                disc_frame = tag.search_frame(FrameId.DISC);
+                tag.detachframe(disc_frame);
+                _disc = -1;
+                return;
+            }
+            if (_disc == -1) {
+                disc_frame = tag.create_text_frame(FrameId.DISC);
+                tag.attachframe(disc_frame);
+            } else {
+                disc_frame = tag.search_frame(FrameId.DISC);
+            }
+            _disc = d;
+            disc_frame.set_text("%d".printf(_disc));
+        }
+
+        private void define_genre(int g) {
+            if (g == _genre)
+                return;
+            Id3Tag.Frame genre_frame;
+            if (g == -1) {
+                genre_frame = tag.search_frame(FrameId.GENRE);
+                tag.detachframe(genre_frame);
+                _genre = -1;
+                return;
+            }
+            if (_genre == -1) {
+                genre_frame = tag.create_text_frame(FrameId.GENRE);
+                tag.attachframe(genre_frame);
+            } else {
+                genre_frame = tag.search_frame(FrameId.GENRE);
+            }
+            _genre = g;
+            genre_frame.set_text("%d".printf(_genre));
+        }
+
+        private void define_comment(string c) {
+            if (c == "" && _comment == null)
+                return;
+            Id3Tag.Frame comment_frame;
+            if (c == "") {
+                comment_frame = tag.search_frame(FrameId.COMMENT);
+                tag.detachframe(comment_frame);
+                _comment = null;
+                return;
+            }
+            if (_comment == null) {
+                comment_frame = tag.create_comment_frame("eng");
+                tag.attachframe(comment_frame);
+            } else {
+                comment_frame = tag.search_frame(FrameId.COMMENT);
+            }
+            _comment = c;
+            comment_frame.set_comment_text(c);
+        }
+
+        private void define_composer(string c) {
+            if (c == "" && _composer == null)
+                return;
+            Id3Tag.Frame composer_frame;
+            if (c == "") {
+                composer_frame = tag.search_frame(FrameId.COMPOSER);
+                tag.detachframe(composer_frame);
+                _composer = null;
+                return;
+            }
+            if (_composer == null) {
+                composer_frame = tag.create_text_frame(FrameId.COMPOSER);
+                tag.attachframe(composer_frame);
+            } else {
+                composer_frame = tag.search_frame(FrameId.COMPOSER);
+            }
+            _composer = c;
+            composer_frame.set_text(_composer);
+        }
+
+        private void define_original(string o) {
+            if (o == "" && _original == null)
+                return;
+            Id3Tag.Frame original_artist_frame;
+            if (o == "") {
+                original_artist_frame = tag.search_frame(FrameId.ORIGINAL);
+                tag.detachframe(original_artist_frame);
+                _original = null;
+                return;
+            }
+            if (_original == null) {
+                original_artist_frame = tag.create_text_frame(FrameId.ORIGINAL);
+                tag.attachframe(original_artist_frame);
+            } else {
+                original_artist_frame = tag.search_frame(FrameId.ORIGINAL);
+            }
+            _original = o;
+            original_artist_frame.set_text(_original);
+        }
+
+        private void define_front_cover_picture(uint8[] f) {
+            if (_front_cover_picture == null && f == null)
+                return;
+            Id3Tag.PictureType pt = Id3Tag.PictureType.COVERFRONT;
+            Id3Tag.Frame fcp_frame;
+            if (f == null) {
+                fcp_frame = tag.search_picture_frame(pt);
+                tag.detachframe(fcp_frame);
+                _front_cover_picture = null;
+                return;
+            }
+            if (_front_cover_picture == null) {
+                fcp_frame = tag.create_picture_frame(pt);
+                tag.attachframe(fcp_frame);
+            } else {
+                fcp_frame = tag.search_picture_frame(pt);
+            }
+            _front_cover_picture = f;
+            fcp_frame.set_picture(_front_cover_picture,
+                                  album != null ? album + " cover" : "");
+        }
+
+        private void define_artist_picture(uint8[] a) {
+            if (_artist_picture == null && a == null)
+                return;
+            Id3Tag.PictureType pt = Id3Tag.PictureType.ARTIST;
+            Id3Tag.Frame ap_frame;
+            if (a == null) {
+                ap_frame = tag.search_picture_frame(pt);
+                tag.detachframe(ap_frame);
+                _artist_picture = null;
+                return;
+            }
+            if (_artist_picture == null) {
+                ap_frame = tag.create_picture_frame(pt);
+                tag.attachframe(ap_frame);
+            } else {
+                ap_frame = tag.search_picture_frame(pt);
+            }
+            _artist_picture = a;
+            ap_frame.set_picture(_artist_picture,
+                                 artist != null ? artist : "");
         }
     }
 }
