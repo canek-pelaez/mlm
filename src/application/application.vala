@@ -122,7 +122,7 @@ namespace MLM {
             window.comment = tags.comment != null ? tags.comment : "";
             window.composer = tags.composer != null ? tags.composer : "";
             window.original = tags.original != null ? tags.original : "";
-            window.cover_data = tags.front_cover_picture;
+            window.cover_data = tags.cover_picture;
             window.artist_data = tags.artist_picture;
             window.disable(UIItemFlags.SAVE);
             window.current = index;
@@ -174,7 +174,7 @@ namespace MLM {
             t.comment = window.comment;
             t.composer = window.composer;
             t.original = window.original;
-            t.front_cover_picture = window.cover_data;
+            t.cover_picture = window.cover_data;
             t.artist_picture = window.artist_data;
         }
 

@@ -116,11 +116,11 @@ namespace MLM {
         }
         private string _original;
 
-        public uint8[] front_cover_picture {
-            get { return _front_cover_picture; }
-            set { define_front_cover_picture(value); }
+        public uint8[] cover_picture {
+            get { return _cover_picture; }
+            set { define_cover_picture(value); }
         }
-        private uint8[] _front_cover_picture;
+        private uint8[] _cover_picture;
 
         public uint8[] artist_picture {
             get { return _artist_picture; }
@@ -128,7 +128,7 @@ namespace MLM {
         }
         private uint8[] _artist_picture;
 
-        public string front_cover_picture_description { get; private set; }
+        public string cover_picture_description { get; private set; }
         public string artist_picture_description { get; private set; }
         public bool has_tags { get; private set; }
 
@@ -211,9 +211,9 @@ namespace MLM {
                 } else if (frame.id == FrameId.PICTURE) {
                     var fc_data = frame.get_picture(Id3Tag.PictureType.COVERFRONT);
                     if (fc_data != null) {
-                        _front_cover_picture = fc_data;
+                        _cover_picture = fc_data;
                         data_frames[Id3Tag.PictureType.COVERFRONT] = new GLib.Bytes(fc_data);
-                        front_cover_picture_description = frame.get_picture_description();
+                        cover_picture_description = frame.get_picture_description();
                     }
                     var a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
                     if (a_data != null) {
@@ -386,11 +386,11 @@ namespace MLM {
                 string_frames[FrameId.ORIGINAL] : null;
         }
 
-        private void define_front_cover_picture(uint8[] value) {
+        private void define_cover_picture(uint8[] value) {
             Id3Tag.PictureType pt = Id3Tag.PictureType.COVERFRONT;
             define_data_value(pt, value, (album != null) ?
                               album + " cover" : "");
-            _front_cover_picture = data_frames.has_key(pt) ?
+            _cover_picture = data_frames.has_key(pt) ?
                 data_frames[pt].get_data() : null;
         }
 

@@ -437,23 +437,23 @@ namespace MLM.Test {
                                              uint8[] val1, uint8[] val2) {
             var path = file.get_path();
             var tags = new FileTags(path);
-            assert_bytes_equal(tags.front_cover_picture, original);
-            tags.front_cover_picture = val1;
-            GLib.assert(tags.front_cover_picture != null);
-            assert_bytes_equal(tags.front_cover_picture, val1);
+            assert_bytes_equal(tags.cover_picture, original);
+            tags.cover_picture = val1;
+            GLib.assert(tags.cover_picture != null);
+            assert_bytes_equal(tags.cover_picture, val1);
             tags.update();
             tags = null;
             tags = new FileTags(path);
-            GLib.assert(tags.front_cover_picture != null);
-            assert_bytes_equal(tags.front_cover_picture, val1);
-            tags.front_cover_picture = val2;
-            GLib.assert(tags.front_cover_picture != null);
-            assert_bytes_equal(tags.front_cover_picture, val2);
+            GLib.assert(tags.cover_picture != null);
+            assert_bytes_equal(tags.cover_picture, val1);
+            tags.cover_picture = val2;
+            GLib.assert(tags.cover_picture != null);
+            assert_bytes_equal(tags.cover_picture, val2);
             tags.update();
             tags = null;
             tags = new FileTags(path);
-            GLib.assert(tags.front_cover_picture != null);
-            assert_bytes_equal(tags.front_cover_picture, val2);
+            GLib.assert(tags.cover_picture != null);
+            assert_bytes_equal(tags.cover_picture, val2);
         }
 
         /**

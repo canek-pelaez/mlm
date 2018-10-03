@@ -204,8 +204,8 @@ Format for printing:
                 box.add_body_key_value("Composer", file_tags.composer);
             if (file_tags.original != null)
                 box.add_body_key_value("Original artist", file_tags.original);
-            var desc = file_tags.front_cover_picture_description;
-            if (file_tags.front_cover_picture != null)
+            var desc = file_tags.cover_picture_description;
+            if (file_tags.cover_picture != null)
                 box.add_body_key_value("Front cover picture", desc);
             desc = file_tags.artist_picture_description;
             if (file_tags.artist_picture != null)
@@ -298,7 +298,7 @@ Format for printing:
             string type = null;
             switch (picture_type) {
             case PictureType.COVER:
-                data = file_tags.front_cover_picture;
+                data = file_tags.cover_picture;
                 type = "front cover";
                 break;
             case PictureType.ARTIST:
@@ -358,7 +358,7 @@ Format for printing:
             if (s_genre != null)
                 ft.genre = genre;
             if (cover_picture != null)
-                ft.front_cover_picture = cover_picture_data;
+                ft.cover_picture = cover_picture_data;
             if (artist_picture != null)
                 ft.artist_picture = artist_picture_data;
             if (band != null)

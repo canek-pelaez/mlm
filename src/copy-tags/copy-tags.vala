@@ -64,8 +64,8 @@ namespace MLM {
                 target_tags.composer = source_tags.composer;
             if (source_tags.original != null)
                 target_tags.original = source_tags.original;
-            if (source_tags.front_cover_picture != null)
-                target_tags.front_cover_picture = source_tags.front_cover_picture;
+            if (source_tags.cover_picture != null)
+                target_tags.cover_picture = source_tags.cover_picture;
             if (source_tags.artist_picture != null)
                 target_tags.artist_picture = source_tags.artist_picture;
             if (source_tags.band != null)
