@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013-2014 Canek Peláez Valdés
+ * Copyright © 2013-2018 Canek Peláez Valdés
  *
  * mlm is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -167,7 +167,8 @@ namespace MLM {
                 } else if (frame.id == FrameId.BAND) {
                     string_frames[FrameId.BAND] = _band = frame.get_text();
                 } else if (frame.id == FrameId.YEAR) {
-                    int_frames[FrameId.YEAR] = _year = int.parse(frame.get_text());
+                    int_frames[FrameId.YEAR] = _year =
+                        int.parse(frame.get_text());
                 } else if (frame.id == FrameId.TRACK) {
                     string track = frame.get_text();
                     if (track == null)
@@ -203,26 +204,35 @@ namespace MLM {
                         invalid_frames.add(frame);
                     }
                 } else if (frame.id == FrameId.COMMENT) {
-                    string_frames[FrameId.COMMENT] = _comment = frame.get_comment_text();
+                    string_frames[FrameId.COMMENT] = _comment =
+                        frame.get_comment_text();
                 } else if (frame.id == FrameId.COMPOSER) {
-                    string_frames[FrameId.COMPOSER] = _composer = frame.get_text();
+                    string_frames[FrameId.COMPOSER] = _composer =
+                        frame.get_text();
                 } else if (frame.id == FrameId.ORIGINAL) {
-                    string_frames[FrameId.ORIGINAL] = _original = frame.get_text();
+                    string_frames[FrameId.ORIGINAL] = _original =
+                        frame.get_text();
                 } else if (frame.id == FrameId.PICTURE) {
-                    var fc_data = frame.get_picture(Id3Tag.PictureType.COVERFRONT);
+                    var fc_data =
+                        frame.get_picture(Id3Tag.PictureType.COVERFRONT);
                     if (fc_data != null) {
                         _cover_picture = fc_data;
-                        data_frames[Id3Tag.PictureType.COVERFRONT] = new GLib.Bytes(fc_data);
-                        cover_picture_description = frame.get_picture_description();
+                        data_frames[Id3Tag.PictureType.COVERFRONT] =
+                            new GLib.Bytes(fc_data);
+                        cover_picture_description =
+                            frame.get_picture_description();
                     }
                     var a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
                     if (a_data != null) {
                         _artist_picture = a_data;
-                        data_frames[Id3Tag.PictureType.ARTIST] = new GLib.Bytes(a_data);
-                        artist_picture_description = frame.get_picture_description();
+                        data_frames[Id3Tag.PictureType.ARTIST] =
+                            new GLib.Bytes(a_data);
+                        artist_picture_description =
+                            frame.get_picture_description();
                     }
                 } else {
-                    GLib.warning("Invalid frame ‘%s’ will be deleted.\n", frame.id);
+                    GLib.warning("Invalid frame ‘%s’ will be deleted.\n",
+                                 frame.id);
                     invalid_frames.add(frame);
                 }
             }
@@ -330,7 +340,8 @@ namespace MLM {
         private void define_track_total(int new_track, int new_total) {
             if (new_total < new_track && new_track > 0)
                 new_total = new_track;
-            string value = (new_track == -1) ? null : "%d/%d".printf(new_total, new_track);
+            string value = (new_track == -1) ? null :
+                "%d/%d".printf(new_total, new_track);
             define_text_value(FrameId.TRACK, value);
             if (string_frames.has_key(FrameId.TRACK)) {
                 _track = new_track;
