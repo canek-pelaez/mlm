@@ -25,7 +25,7 @@ The standard tags are:
 * Album and artist picture (`APIC`)
 
 Utilities
-─────────
+---------
 
 The utilities are:
 
