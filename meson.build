@@ -34,7 +34,6 @@ datadir = join_paths(prefixdir, get_option('datadir'))
 docdir = join_paths(datadir, 'doc/mlm')
 
 # libid3tagx
-
 id3tagx_sources = [
   'lib/id3tag-x/id3tag-x.c',
   'lib/id3tag-x/id3tag-x.h'
@@ -45,7 +44,6 @@ id3tagx = static_library('id3tag-x', id3tagx_sources)
 id3tagx_includes = include_directories('lib/id3tag-x')
 
 # libmlm
-
 mlm_sources = [
   'lib/mlm/genres.vala',
   'lib/mlm/file-tags.vala',
@@ -78,7 +76,6 @@ check = static_library('check', check_sources,
 check_includes = include_directories('lib/test')
 
 # tests
-
 check_file_tags_vala_sources = [ 'test/test-file-tags.vala' ]
 check_file_tags_sources = [
   check_file_tags_vala_sources,
@@ -91,7 +88,6 @@ check_file_tags = executable('test-file-tags', check_file_tags_sources,
 test('Test file-tags', check_file_tags, args: [ meson.source_root() ])
 
 # command line utilities
-
 executable('mlm-accommodator', 'src/accommodator/accommodator.vala',
            dependencies: [ gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
@@ -123,7 +119,6 @@ executable('mlm-verify', 'src/verify/verify.vala',
            install: true)
 
 # resources
-
 gnome = import('gnome')
 
 gresources = gnome.compile_resources(
@@ -132,7 +127,6 @@ gresources = gnome.compile_resources(
   c_name: 'resources')
 
 # main application
-
 mlm_gui_sources = [
   'src/application/application-window.vala',
   'src/application/application.vala',
