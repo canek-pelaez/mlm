@@ -6,3 +6,9 @@ compile:
   script:
     - meson build
     - ninja -C build
+
+test:
+  script:
+    - meson build
+    - ninja -C build
+    - ninja -C build test
