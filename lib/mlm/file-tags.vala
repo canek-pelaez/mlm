@@ -22,54 +22,123 @@
 
 namespace MLM {
 
+    /**
+     * Namespace for frame ids.
+     */
     namespace FrameId {
-        public const string ARTIST   = "TPE1";
-        public const string TITLE    = "TIT2";
-        public const string ALBUM    = "TALB";
-        public const string BAND     = "TPE2";
-        public const string YEAR     = "TDRC";
-        public const string TRACK    = "TRCK";
-        public const string DISC     = "TPOS";
-        public const string GENRE    = "TCON";
-        public const string COMMENT  = "COMM";
+
+        /**
+         * The artist tag.
+         */
+        public const string ARTIST = "TPE1";
+
+        /**
+         * The title tag.
+         */
+        public const string TITLE = "TIT2";
+
+        /**
+         * The album tag.
+         */
+        public const string ALBUM = "TALB";
+
+        /**
+         * The band tag.
+         */
+        public const string BAND = "TPE2";
+
+        /**
+         * The year tag.
+         */
+        public const string YEAR = "TDRC";
+
+        /**
+         * The track tag.
+         */
+        public const string TRACK = "TRCK";
+
+        /**
+         * The disc tag.
+         */
+        public const string DISC = "TPOS";
+
+        /**
+         * The genre tag.
+         */
+        public const string GENRE = "TCON";
+
+        /**
+         * The comment tag.
+         */
+        public const string COMMENT = "COMM";
+
+        /**
+         * The composer tag.
+         */
         public const string COMPOSER = "TCOM";
+
+        /**
+         * The original artist tag.
+         */
         public const string ORIGINAL = "TOPE";
-        public const string PICTURE  = "APIC";
-        /* The following are added for completeness, but are not
-         * really used by the suite. */
-        public const string POPULARIMETER  = "POPM";
+
+        /**
+         * The picture tag.
+         */
+        public const string PICTURE = "APIC";
     }
 
+    /**
+     * Class for file tags.
+     */
     public class FileTags {
 
+        /* String frames. */
         private Gee.HashMap<string, string?> string_frames;
+        /* Integer frames. */
         private Gee.HashMap<string, int?> int_frames;
+        /* Data frames. */
         private Gee.HashMap<int, GLib.Bytes> data_frames;
 
+        /**
+         * The artist.
+         */
         public string artist {
             get { return _artist; }
             set { define_artist(value); }
         }
         private string _artist;
 
+        /**
+         * The band.
+         */
         public string band {
             get { return _band; }
             set { define_band(value); }
         }
         private string _band;
 
+        /**
+         * The title.
+         */
         public string title {
             get { return _title; }
             set { define_title(value); }
         }
         private string _title;
 
+        /**
+         * The album.
+         */
         public string album {
             get { return _album; }
             set { define_album(value); }
         }
         private string _album;
 
+        /**
+         * The year.
+         */
         public int year {
             get { return _year; }
             set { define_year(value);
@@ -77,88 +146,134 @@ namespace MLM {
         }
         private int _year;
 
+        /**
+         * The track.
+         */
         public int track {
             get { return _track; }
             set { define_track_total(value, _total); }
         }
         private int _track;
 
+        /**
+         * The total.
+         */
         public int total {
             get { return _total; }
             set { define_track_total(_track, value); }
         }
         private int _total;
 
+        /**
+         * The disc.
+         */
         public int disc {
             get { return _disc; }
             set { define_disc(value); }
         }
         private int _disc;
 
+        /**
+         * The genre.
+         */
         public int genre {
             get { return _genre; }
             set { define_genre(value); }
         }
         private int _genre;
 
+        /**
+         * The comment.
+         */
         public string comment {
             get { return _comment; }
             set { define_comment(value); }
         }
         private string _comment;
 
+        /**
+         * The composer.
+         */
         public string composer {
             get { return _composer; }
             set { define_composer(value); }
         }
         private string _composer;
 
+        /**
+         * The original.
+         */
         public string original {
             get { return _original; }
             set { define_original(value); }
         }
         private string _original;
 
+        /**
+         * The cover picture.
+         */
         public uint8[] cover_picture {
             get { return _cover_picture; }
             set { define_cover_picture(value); }
         }
         private uint8[] _cover_picture;
 
+        /**
+         * The artist picture.
+         */
         public uint8[] artist_picture {
             get { return _artist_picture; }
             set { define_artist_picture(value); }
         }
         private uint8[] _artist_picture;
 
-        public string cover_picture_description { get; private set; }
-        public string artist_picture_description { get; private set; }
-        public bool has_tags { get; private set; }
+        /**
+         * The cover description.
+         */
+        public string cover_description { get; private set; }
 
-        private string filename;
+        /**
+         * The artist description.
+         */
+        public string artist_description { get; private set; }
+
+        /**
+         * Whether the file has tags.
+         */
+        public bool has_tags { public get { return tag.frames.length > 0; } }
+
+        /* The path of the file. */
+        private string path;
+        /* The modification date of the file. */
         private GLib.TimeVal time;
+        /* The file. */
         private Id3Tag.File file;
+        /* The ID3 tag. */
         private Id3Tag.Tag tag;
 
-        public FileTags(string filename) {
-            this.filename = filename;
+        /**
+         * Sets up a FileTags.
+         * @param path the path of the file.
+         */
+        public FileTags(string path) {
+            this.path = path;
             string_frames = new Gee.HashMap<string, string?>();
             int_frames = new Gee.HashMap<string, int?>();
             data_frames = new Gee.HashMap<int, GLib.Bytes>();
             read_tags();
         }
 
+        /* Reads the tags from the file. */
         private void read_tags() {
             _year = _track = _total = _disc = _genre = -1;
-            time = Util.get_file_time(filename);
+            time = Util.get_file_time(path);
 
-            file = new Id3Tag.File(filename, Id3Tag.FileMode.READWRITE);
+            file = new Id3Tag.File(path, Id3Tag.FileMode.READWRITE);
             tag = file.tag();
             if (tag.frames.length == 0)
                 return;
 
             var invalid_frames = new Gee.ArrayList<Id3Tag.Frame>();
-            has_tags = tag.frames.length > 0;
             for (int i = 0; i < tag.frames.length; i++) {
                 var frame = tag.frames[i];
                 if (frame.id == FrameId.ARTIST) {
@@ -191,16 +306,13 @@ namespace MLM {
                     var g = frame.get_text();
                     if (g == null)
                         continue;
-                    var genres = Genre.all();
-                    for (int j = 0; j < genres.length; j++)
-                        if (g == genres[j].to_string())
-                            _genre = j;
+                    _genre = Genre.index_of(g);
                     if (_genre != -1) {
                         int_frames[FrameId.GENRE] = _genre;
                         continue;
                     }
                     int n = int.parse(g);
-                    if (0 <= n && n < genres.length) {
+                    if (0 <= n && n < Genre.total()) {
                         _genre = n;
                         int_frames[FrameId.GENRE] = _genre;
                     } else {
@@ -222,7 +334,7 @@ namespace MLM {
                         _cover_picture = fc_data;
                         data_frames[Id3Tag.PictureType.COVERFRONT] =
                             new GLib.Bytes(fc_data);
-                        cover_picture_description =
+                        cover_description =
                             frame.get_picture_description();
                     }
                     var a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
@@ -230,7 +342,7 @@ namespace MLM {
                         _artist_picture = a_data;
                         data_frames[Id3Tag.PictureType.ARTIST] =
                             new GLib.Bytes(a_data);
-                        artist_picture_description =
+                        artist_description =
                             frame.get_picture_description();
                     }
                 } else {
@@ -244,10 +356,14 @@ namespace MLM {
             }
         }
 
-        /* libid3tag has no nice support for removing all tags. We
-         * just remove the ID3v2.4 tag following
+        /**
+         * Removes the tags from the file.
          *
-         * http://id3lib.sourceforge.net/id3/id3v2.4.0-structure.txt */
+         * libid3tag has no nice support for removing all tags. We just remove
+         * the ID3v2.4 tag following:
+         *
+         * http://id3lib.sourceforge.net/id3/id3v2.4.0-structure.txt
+         */
         public void remove_tags() {
             file.close();
             file = null;
@@ -255,14 +371,13 @@ namespace MLM {
 
             uint8[] bytes;
             try {
-                FileUtils.get_data(filename, out bytes);
+                FileUtils.get_data(path, out bytes);
             } catch (GLib.Error e) {
-                GLib.warning("There was an error reading from ‘%s’.\n",
-                             filename);
+                GLib.warning("There was an error reading from ‘%s’.", path);
                 return;
             }
 
-            // Unzynch the size of the tag.
+            /* Unzynch the size of the tag. */
             uint a = bytes[6];
             uint b = bytes[7];
             uint c = bytes[8];
@@ -273,18 +388,21 @@ namespace MLM {
             for (int i = 0; i < new_bytes.length; i++)
                 new_bytes[i] = bytes[i + size];
 
-            GLib.FileStream file = GLib.FileStream.open(filename, "w");
+            GLib.FileStream file = GLib.FileStream.open(path, "w");
             size_t r = file.write(new_bytes);
             if (r != new_bytes.length)
                 GLib.warning("There was an error removing tags from ‘%s’.\n",
-                             filename);
+                             path);
             file = null;
 
-            Util.set_file_time(filename, time);
+            Util.set_file_time(path, time);
 
             read_tags();
         }
 
+        /**
+         * Updates the file.
+         */
         public void update() {
             if (string_frames.is_empty && int_frames.is_empty &&
                 data_frames.is_empty) {
@@ -295,13 +413,17 @@ namespace MLM {
             }
         }
 
+        /**
+         * Frees resources for the file.
+         */
         ~FileTags() {
             if (file != null) {
                 file.close();
-                Util.set_file_time(filename, time);
+                Util.set_file_time(path, time);
             }
         }
 
+        /* Defines the artist. */
         private void define_artist(string? value) {
             define_text_value(FrameId.ARTIST, value);
             _artist = string_frames.has_key(FrameId.ARTIST) ?
@@ -313,18 +435,21 @@ namespace MLM {
                 frame.set_picture_description(value);
         }
 
+        /* Defines the band. */
         private void define_band(string? value) {
             define_text_value(FrameId.BAND, value);
             _band = string_frames.has_key(FrameId.BAND) ?
                 string_frames[FrameId.BAND] : null;
         }
 
+        /* Defines the title. */
         private void define_title(string? value) {
             define_text_value(FrameId.TITLE, value);
             _title = string_frames.has_key(FrameId.TITLE) ?
                 string_frames[FrameId.TITLE] : null;
         }
 
+        /* Defines the album. */
         private void define_album(string? value) {
             define_text_value(FrameId.ALBUM, value);
             _album = string_frames.has_key(FrameId.ALBUM) ?
@@ -334,12 +459,14 @@ namespace MLM {
                 frame.set_picture_description(value + " cover");
         }
 
+        /* Defines the year. */
         private void define_year(int value) {
             define_int_value(FrameId.YEAR, value);
             _year = int_frames.has_key(FrameId.YEAR) ?
                 int_frames[FrameId.YEAR] : -1;
         }
 
+        /* Defines the track_total. */
         private void define_track_total(int new_track, int new_total) {
             if (new_total < new_track && new_track > 0)
                 new_total = new_track;
@@ -354,18 +481,21 @@ namespace MLM {
             }
         }
 
+        /* Defines the disc. */
         private void define_disc(int value) {
             define_int_value(FrameId.DISC, value);
             _disc = int_frames.has_key(FrameId.DISC) ?
                 int_frames[FrameId.DISC] : -1;
         }
 
+        /* Defines the genre. */
         private void define_genre(int value) {
             define_int_value(FrameId.GENRE, value);
             _genre = int_frames.has_key(FrameId.GENRE) ?
                 int_frames[FrameId.GENRE] : -1;
         }
 
+        /* Defines the comment. */
         private void define_comment(string? value) {
             Id3Tag.Frame frame;
             if (value == null || value == "") {
@@ -388,18 +518,21 @@ namespace MLM {
                 string_frames[FrameId.COMMENT] : null;
         }
 
+        /* Defines the composer. */
         private void define_composer(string? value) {
             define_text_value(FrameId.COMPOSER, value);
             _composer = string_frames.has_key(FrameId.COMPOSER) ?
                 string_frames[FrameId.COMPOSER] : null;
         }
 
+        /* Defines the original. */
         private void define_original(string? value) {
             define_text_value(FrameId.ORIGINAL, value);
             _original = string_frames.has_key(FrameId.ORIGINAL) ?
                 string_frames[FrameId.ORIGINAL] : null;
         }
 
+        /* Defines the cover_picture. */
         private void define_cover_picture(uint8[] value) {
             Id3Tag.PictureType pt = Id3Tag.PictureType.COVERFRONT;
             define_data_value(pt, value, (album != null) ?
@@ -408,6 +541,7 @@ namespace MLM {
                 data_frames[pt].get_data() : null;
         }
 
+        /* Defines the artist_picture. */
         private void define_artist_picture(uint8[] value) {
             Id3Tag.PictureType pt = Id3Tag.PictureType.ARTIST;
             define_data_value(pt, value, (artist != null) ? artist : "");
@@ -415,6 +549,7 @@ namespace MLM {
                 data_frames[pt].get_data() : null;
         }
 
+        /* Defines the text_value. */
         private void define_text_value(string frame_id, string? value) {
             Id3Tag.Frame frame;
             if (value == null || value == "") {
@@ -435,6 +570,7 @@ namespace MLM {
             string_frames[frame_id] = value;
         }
 
+        /* Defines the int_value. */
         private void define_int_value(string frame_id, int value) {
             Id3Tag.Frame frame;
             if (value == -1) {
@@ -455,6 +591,7 @@ namespace MLM {
             int_frames[frame_id] = value;
         }
 
+        /* Defines the data_value. */
         private void define_data_value(Id3Tag.PictureType pt,
                                        uint8[] value,
                                        string? text) {

@@ -438,23 +438,33 @@ namespace MLM.Test {
                                              uint8[] val1, uint8[] val2) {
             var path = file.get_path();
             var tags = new FileTags(path);
+            var desc = (tags.album != null) ? tags.album + " cover" : null;
             assert_bytes_equal(tags.cover_picture, original);
+            if (desc != null)
+                GLib.assert(tags.cover_description == desc);
             tags.cover_picture = val1;
             GLib.assert(tags.cover_picture != null);
             assert_bytes_equal(tags.cover_picture, val1);
+            GLib.assert(tags.cover_description == desc);
             tags.update();
             tags = null;
             tags = new FileTags(path);
             GLib.assert(tags.cover_picture != null);
             assert_bytes_equal(tags.cover_picture, val1);
+            if (desc != null)
+                GLib.assert(tags.cover_description == desc);
             tags.cover_picture = val2;
             GLib.assert(tags.cover_picture != null);
             assert_bytes_equal(tags.cover_picture, val2);
+            if (desc != null)
+                GLib.assert(tags.cover_description == desc);
             tags.update();
             tags = null;
             tags = new FileTags(path);
             GLib.assert(tags.cover_picture != null);
             assert_bytes_equal(tags.cover_picture, val2);
+            if (desc != null)
+                GLib.assert(tags.cover_description == desc);
         }
 
         /**
@@ -474,30 +484,30 @@ namespace MLM.Test {
             var tags = new FileTags(path);
             assert_bytes_equal(tags.artist_picture, original);
             if (tags.artist != null)
-                GLib.assert(tags.artist_picture_description == tags.artist);
+                GLib.assert(tags.artist_description == tags.artist);
             tags.artist_picture = val1;
             GLib.assert(tags.artist_picture != null);
             assert_bytes_equal(tags.artist_picture, val1);
-            GLib.assert(tags.artist_picture_description == tags.artist);
+            GLib.assert(tags.artist_description == tags.artist);
             tags.update();
             tags = null;
             tags = new FileTags(path);
             GLib.assert(tags.artist_picture != null);
             assert_bytes_equal(tags.artist_picture, val1);
             if (tags.artist != null)
-                GLib.assert(tags.artist_picture_description == tags.artist);
+                GLib.assert(tags.artist_description == tags.artist);
             tags.artist_picture = val2;
             GLib.assert(tags.artist_picture != null);
             assert_bytes_equal(tags.artist_picture, val2);
             if (tags.artist != null)
-                GLib.assert(tags.artist_picture_description == tags.artist);
+                GLib.assert(tags.artist_description == tags.artist);
             tags.update();
             tags = null;
             tags = new FileTags(path);
             GLib.assert(tags.artist_picture != null);
             assert_bytes_equal(tags.artist_picture, val2);
             if (tags.artist != null)
-                GLib.assert(tags.artist_picture_description == tags.artist);
+                GLib.assert(tags.artist_description == tags.artist);
         }
 
         /**

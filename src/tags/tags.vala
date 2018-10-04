@@ -204,10 +204,10 @@ Format for printing:
                 box.add_body_key_value("Composer", file_tags.composer);
             if (file_tags.original != null)
                 box.add_body_key_value("Original artist", file_tags.original);
-            var desc = file_tags.cover_picture_description;
+            var desc = file_tags.cover_description;
             if (file_tags.cover_picture != null)
                 box.add_body_key_value("Front cover picture", desc);
-            desc = file_tags.artist_picture_description;
+            desc = file_tags.artist_description;
             if (file_tags.artist_picture != null)
                 box.add_body_key_value("Artist picture", desc);
             stdout.printf("%s", box.to_string());

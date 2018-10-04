@@ -196,11 +196,6 @@ namespace MLM {
                 v = (int)field.number_value;
                 if (frame.id == FrameId.PICTURE) {
                     analyze_picture_type(field);
-                } else if (frame.id == FrameId.POPULARIMETER) {
-                    double r = v / 2.55;
-                    stdout.printf("\t%s: %s\n",
-                                  Util.color("Rating", Color.BLUE),
-                                  Util.color("%g%%".printf(r), Color.YELLOW));
                 } else {
                     stdout.printf("\t%s: %s\n",
                                   Util.color("UNKNOWN int8", Color.BLUE),
@@ -218,15 +213,9 @@ namespace MLM {
                 break;
             case Id3Tag.FieldType.INT32PLUS:
                 v = (int)field.number_value;
-                if (frame.id == FrameId.POPULARIMETER) {
-                    stdout.printf("\t%s: %s\n",
-                                  Util.color("Counter", Color.BLUE),
-                                  Util.color("%d".printf(v), Color.YELLOW));
-                } else {
-                    stdout.printf("\t%s: %s\n",
-                                  Util.color("UNKNOWN int32 plus", Color.BLUE),
-                                  Util.color("%d".printf(v), Color.YELLOW));
-                }
+                stdout.printf("\t%s: %s\n",
+                              Util.color("UNKNOWN int32 plus", Color.BLUE),
+                              Util.color("%d".printf(v), Color.YELLOW));
                 break;
             case Id3Tag.FieldType.BINARYDATA:
                 stdout.printf("\t%s: %s bytes\n",

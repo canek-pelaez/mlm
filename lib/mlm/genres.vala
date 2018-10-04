@@ -20,10 +20,11 @@
  *    Canek Peláez Valdés <canek@ciencias.unam.mx>
  */
 
-using Id3Tag;
-
 namespace MLM {
 
+    /**
+     * Enumeration for genres.
+     */
     public enum Genre {
         BLUES                  = 0,
         CLASSIC_ROCK           = 1,
@@ -174,6 +175,10 @@ namespace MLM {
         JPOP                   = 146,
         SYNTHPOP               = 147;
 
+        /**
+         * Returns an array with all the genres.
+         * @return an array with all the genres.
+         */
         public static Genre[] all() {
             return { BLUES,
                     CLASSIC_ROCK,
@@ -325,14 +330,23 @@ namespace MLM {
                     SYNTHPOP };
         }
 
+        /**
+         * Returns the genre of the string.
+         * @param genre the genre.
+         * @return the genre of the string, or -1 if there is no genre for the
+         *         string.
+         */
         public static int index_of(string genre) {
-            var genres = all();
-            for (int i = 0; i < genres.length; i++)
-                if (genre == genres[i].to_string())
+            for (int i = 0; i < total(); i++)
+                if (genre == ((Genre)i).to_string())
                     return i;
             return -1;
         }
 
+        /**
+         * Returns the string representation of the genre.
+         * @return the string representation of the genre.
+         */
         public string to_string() {
             switch (this) {
             case BLUES:                  return "Blues";
@@ -485,6 +499,14 @@ namespace MLM {
             case SYNTHPOP:               return "Synthpop";
             default:                     return "Invalid genre";
             }
+        }
+
+        /**
+         * Returns the total number of genres, 148.
+         * @return 148, always.
+         */
+        public static int total() {
+            return 148;
         }
     }
 }

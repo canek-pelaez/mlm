@@ -35,12 +35,12 @@ namespace MLM {
 
     public class Util {
 
-        private static bool get_should_colorize_called = false;
-        private static bool should_colorize = true;
+        private static bool get_colorize_called = false;
+        private static bool colorize = true;
         private const string MLM_DONT_COLORIZE = "MLM_DONT_COLORIZE";
 
         public static string color(string s, Color c) {
-            if (!get_should_colorize() || c == Color.NONE)
+            if (!get_colorize() || c == Color.NONE)
                 return s;
             return "\033[1m\033[9%dm%s\033[0m".printf(c, s);
         }
@@ -100,12 +100,12 @@ namespace MLM {
             return "";
         }
 
-        private static bool get_should_colorize() {
-            if (get_should_colorize_called)
-                return should_colorize;
-            get_should_colorize_called = true;
-            should_colorize = GLib.Environment.get_variable(MLM_DONT_COLORIZE) != "1";
-            return should_colorize;
+        private static bool get_colorize() {
+            if (get_colorize_called)
+                return colorize;
+            get_colorize_called = true;
+            colorize = GLib.Environment.get_variable(MLM_DONT_COLORIZE) != "1";
+            return colorize;
         }
 
         public static void set_locale(GLib.LocaleCategory category) {
