@@ -1,4 +1,5 @@
-/* test-path-main.vala - This file is part of mlm.
+/*
+ * This file is part of mlm.
  *
  * Copyright © 2013-2018 Canek Peláez Valdés
  *
@@ -13,7 +14,7 @@
  * details.
  *
  * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * Author:
  *    Canek Peláez Valdés <canek@ciencias.unam.mx>

@@ -1,4 +1,4 @@
-/* test-case.vala - This file is part of mlm.
+/* This file is part of mlm.
  *
  * Copyright © 2009 Julien Peeters
  *
@@ -13,8 +13,7 @@
  * details.
 
  * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  * Author:
  *    Julien Peeters <contact@julienpeeters.fr>
