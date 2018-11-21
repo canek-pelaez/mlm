@@ -1,20 +1,23 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013-2014 Canek Peláez Valdés
+ * Copyright © 2013-2018 Canek Peláez Valdés
  *
- * mlm is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * mlm is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with mlm. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *    Canek Peláez Valdés <canek@ciencias.unam.mx>
  */
 
 namespace MLM {
@@ -32,12 +35,12 @@ namespace MLM {
 
     public class Util {
 
-        private static bool get_should_colorize_called = false;
-        private static bool should_colorize = true;
+        private static bool get_colorize_called = false;
+        private static bool colorize = true;
         private const string MLM_DONT_COLORIZE = "MLM_DONT_COLORIZE";
 
         public static string color(string s, Color c) {
-            if (!get_should_colorize() || c == Color.NONE)
+            if (!get_colorize() || c == Color.NONE)
                 return s;
             return "\033[1m\033[9%dm%s\033[0m".printf(c, s);
         }
@@ -97,12 +100,12 @@ namespace MLM {
             return "";
         }
 
-        private static bool get_should_colorize() {
-            if (get_should_colorize_called)
-                return should_colorize;
-            get_should_colorize_called = true;
-            should_colorize = GLib.Environment.get_variable(MLM_DONT_COLORIZE) != "1";
-            return should_colorize;
+        private static bool get_colorize() {
+            if (get_colorize_called)
+                return colorize;
+            get_colorize_called = true;
+            colorize = GLib.Environment.get_variable(MLM_DONT_COLORIZE) != "1";
+            return colorize;
         }
 
         public static void set_locale(GLib.LocaleCategory category) {

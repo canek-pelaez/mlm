@@ -1,26 +1,30 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013-2014 Canek Peláez Valdés
+ * Copyright © 2013-2018 Canek Peláez Valdés
  *
- * mlm is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * mlm is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with mlm. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *    Canek Peláez Valdés <canek@ciencias.unam.mx>
  */
-
-using Id3Tag;
 
 namespace MLM {
 
+    /**
+     * Enumeration for genres.
+     */
     public enum Genre {
         BLUES                  = 0,
         CLASSIC_ROCK           = 1,
@@ -171,6 +175,10 @@ namespace MLM {
         JPOP                   = 146,
         SYNTHPOP               = 147;
 
+        /**
+         * Returns an array with all the genres.
+         * @return an array with all the genres.
+         */
         public static Genre[] all() {
             return { BLUES,
                     CLASSIC_ROCK,
@@ -322,14 +330,23 @@ namespace MLM {
                     SYNTHPOP };
         }
 
+        /**
+         * Returns the genre of the string.
+         * @param genre the genre.
+         * @return the genre of the string, or -1 if there is no genre for the
+         *         string.
+         */
         public static int index_of(string genre) {
-            var genres = all();
-            for (int i = 0; i < genres.length; i++)
-                if (genre == genres[i].to_string())
+            for (int i = 0; i < total(); i++)
+                if (genre == ((Genre)i).to_string())
                     return i;
             return -1;
         }
 
+        /**
+         * Returns the string representation of the genre.
+         * @return the string representation of the genre.
+         */
         public string to_string() {
             switch (this) {
             case BLUES:                  return "Blues";
@@ -482,6 +499,14 @@ namespace MLM {
             case SYNTHPOP:               return "Synthpop";
             default:                     return "Invalid genre";
             }
+        }
+
+        /**
+         * Returns the total number of genres, 148.
+         * @return 148, always.
+         */
+        public static int total() {
+            return 148;
         }
     }
 }

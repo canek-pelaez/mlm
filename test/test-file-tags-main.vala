@@ -20,20 +20,19 @@
  *    Canek Peláez Valdés <canek@ciencias.unam.mx>
  */
 
-namespace MLM {
+namespace MLM.Test {
 
-    public class Main {
+    public class TestFileTagsMain {
 
         public static int main(string[] args) {
-            Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-            Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
-            Intl.textdomain(Config.GETTEXT_PACKAGE);
-            GLib.Environment.set_application_name("MLM");
-            Gtk.init(ref args);
-            Gst.init(ref args);
-
-            var mlm = new Application();
-            return mlm.run(args);
+            GLib.Test.init(ref args);
+            var source_root = GLib.Path.build_filename(
+                GLib.Environment.get_current_dir(), "..");
+            if (args.length == 2)
+                source_root = args[1];
+            var test = new TestFileTags(source_root);
+            GLib.TestSuite.get_root().add_suite(test.get_suite());
+            return GLib.Test.run();
         }
     }
 }

@@ -1,20 +1,23 @@
 /*
  * This file is part of mlm.
  *
- * Copyright 2013-2014 Canek Peláez Valdés
+ * Copyright © 2013-2018 Canek Peláez Valdés
  *
- * mlm is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * mlm is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with mlm. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *    Canek Peláez Valdés <canek@ciencias.unam.mx>
  */
 
 namespace MLM {
@@ -122,7 +125,7 @@ namespace MLM {
             window.comment = tags.comment != null ? tags.comment : "";
             window.composer = tags.composer != null ? tags.composer : "";
             window.original = tags.original != null ? tags.original : "";
-            window.cover_data = tags.front_cover_picture;
+            window.cover_data = tags.cover_picture;
             window.artist_data = tags.artist_picture;
             window.disable(UIItemFlags.SAVE);
             window.current = index;
@@ -174,7 +177,7 @@ namespace MLM {
             t.comment = window.comment;
             t.composer = window.composer;
             t.original = window.original;
-            t.front_cover_picture = window.cover_data;
+            t.cover_picture = window.cover_data;
             t.artist_picture = window.artist_data;
         }
 
@@ -184,7 +187,7 @@ namespace MLM {
                 window,
                 "authors",        authors,
                 "comments",       _("A Gtk+ based music library maintainer"),
-                "copyright",      "Copyright 2014 Canek Peláez Valdés",
+                "copyright",      "Copyright © 2013-2018 Canek Peláez Valdés",
                 "license-type",   Gtk.License.GPL_3_0,
                 "logo-icon-name", "mlm",
                 "version",        Config.PACKAGE_VERSION,
