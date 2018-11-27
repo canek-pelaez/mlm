@@ -10,3 +10,9 @@ custom_target(
   command: [msgfmt, '--desktop', '--template', '@INPUT@',
             '-d', podir, '-o', '@OUTPUT@'],
 )
+
+icon_dir = join_paths(datadir, 'icons', 'hicolor', 'scalable', 'apps')
+install_data(
+  'mlm.svg',
+  install_dir: icon_dir
+)
