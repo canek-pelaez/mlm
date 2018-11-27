@@ -470,6 +470,8 @@ namespace MLM {
         private void define_track_total(int new_track, int new_total) {
             if (new_total < new_track && new_track > 0)
                 new_total = new_track;
+            if (new_total > 0 && new_track < 0)
+                new_total = -1;
             string value = (new_track == -1) ? null :
                 "%d/%d".printf(new_total, new_track);
             define_text_value(FrameId.TRACK, value);

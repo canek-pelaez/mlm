@@ -66,6 +66,7 @@ namespace MLM.Test {
             add_test("test_original",       test_original);
             add_test("test_artist_picture", test_artist_picture);
             add_test("test_cover_picture",  test_cover_picture);
+            add_test("test_remove_tags",    test_remove_tags);
         }
 
         /**
@@ -518,6 +519,20 @@ namespace MLM.Test {
             var data2 = get_picture_data(test_cover_png);
             test_artist_picture_file(empty_mp3, null, data1, data2);
             test_artist_picture_file(full_mp3, data1, data1, data2);
+        }
+
+        /**
+         * Test for removing the tags of a {@link FileTags}.
+         */
+        public void test_remove_tags() {
+            var path = full_mp3.get_path();
+            var tags = new FileTags(path);
+            GLib.assert(tags.has_tags);
+            tags.remove_tags();
+            tags = null;
+            tags = new FileTags(path);
+            GLib.assert(!tags.has_tags);
+            tags = null;
         }
     }
 }
