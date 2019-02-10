@@ -1,3 +1,7 @@
-option('disable_doc', type: 'boolean',
+option('man', type: 'boolean',
+       value: true,
+       description: 'Enable generation of man pages')
+
+option('html', type: 'boolean',
        value: false,
-       description: 'Disable generation of man pages')
+       description: 'Enable generation of HTML man pages')
