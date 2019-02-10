@@ -29,21 +29,25 @@ foreach page : pages
   mandir = join_paths(get_option('mandir'), 'man1')
   htmldir = join_paths(docdir, 'html')
 
-  mp = custom_target(man,
-                     input : xml,
-                     output : man,
-                     command : command + [ customman, '@INPUT@' ],
-                     install : true,
-                     install_dir : mandir )
-  man_pages += [ mp ]
+  if want_man
+    mp = custom_target(man,
+                       input : xml,
+                       output : man,
+                       command : command + [ customman, '@INPUT@' ],
+                       install : true,
+                       install_dir : mandir )
+    man_pages += [ mp ]
+  endif
 
-  hp = custom_target(html,
-                     input : xml,
-                     output : html,
-                     command : command + [ customhtml, '@INPUT@' ],
-                     install : true,
-                     install_dir : htmldir )
-  html_pages += [ hp ]
+  if want_html
+    hp = custom_target(html,
+                       input : xml,
+                       output : html,
+                       command : command + [ customhtml, '@INPUT@' ],
+                       install : true,
+                       install_dir : htmldir )
+    html_pages += [ hp ]
+  endif
 
 endforeach
 
