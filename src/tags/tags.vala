@@ -170,7 +170,8 @@ Format for printing:
             }
             var file_tags = new FileTags(filename);
             if (!file_tags.has_tags) {
-                stderr.printf("The file ‘%s’ has no ID3 v2.4.0 tags.\n", filename);
+                stderr.printf("The file ‘%s’ has no ID3 v2.4.0 tags.\n",
+                              filename);
                 return;
             }
             var box = new PrettyBox(80, Color.RED);
@@ -180,7 +181,7 @@ Format for printing:
             if (file_tags.title != null)
                 box.add_body_key_value("Title", file_tags.title);
             if (file_tags.album != null)
-                box.add_body_key_value("Album", file_tags.album); 
+                box.add_body_key_value("Album", file_tags.album);
             if (file_tags.band != null)
                 box.add_body_key_value("Album band", file_tags.band);
             if (file_tags.year != -1)

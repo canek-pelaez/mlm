@@ -25,11 +25,10 @@ namespace MLM {
     public class Main {
 
         public static int main(string[] args) {
-            Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-            Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
-            Intl.textdomain(Config.GETTEXT_PACKAGE);
+            GLib.Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
+            GLib.Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
+            GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);
             GLib.Environment.set_application_name("MLM");
-            Gtk.init(ref args);
             Gst.init(ref args);
 
             var mlm = new Application();

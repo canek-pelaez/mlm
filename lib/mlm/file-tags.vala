@@ -99,8 +99,6 @@ namespace MLM {
         private Gee.HashMap<string, int?> int_frames;
         /* Data frames. */
         private Gee.HashMap<int, GLib.Bytes> data_frames;
-        /* Invalid frames. */
-        private Gee.ArrayList<Id3Tag.Frame> invalid_frames;
 
         /**
          * The artist.
@@ -275,154 +273,87 @@ namespace MLM {
             if (tag.frames.length == 0)
                 return;
 
-            invalid_frames = new Gee.ArrayList<Id3Tag.Frame>();
-            for (int i = 0; i < tag.frames.length; i++)
-                set_frame(tag.frames[i]);
+            var invalid_frames = new Gee.ArrayList<Id3Tag.Frame>();
+            for (int i = 0; i < tag.frames.length; i++) {
+                var frame = tag.frames[i];
+                if (frame.id == FrameId.ARTIST) {
+                    string_frames[FrameId.ARTIST] = _artist = frame.get_text();
+                } else if (frame.id == FrameId.TITLE) {
+                    string_frames[FrameId.TITLE] = _title = frame.get_text();
+                } else if (frame.id == FrameId.ALBUM) {
+                    string_frames[FrameId.ALBUM] = _album = frame.get_text();
+                } else if (frame.id == FrameId.BAND) {
+                    string_frames[FrameId.BAND] = _band = frame.get_text();
+                } else if (frame.id == FrameId.YEAR) {
+                    int_frames[FrameId.YEAR] = _year =
+                        int.parse(frame.get_text());
+                } else if (frame.id == FrameId.TRACK) {
+                    string track = frame.get_text();
+                    if (track == null)
+                        continue;
+                    string_frames[FrameId.TRACK] = track;
+                    if (track.index_of("/") != -1) {
+                        string[] t = track.split("/");
+                        _track = int.parse(t[0]);
+                        _total = int.parse(t[1]);
+                    } else {
+                        _track = int.parse(track);
+                        _total = -1;
+                    }
+                } else if (frame.id == FrameId.DISC) {
+                    _disc = int.parse(frame.get_text());
+                } else if (frame.id == FrameId.GENRE) {
+                    var g = frame.get_text();
+                    if (g == null)
+                        continue;
+                    _genre = Genre.index_of(g);
+                    if (_genre != -1) {
+                        int_frames[FrameId.GENRE] = _genre;
+                        continue;
+                    }
+                    int n = int.parse(g);
+                    if (0 <= n && n < Genre.total()) {
+                        _genre = n;
+                        int_frames[FrameId.GENRE] = _genre;
+                    } else {
+                        invalid_frames.add(frame);
+                    }
+                } else if (frame.id == FrameId.COMMENT) {
+                    string_frames[FrameId.COMMENT] = _comment =
+                        frame.get_comment_text();
+                } else if (frame.id == FrameId.COMPOSER) {
+                    string_frames[FrameId.COMPOSER] = _composer =
+                        frame.get_text();
+                } else if (frame.id == FrameId.ORIGINAL) {
+                    string_frames[FrameId.ORIGINAL] = _original =
+                        frame.get_text();
+                } else if (frame.id == FrameId.PICTURE) {
+                    var fc_data =
+                        frame.get_picture(Id3Tag.PictureType.COVERFRONT);
+                    if (fc_data != null) {
+                        _cover_picture = fc_data;
+                        data_frames[Id3Tag.PictureType.COVERFRONT] =
+                            new GLib.Bytes(fc_data);
+                        cover_description =
+                            frame.get_picture_description();
+                    }
+                    var a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
+                    if (a_data != null) {
+                        _artist_picture = a_data;
+                        data_frames[Id3Tag.PictureType.ARTIST] =
+                            new GLib.Bytes(a_data);
+                        artist_description =
+                            frame.get_picture_description();
+                    }
+                } else {
+                    GLib.warning("Invalid frame ‘%s’ will be deleted.\n",
+                                 frame.id);
+                    invalid_frames.add(frame);
+                }
+            }
             foreach (Id3Tag.Frame frame in invalid_frames) {
                 tag.detachframe(frame);
             }
-            invalid_frames = null;
-        }
-
-        /* Sets a frame. */
-        private void set_frame(Id3Tag.Frame frame) {
-            if (frame.id == FrameId.ARTIST) {
-                set_artist_frame(frame);
-            } else if (frame.id == FrameId.TITLE) {
-                set_title_frame(frame);
-            } else if (frame.id == FrameId.ALBUM) {
-                set_album_frame(frame);
-            } else if (frame.id == FrameId.BAND) {
-                set_band_frame(frame);
-            } else if (frame.id == FrameId.YEAR) {
-                set_year_frame(frame);
-            } else if (frame.id == FrameId.TRACK) {
-                set_track_frame(frame);
-            } else if (frame.id == FrameId.DISC) {
-                set_disc_frame(frame);
-            } else if (frame.id == FrameId.GENRE) {
-                set_genre_frame(frame);
-            } else if (frame.id == FrameId.COMMENT) {
-                set_comment_frame(frame);
-            } else if (frame.id == FrameId.COMPOSER) {
-                set_composer_frame(frame);
-            } else if (frame.id == FrameId.ORIGINAL) {
-                set_original_frame(frame);
-            } else if (frame.id == FrameId.PICTURE) {
-                set_picture_frame(frame);
-            } else {
-                set_invalid_frame(frame);
-            }
-        }
-
-        /* Sets the artist frame. */
-        private void set_artist_frame(Id3Tag.Frame frame) {
-            string_frames[FrameId.ARTIST] = _artist = frame.get_text();
-        }
-
-        /* Sets the artist frame. */
-        private void set_title_frame(Id3Tag.Frame frame) {
-            string_frames[FrameId.TITLE] = _title = frame.get_text();
-        }
-
-        /* Sets the album frame. */
-        private void set_album_frame(Id3Tag.Frame frame) {
-            string_frames[FrameId.ALBUM] = _album = frame.get_text();
-        }
-
-        /* Sets the band frame. */
-        private void set_band_frame(Id3Tag.Frame frame) {
-            string_frames[FrameId.BAND] = _band = frame.get_text();
-        }
-
-        /* Sets the year frame. */
-        private void set_year_frame(Id3Tag.Frame frame) {
-            int_frames[FrameId.YEAR] = _year = int.parse(frame.get_text());
-        }
-
-        /* Sets the track frame. */
-        private void set_track_frame(Id3Tag.Frame frame) {
-                string track = frame.get_text();
-                if (track == null)
-                    return;
-                string_frames[FrameId.TRACK] = track;
-                if (track.index_of("/") != -1) {
-                    string[] t = track.split("/");
-                    _track = int.parse(t[0]);
-                    _total = int.parse(t[1]);
-                } else {
-                    _track = int.parse(track);
-                    _total = -1;
-                }
-        }
-
-        /* Sets the disc frame. */
-        private void set_disc_frame(Id3Tag.Frame frame) {
-            int_frames[FrameId.DISC] = _disc = int.parse(frame.get_text());
-        }
-
-        /* Sets the genre frame. */
-        private void set_genre_frame(Id3Tag.Frame frame) {
-                var g = frame.get_text();
-                if (g == null)
-                    return;
-                _genre = Genre.index_of(g);
-                if (_genre != -1) {
-                    int_frames[FrameId.GENRE] = _genre;
-                    return;
-                }
-                int n = int.parse(g);
-                if (0 <= n && n < Genre.total()) {
-                    _genre = n;
-                    int_frames[FrameId.GENRE] = _genre;
-                } else {
-                    invalid_frames.add(frame);
-                }
-        }
-
-        /* Sets the comment frame. */
-        private void set_comment_frame(Id3Tag.Frame frame) {
-            _comment = frame.get_comment_text();
-            string_frames[FrameId.COMMENT] = _comment;
-        }
-
-        /* Sets the composer frame. */
-        private void set_composer_frame(Id3Tag.Frame frame) {
-            _composer = frame.get_text();
-            string_frames[FrameId.COMPOSER] = _composer;
-        }
-
-        /* Sets the original frame. */
-        private void set_original_frame(Id3Tag.Frame frame) {
-            _original = frame.get_text();
-            string_frames[FrameId.ORIGINAL] = _original;
-        }
-
-        /* Sets the picture frame. */
-        private void set_picture_frame(Id3Tag.Frame frame) {
-                var fc_data =
-                frame.get_picture(Id3Tag.PictureType.COVERFRONT);
-                if (fc_data != null) {
-                    _cover_picture = fc_data;
-                    data_frames[Id3Tag.PictureType.COVERFRONT] =
-                    new GLib.Bytes(fc_data);
-                    cover_description =
-                    frame.get_picture_description();
-                }
-                var a_data = frame.get_picture(Id3Tag.PictureType.ARTIST);
-                if (a_data != null) {
-                    _artist_picture = a_data;
-                    data_frames[Id3Tag.PictureType.ARTIST] =
-                    new GLib.Bytes(a_data);
-                    artist_description =
-                    frame.get_picture_description();
-                }
-        }
-
-        /* Sets an invalid frame. */
-        private void set_invalid_frame(Id3Tag.Frame frame) {
-            GLib.warning("Invalid frame ‘%s’ will be deleted.\n", frame.id);
-            invalid_frames.add(frame);
         }
 
         /**
