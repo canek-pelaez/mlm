@@ -243,15 +243,15 @@ Format for printing:
             if (ft.year != -1)
                 f = f.replace("%y", "%d".printf(ft.year));
             if (ft.track != -1) {
-                f = f.replace("%n", "%02d".printf(ft.track));
+                f = f.replace("%n", "%d".printf(ft.track));
                 f = f.replace("%N", "%02d".printf(ft.track));
             }
             if (ft.total != -1) {
-                f = f.replace("%#", "%02d".printf(ft.total));
+                f = f.replace("%#", "%d".printf(ft.total));
                 f = f.replace("%C", "%02d".printf(ft.total));
             }
             if (ft.disc != -1) {
-                f = f.replace("%d", "%02d".printf(ft.disc));
+                f = f.replace("%d", "%d".printf(ft.disc));
                 f = f.replace("%D", "%02d".printf(ft.disc));
             }
             if (ft.genre != -1)
