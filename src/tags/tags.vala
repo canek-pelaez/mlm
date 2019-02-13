@@ -151,6 +151,7 @@ Format for printing:
   %c: Comment
   %s: Composer
   %o: Original artist
+  %f: File name
 """;
 
         private static void print_genres() {
@@ -261,6 +262,7 @@ Format for printing:
                 f = f.replace("%s", ft.composer);
             if (ft.original != null)
                 f = f.replace("%o", ft.original);
+            f = f.replace("%f", filename);
 
             stdout.printf(f);
         }

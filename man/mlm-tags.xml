@@ -329,6 +329,10 @@
             <entry><literal>%o</literal></entry>
             <entry>Original artist.</entry>
           </row>
+          <row>
+            <entry><literal>%f</literal></entry>
+            <entry>File name.</entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
