@@ -57,14 +57,20 @@ namespace MLM {
         protected override void message_received(Gst.Message message) {
             switch (message.type) {
             case Gst.MessageType.EOS:
-                pipe.set_state(Gst.State.NULL);
+                pipe.set_state(Gst.State.PAUSED);
                 break;
             case Gst.MessageType.STATE_CHANGED:
                 var state = Gst.State.NULL;
                 var pending = Gst.State.NULL;
                 pipe.get_state(out state, out pending, 100);
-                if (state != Gst.State.PLAYING)
+                if (state == Gst.State.PAUSED &&
+                    pending == Gst.State.VOID_PENDING) {
+                    pipe.set_state(Gst.State.READY);
+                } else if (state == Gst.State.READY &&
+                           pending == Gst.State.VOID_PENDING) {
+                    pipe.set_state(Gst.State.NULL);
                     working = false;
+                }
                 break;
             }
         }
