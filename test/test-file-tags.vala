@@ -270,6 +270,18 @@ namespace MLM.Test {
             GLib.assert(tags.track == 7);
             GLib.assert(tags.total == 7);
             tags = null;
+            tags = new FileTags(path);
+            tags.track = -1;
+            tags.update();
+            GLib.assert(tags.track == -1);
+            GLib.assert(tags.total == -1);
+            tags = null;
+            tags = new FileTags(path);
+            tags.track = 3;
+            tags.total = 7;
+            tags.update();
+            GLib.assert(tags.track == 3);
+            GLib.assert(tags.total == 7);
         }
 
         /**

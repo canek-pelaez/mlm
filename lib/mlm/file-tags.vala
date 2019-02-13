@@ -473,7 +473,7 @@ namespace MLM {
             if (new_total > 0 && new_track < 0)
                 new_total = -1;
             string value = (new_track == -1) ? null :
-                "%d/%d".printf(new_total, new_track);
+                "%d/%d".printf(new_track, new_total);
             define_text_value(FrameId.TRACK, value);
             if (string_frames.has_key(FrameId.TRACK)) {
                 _track = new_track;
