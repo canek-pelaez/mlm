@@ -372,7 +372,7 @@ namespace MLM {
                 return false;
             double p = encoder.get_completion();
             bar.set_fraction(p);
-            if (p < 1.0)
+            if (encoder.working)
                 return true;
             app.set_tags_in_file(target);
             encoder = null;
