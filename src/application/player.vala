@@ -65,19 +65,19 @@ namespace MLM {
                 var pending = Gst.State.NULL;
                 pipe.get_state(out state, out pending, 100);
                 switch (state) {
-                case Gst.State.PLAYING:
-                    status_changed(Status.PLAYING);
-                    working = true;
+                case Gst.State.VOID_PENDING:
                     break;
-                case Gst.State.PAUSED:
-                    working = false;
+                case Gst.State.NULL:
                     break;
                 case Gst.State.READY:
                     working = false;
                     break;
-                case Gst.State.NULL:
+                case Gst.State.PAUSED:
+                    working = false;
                     break;
-                case Gst.State.VOID_PENDING:
+                case Gst.State.PLAYING:
+                    status_changed(Status.PLAYING);
+                    working = true;
                     break;
                 }
                 break;
