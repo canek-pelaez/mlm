@@ -638,6 +638,26 @@
     <property name="step-increment">0.1</property>
     <property name="page-increment">1.0</property>
   </object>
+  <object class="GtkEntryCompletion" id="genre_completion">
+    <property name="model">genre_model</property>
+    <property name="text-column">0</property>
+    <property name="inline-completion">True</property>
+    <property name="inline-selection">True</property>
+    <property name="popup-completion">False</property>
+    <signal name="match-selected" handler="on_match_selected" swapped="no"/>
+  </object>
+  <object class="GtkPopover" id="popover">
+    <property name="relative-to">reencode</property>
+    <signal name="notify::visible" handler="popover_visibility_changed" swapped="no"/>
+    <child>
+      <object class="GtkProgressBar" id="bar">
+        <property name="margin">12</property>
+        <property name="visible">True</property>
+        <property name="text">Reencoding...</property>
+        <property name="show-text">True</property>
+      </object>
+    </child>
+  </object>
   <template class="MLMApplicationWindow" parent="GtkApplicationWindow">
     <property name="visible">False</property>
     <property name="can-focus">False</property>
@@ -1012,13 +1032,15 @@
                         <property name="active-id">0</property>
                         <property name="has-entry">True</property>
                         <property name="model">genre_model</property>
-                        <property name="entry_text-column">0</property>
+                        <property name="entry-text-column">0</property>
+                        <property name="popup-fixed-width">True</property>
                         <property name="id-column">1</property>
                         <child internal-child="entry">
                           <object class="GtkEntry" id="genre">
                             <property name="can-focus">True</property>
                             <property name="hexpand">True</property>
                             <property name="text">Blues</property>
+                            <property name="completion">genre_completion</property>
                             <property name="tooltip-text" translatable="yes">Genre of the track</property>
                             <signal name="changed" handler="tags_changed" swapped="no"/>
                           </object>

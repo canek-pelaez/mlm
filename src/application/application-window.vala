@@ -65,6 +65,12 @@ namespace MLM {
         private Gtk.MenuButton reencode;
 
         [GtkChild]
+        private Gtk.Popover popover;
+
+        [GtkChild]
+        private Gtk.ProgressBar bar;
+
+        [GtkChild]
         private Gtk.Frame frame;
 
         [GtkChild]
@@ -216,8 +222,6 @@ namespace MLM {
         [GtkChild]
         private Gtk.Label time;
 
-        private Gtk.Popover popover;
-        private Gtk.ProgressBar bar;
         private bool ignore_popover;
 
         private Application app;
@@ -241,39 +245,25 @@ namespace MLM {
                 var file = GLib.File.new_for_uri("resource:///mx/unam/MLM/mlm.css");
                 provider.load_from_file(file);
             } catch (GLib.Error e) {
-                stderr.printf("There was a problem loading ‘mlm.css’");
+                stderr.printf("There was a problem loading ‘mlm.css’\n");
             }
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                       provider, 999);
             var date_time = new GLib.DateTime.now_local();
             year_adjustment.upper = date_time.get_year();
 
-            /* Stupid GtkBuilder */
-            var completion = genre_widget.completion;
-            completion = new Gtk.EntryCompletion();
-            completion.model = genre_model;
-            completion.text_column = 0;
-            completion.match_selected.connect(match_selected);
-
             _cover_data = null;
             _artist_data = null;
 
-            bar = new Gtk.ProgressBar();
-            bar.text = _("Reencoding...");
-            bar.show_text = true;
-            bar.visible = true;
-            bar.margin = 12;
-
-            popover = new Gtk.Popover(reencode);
-            popover.add(bar);
-
             reencode.bind_property("active", popover, "visible",
                                    GLib.BindingFlags.BIDIRECTIONAL);
-            popover.notify["visible"].connect(popover_visibility_changed);
             ignore_popover = false;
+
+            genre_model.set_sort_column_id(0, Gtk.SortType.ASCENDING);
         }
 
-        private bool match_selected(Gtk.TreeModel m, Gtk.TreeIter i) {
+        [GtkCallback]
+        public bool on_match_selected(Gtk.TreeModel m, Gtk.TreeIter i) {
             genre_combobox.set_active_iter(i);
             return true;
         }
@@ -333,6 +323,7 @@ namespace MLM {
                 cover_data = data;
         }
 
+        [GtkCallback]
         public void popover_visibility_changed() {
             if (ignore_popover)
                 return;
