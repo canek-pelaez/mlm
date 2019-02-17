@@ -81,17 +81,7 @@ namespace MLM {
         private string _filename;
         public string filename {
             get { return _filename; }
-            set {
-                _filename = value;
-                var basename = GLib.Path.get_basename(filename);
-                var markup = GLib.Markup.printf_escaped("<b>%s</b>", basename);
-                filename_widget.set_markup(markup);
-                if (player != null)
-                    player.pause();
-                reset_timer();
-                player = new Player(value);
-                player.status_changed.connect(player_status_changed);
-            }
+            set { define_filename(value); }
         }
 
         [GtkChild (name = "artist")]
@@ -163,12 +153,7 @@ namespace MLM {
         private Gtk.Entry genre_widget;
         public string genre {
             get { return genre_widget.get_text(); }
-            set {
-                int i = Genre.index_of(value);
-                if (i != -1) {
-                    genre_combobox.active = i;
-                }
-            }
+            set { define_genre(value); }
         }
 
         [GtkChild]
@@ -374,17 +359,17 @@ namespace MLM {
             return false;
         }
 
-        private void player_status_changed(Player.Status status) {
-            switch (status) {
-            case Player.Status.PLAYING:
+        private void player_state_changed(Gst.State state) {
+            switch (state) {
+            case Gst.State.PLAYING:
                 play_image.set_from_icon_name(ICON_NAME_PAUSE, ICON_SIZE);
                 GLib.Idle.add(monitor_play);
                 break;
-            case Player.Status.PAUSED:
+            case Gst.State.PAUSED:
+                int64 d, p;
+                if (player.get_completion(out d, out p) == 0.0)
+                    reset_timer();
                 play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
-                break;
-            case Player.Status.RESET:
-                reset_timer();
                 break;
             }
         }
@@ -514,6 +499,40 @@ namespace MLM {
                 save.sensitive = s;
             if ((flags & UIItemFlags.REST) != 0)
                 frame.sensitive = s;
+        }
+
+        private void define_genre(string g) {
+            Gtk.TreeIter iter = {};
+            if (!genre_model.get_iter_first(out iter))
+                return;
+            int c = 0;
+            do {
+                string ig;
+                genre_model.get(iter, 0, out ig);
+                if (g == ig)
+                    genre_combobox.active = c;
+                c++;
+            } while (genre_model.iter_next(ref iter));
+        }
+
+        private void define_filename(string f) {
+            _filename = f;
+            var basename = GLib.Path.get_basename(_filename);
+            var markup = GLib.Markup.printf_escaped("<b>%s</b>", basename);
+            filename_widget.set_markup(markup);
+            if (player != null)
+                player.finish();
+            reset_timer();
+            GLib.Idle.add(dispose_player);
+        }
+
+        private bool dispose_player() {
+            if (player == null || player.state == Gst.State.NULL) {
+                player = new Player(filename);
+                player.state_changed.connect(player_state_changed);
+                return false;
+            }
+            return true;
         }
 
         public void enable(UIItemFlags flags) {
