@@ -24,21 +24,17 @@ namespace MLM {
 
     public class Player : Media {
 
-        public enum Status {
-            RESET,
-            PLAYING,
-            PAUSED;
-        }
+        public signal void state_changed(Gst.State state);
 
-        public signal void status_changed(Player.Status status);
+        public Gst.State state { get { return obtain_state(); } }
+        private Gst.State last_state;
 
         public Player(string filename) {
             base();
-
             var src = pipe.get_by_name("src");
             src.set_property("location", filename);
-
             pipe.set_state(Gst.State.PAUSED);
+            last_state = Gst.State.PAUSED;
         }
 
         protected override void set_pipeline() {
@@ -49,7 +45,7 @@ namespace MLM {
                         "decodebin        ! " +
                         "autoaudiosink");
             } catch (GLib.Error e) {
-                stderr.printf("There was an error while creating the play pipeline.\n");
+                stderr.printf("Error while creating the play pipeline.\n");
             }
         }
 
@@ -58,27 +54,25 @@ namespace MLM {
             case Gst.MessageType.EOS:
                 pipe.seek_simple(Gst.Format.TIME, Gst.SeekFlags.FLUSH, 0);
                 pipe.set_state(Gst.State.PAUSED);
-                status_changed(Status.RESET);
                 break;
             case Gst.MessageType.STATE_CHANGED:
-                var state = Gst.State.NULL;
+                var new_state = Gst.State.NULL;
                 var pending = Gst.State.NULL;
-                pipe.get_state(out state, out pending, 100);
-                switch (state) {
-                case Gst.State.VOID_PENDING:
-                    break;
-                case Gst.State.NULL:
-                    break;
-                case Gst.State.READY:
+                pipe.get_state(out new_state, out pending, 100);
+                if (last_state != new_state) {
+                    state_changed(new_state);
+                    last_state = new_state;
+                }
+                if (new_state == Gst.State.PAUSED &&
+                    pending == Gst.State.VOID_PENDING) {
                     working = false;
-                    break;
-                case Gst.State.PAUSED:
-                    working = false;
-                    break;
-                case Gst.State.PLAYING:
-                    status_changed(Status.PLAYING);
+                } else if (new_state == Gst.State.PLAYING &&
+                           pending == Gst.State.VOID_PENDING) {
                     working = true;
-                    break;
+                } else if (new_state == Gst.State.READY &&
+                           pending == Gst.State.VOID_PENDING) {
+                    pipe.set_state(Gst.State.NULL);
+                    working = false;
                 }
                 break;
             }
@@ -90,7 +84,10 @@ namespace MLM {
 
         public void pause() {
             pipe.set_state(Gst.State.PAUSED);
-            working = false;
+        }
+
+        public void finish() {
+            pipe.set_state(Gst.State.READY);
         }
 
         public bool seek(double percentage) {
@@ -105,5 +102,12 @@ namespace MLM {
                              nsecs);
             return true;
         }
+
+        private Gst.State obtain_state() {
+            var new_state = Gst.State.NULL;
+            var pending = Gst.State.NULL;
+            pipe.get_state(out new_state, out pending, 100);
+            return new_state;
+       }
     }
 }
