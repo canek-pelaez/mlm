@@ -165,19 +165,19 @@ namespace MLM {
         }
 
         private void set_tags_from_window(FileTags t) {
-            t.artist = window.artist;
-            t.title = window.title_;
-            t.album = window.album;
-            t.band = window.band;
-            t.year = window.year;
-            t.disc = window.disc;
-            t.track = window.track;
-            t.total = window.total;
-            t.genre = window.genre_id;
-            t.comment = window.comment;
-            t.composer = window.composer;
-            t.original = window.original;
-            t.cover_picture = window.cover_data;
+            t.artist         = window.artist;
+            t.title          = window.title_;
+            t.album          = window.album;
+            t.band           = window.band;
+            t.year           = window.year;
+            t.disc           = window.disc;
+            t.track          = window.track;
+            t.total          = window.total;
+            t.genre          = window.genre_id;
+            t.comment        = window.comment;
+            t.composer       = window.composer;
+            t.original       = window.original;
+            t.cover_picture  = window.cover_data;
             t.artist_picture = window.artist_data;
         }
 
