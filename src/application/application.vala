@@ -24,12 +24,19 @@ namespace MLM {
 
     public class Application : Gtk.Application {
 
-        private FileTags tags;
+        public int total { public get; private set; }
+        public int current { public get; private set; }
+        public FileTags tags { public get; private set; }
+        public Gee.BidirListIterator<GLib.File> iterator {
+            public  get;
+            private set;
+        }
+
         private ApplicationWindow window;
-        private int total;
-        private int index;
         private Gee.ArrayList<GLib.File> files;
-        private Gee.BidirListIterator<GLib.File> iterator;
+        private Player player;
+        private Encoder encoder;
+        private string target;
 
         public Application() {
             application_id = "mx.unam.MLM";
@@ -128,14 +135,16 @@ namespace MLM {
             window.cover_data = tags.cover_picture;
             window.artist_data = tags.artist_picture;
             window.disable(UIItemFlags.SAVE);
-            window.current = index;
+            window.current = current;
         }
 
         public void previous() {
+            if (player.working)
+                player.pause();
             if (!iterator.has_previous())
                 return;
             iterator.previous();
-            index--;
+            current--;
             window.enable(UIItemFlags.NEXT);
             if (!iterator.has_previous())
                 window.disable(UIItemFlags.PREVIOUS);
@@ -143,10 +152,12 @@ namespace MLM {
         }
 
         public void next() {
+            if (player.working)
+                player.pause();
             if (!iterator.has_next())
                 return;
             iterator.next();
-            index++;
+            current++;
             window.enable(UIItemFlags.PREVIOUS);
             if (!iterator.has_next())
                 window.disable(UIItemFlags.NEXT);
@@ -194,6 +205,44 @@ namespace MLM {
                 "website",        ("https://canek@aztlan.fciencias.unam.mx/" +
                                    "gitlab/canek/mlm.git"),
                 "wrap-license",   true);
+        }
+
+        public void start_encoder() {
+            int cont = 0;
+            do {
+                string d = Path.get_dirname(filename);
+                string s = GLib.Path.DIR_SEPARATOR_S;
+                string a = artist.replace("/", "_");
+                string t = title_.replace("/", "_");
+                string e = (cont == 0) ? ".mp3" : "-%d.mp3".printf(cont);
+                target = d + s + a + " - " + t + e;
+                cont++;
+            } while (GLib.FileUtils.test(target, GLib.FileTest.EXISTS));
+            encoder = new Encoder(filename, target);
+            encoder.encode();
+            GLib.Idle.add(upgrade_encoding);
+        }
+
+        private bool upgrade_encoding() {
+            if (encoder == null || target == null)
+                return false;
+            double p = encoder.get_completion();
+            window.update_progress_bar(p);
+            if (encoder.working)
+                return true;
+            set_tags_in_file();
+            encoder = null;
+            target = null;
+            return false;
+        }
+
+        public void stop_encoder() {
+            if (target == null || encoder == null)
+                return;
+            encoder.cancel();
+            GLib.FileUtils.remove(target);
+            target = null;
+            encoder = null;
         }
     }
 }

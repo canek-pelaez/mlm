@@ -22,183 +22,77 @@
 
 namespace MLM {
 
-    public enum UIItemFlags {
-        PREVIOUS     = 1 << 0,
-        NEXT         = 1 << 1,
-        REENCODE     = 1 << 2,
-        SAVE         = 1 << 3,
-        REST         = 1 << 4,
-        ALL          = 0x1f;
-    }
-
     [GtkTemplate (ui = "/mx/unam/MLM/mlm.ui")]
     public class ApplicationWindow : Gtk.ApplicationWindow {
 
-        public int current {
-            get { return _current; }
-            set { define_current(value); }
-        }
-        private int _current;
-
-        public int last {
-            get { return _last; }
-            set { define_last(value); }
-        }
-        private int _last;
-
-        public string filename {
-            get { return _filename; }
-            set { define_filename(value); }
-        }
-        private string _filename;
-
-        public string artist {
-            get { return artist_widget.get_text(); }
-            set { artist_widget.set_text(value); }
-        }
-
-        public string title_ {  // title is used by Gtk.ApplicationWindow
-            get { return title_widget.get_text(); }
-            set { title_widget.set_text(value); }
-        }
-
-        public string album {
-            get { return album_widget.get_text(); }
-            set { album_widget.set_text(value); }
-        }
-
-        public string band {
-            get { return band_widget.get_text(); }
-            set { band_widget.set_text(value); }
-        }
-
-        public int year {
-            get { return (int)year_widget.get_value(); }
-            set { year_widget.set_value(value); }
-        }
-
-        public int disc {
-            get { return (int)disc_widget.get_value(); }
-            set { disc_widget.set_value(value); }
-        }
-
-        public int track {
-            get { return (int)track_widget.get_value(); }
-            set { track_widget.set_value(value); }
-        }
-
-        public int total {
-            get { return (int)total_widget.get_value(); }
-            set { total_widget.set_value(value); }
-        }
-
-        public string genre {
-            get { return genre_widget.get_text(); }
-            set { define_genre(value); }
-        }
-
-        public int genre_id {
-            get { return genre_combobox.active; }
-        }
-
-        public string comment {
-            get { return comment_widget.get_text(); }
-            set { comment_widget.set_text(value); }
-        }
-
-        public string composer {
-            get { return composer_widget.get_text(); }
-            set { composer_widget.set_text(value); }
-        }
-
-        public string original {
-            get { return original_widget.get_text(); }
-            set { original_widget.set_text(value); }
-        }
-
-        public uint8[] cover_data {
-            get { return _cover_data; }
-            set { _cover_data = update_image(cover_image, value, _cover_data); }
-        }
-        private uint8[] _cover_data;
-
-        public uint8[] artist_data {
-            get { return _artist_data; }
-            set { _artist_data = update_image(artist_image, value, _artist_data); }
-        }
-        private uint8[] _artist_data;
+        [GtkChild]
+        private Gtk.HeaderBar header_bar;
 
         [GtkChild]
-        private Gtk.HeaderBar header;
+        private Gtk.Button previous_button;
 
         [GtkChild]
-        private Gtk.Button previous;
+        private Gtk.Button next_button;
 
         [GtkChild]
-        private Gtk.Button next;
+        private Gtk.Button save_button;
 
         [GtkChild]
-        private Gtk.MenuButton reencode;
+        private Gtk.MenuButton reencode_menu_button;
 
         [GtkChild]
-        private Gtk.Popover popover;
+        private Gtk.Popover reencode_popover;
 
         [GtkChild]
         private Gtk.ProgressBar bar;
 
         [GtkChild]
-        private Gtk.Frame frame;
+        private Gtk.Frame tags_frame;
 
         [GtkChild]
-        private Gtk.Button save;
+        private Gtk.Entry artist_entry;
 
-        [GtkChild (name = "filename")]
-        private Gtk.Label filename_widget;
+        [GtkChild]
+        private Gtk.Entry title_entry;
 
-        [GtkChild (name = "artist")]
-        private Gtk.Entry artist_widget;
+        [GtkChild]
+        private Gtk.Entry album_entry;
 
-        [GtkChild (name = "title")]
-        private Gtk.Entry title_widget;
+        [GtkChild]
+        private Gtk.Entry band_entry;
 
-        [GtkChild (name = "album")]
-        private Gtk.Entry album_widget;
-
-        [GtkChild (name = "band")]
-        private Gtk.Entry band_widget;
-
-        [GtkChild (name = "year")]
-        private Gtk.SpinButton year_widget;
+        [GtkChild]
+        private Gtk.SpinButton year_spin_button;
 
         [GtkChild]
         private Gtk.Adjustment year_adjustment;
 
-        [GtkChild (name = "disc")]
-        private Gtk.SpinButton disc_widget;
+        [GtkChild]
+        private Gtk.SpinButton disc_spin_button;
 
-        [GtkChild (name = "track")]
-        private Gtk.SpinButton track_widget;
+        [GtkChild]
+        private Gtk.SpinButton track_spin_button;
 
-        [GtkChild (name = "total")]
-        private Gtk.SpinButton total_widget;
+        [GtkChild]
+        private Gtk.SpinButton total_spin_button;
 
         [GtkChild]
         private Gtk.ComboBox genre_combobox;
 
-        [GtkChild (name = "genre")]
-        private Gtk.Entry genre_widget;
+        [GtkChild]
+        private Gtk.Entry genre_entry;
 
         [GtkChild]
         private Gtk.ListStore genre_model;
 
-        [GtkChild (name = "comment")]
-        private Gtk.Entry comment_widget;
+        [GtkChild]
+        private Gtk.Entry comment_entry;
 
-        [GtkChild (name = "composer")]
-        private Gtk.Entry composer_widget;
+        [GtkChild]
+        private Gtk.Entry composer_entry;
 
-        [GtkChild (name = "original")]
-        private Gtk.Entry original_widget;
+        [GtkChild]
+        private Gtk.Entry original_entry;
 
         [GtkChild]
         private Gtk.Image cover_image;
@@ -213,14 +107,14 @@ namespace MLM {
         private Gtk.Adjustment play_adjustment;
 
         [GtkChild]
-        private Gtk.Label time;
+        private Gtk.Label time_label;
+
+        [GtkChild]
+        private Gtk.Label filename_label;
 
         private bool ignore_popover;
 
-        private Application app;
-        private Player player;
-        private Encoder encoder;
-        private string target;
+        private Application mlm;
 
         private const string CSS_URI = "resource:///mx/unam/MLM/mlm.css";
         private const string ICON_NAME_CD = "media-optical-cd-audio-symbolic";
@@ -231,7 +125,7 @@ namespace MLM {
 
         public ApplicationWindow(Gtk.Application application) {
             GLib.Object(application: application);
-            app = application as Application;
+            mlm = application as Application;
 
             Gtk.Window.set_default_icon_name("mlm");
             var provider = new Gtk.CssProvider();
@@ -246,12 +140,8 @@ namespace MLM {
             var date_time = new GLib.DateTime.now_local();
             year_adjustment.upper = date_time.get_year();
 
-            _cover_data = null;
-            _artist_data = null;
-
             reencode.bind_property("active", popover, "visible",
                                    GLib.BindingFlags.BIDIRECTIONAL);
-            ignore_popover = false;
 
             genre_model.set_sort_column_id(0, Gtk.SortType.ASCENDING);
         }
@@ -264,16 +154,12 @@ namespace MLM {
 
         [GtkCallback]
         public void on_previous_clicked() {
-            if (player.working)
-                player.pause();
-            app.previous();
+            mlm.previous();
         }
 
         [GtkCallback]
         public void on_next_clicked() {
-            if (player.working)
-                player.pause();
-            app.next();
+            mlm.next();
         }
 
         [GtkCallback]
@@ -306,66 +192,31 @@ namespace MLM {
         [GtkCallback]
         public void on_open_artist_clicked() {
             var data = select_image(_("Select image for artist"));
-            if (data != null)
-                artist_data = data;
+            mlm.set_artist_data(data);
+            update_image(artist_image, data);
         }
 
         [GtkCallback]
         public void on_open_cover_clicked() {
             var data = select_image(_("Select image for cover"));
-            if (data != null)
-                cover_data = data;
+            mlm.set_cover_data(data);
+            update_image(cover_image, data);
         }
 
         [GtkCallback]
         public void popover_visibility_changed() {
-            if (ignore_popover)
-                return;
             if (!popover.visible) {
-                if (target != null && encoder != null) {
-                    encoder.cancel();
-                    GLib.FileUtils.remove(target);
-                    target = null;
-                    encoder = null;
-                }
-                return;
+                mlm.stop_encoder();
+            } else {
+                progress_bar.set_fraction(0.0);
+                mlm.start_encoder()
             }
-            int cont = 0;
-            do {
-                string d = Path.get_dirname(filename);
-                string s = GLib.Path.DIR_SEPARATOR_S;
-                string a = artist.replace("/", "_");
-                string t = title_.replace("/", "_");
-                string e = (cont == 0) ? ".mp3" : "-%d.mp3".printf(cont);
-                target = d + s + a + " - " + t + e;
-                cont++;
-            } while (GLib.FileUtils.test(target, GLib.FileTest.EXISTS));
-            encoder = new Encoder(filename, target);
-            encoder.encode();
-            bar.set_fraction(0.0);
-            GLib.Idle.add(upgrade_progressbar);
         }
 
         [GtkCallback]
         public void on_save_clicked() {
-            app.save();
+            mlm.save();
             save.sensitive = false;
-        }
-
-        private bool upgrade_progressbar() {
-            if (encoder == null || target == null)
-                return false;
-            double p = encoder.get_completion();
-            bar.set_fraction(p);
-            if (encoder.working)
-                return true;
-            app.set_tags_in_file(target);
-            encoder = null;
-            target = null;
-            ignore_popover = true;
-            popover.visible = false;
-            ignore_popover = false;
-            return false;
         }
 
         private void player_state_changed(Gst.State state) {
@@ -381,6 +232,16 @@ namespace MLM {
                 play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
                 break;
             }
+        }
+
+        public void upgrade_progress_bar(double percentage) {
+            progress_bar.set_fraction(percentage);
+        }
+
+        public void hide_progress_bar() {
+            ignore_popover = true;
+            popover.visible = false;
+            ignore_popover = false;
         }
 
         private void reset_timer() {
@@ -409,22 +270,20 @@ namespace MLM {
         public void on_play_clicked() {
             if (!player.working) {
                 play_image.set_from_icon_name(ICON_NAME_PAUSE, ICON_SIZE);
-                player.play();
+                mlm.play();
             } else {
                 play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
-                player.pause();
+                mlm.pause();
             }
         }
 
         [GtkCallback]
         public void on_window_destroy() {
-            application.quit();
+            mlm.quit();
         }
 
         [GtkCallback]
         public void tags_changed() {
-            if (track > total)
-                total = track;
             save.sensitive = true;
         }
 
@@ -439,7 +298,7 @@ namespace MLM {
                 return true;
             }
             if (e.keyval == Gdk.Key.Escape) {
-                app.quit();
+                mlm.quit();
                 return true;
             }
             if (e.keyval == Gdk.Key.space &&
@@ -462,14 +321,6 @@ namespace MLM {
             return false;
         }
 
-        public void enable(UIItemFlags flags) {
-            items_set_sensitive(flags, true);
-        }
-
-        public void disable(UIItemFlags flags) {
-            items_set_sensitive(flags, false);
-        }
-
         public void warning(string message) {
             var dialog = new Gtk.MessageDialog(
                 this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -488,14 +339,10 @@ namespace MLM {
             image.pixel_size = 140;
         }
 
-        private uint8[] update_image(Gtk.Image image,
-                                     uint8[]   data,
-                                     uint8[]   original) {
-            if (data == null) {
-                if (original == null)
-                    set_default_image(image);
-                return original;
-            }
+        private void update_image(Gtk.Image image,
+                                  uint8[]   data) {
+            if (data == null)
+                return;
             var mis = new MemoryInputStream.from_data(data, null);
             Gdk.Pixbuf thumb = null;
             try {
@@ -506,26 +353,9 @@ namespace MLM {
                                             Gdk.InterpType.BILINEAR);
             } catch (GLib.Error e) {
                 warning(_("Could not set pixbuf from data."));
-                if (original == null)
-                    set_default_image(image);
-                return original;
+                return;
             }
             image.set_from_pixbuf(thumb);
-            tags_changed();
-            return data;
-        }
-
-        private void items_set_sensitive(UIItemFlags flags, bool s) {
-            if ((flags & UIItemFlags.PREVIOUS) != 0)
-                previous.sensitive = s;
-            if ((flags & UIItemFlags.NEXT) != 0)
-                next.sensitive = s;
-            if ((flags & UIItemFlags.REENCODE) != 0)
-                reencode.sensitive = s;
-            if ((flags & UIItemFlags.SAVE) != 0)
-                save.sensitive = s;
-            if ((flags & UIItemFlags.REST) != 0)
-                frame.sensitive = s;
         }
 
         private bool dispose_player() {

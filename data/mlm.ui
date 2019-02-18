@@ -605,7 +605,7 @@
   </object>
   <object class="GtkAdjustment" id="year_adjustment">
     <property name="lower">1900</property>
-    <property name="upper">2014</property>
+    <property name="upper">2019</property>
     <property name="value">1900</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
@@ -646,11 +646,11 @@
     <property name="popup-completion">False</property>
     <signal name="match-selected" handler="on_match_selected" swapped="no"/>
   </object>
-  <object class="GtkPopover" id="popover">
-    <property name="relative-to">reencode</property>
+  <object class="GtkPopover" id="reencode_popover">
+    <property name="relative-to">reencode_button</property>
     <signal name="notify::visible" handler="popover_visibility_changed" swapped="no"/>
     <child>
-      <object class="GtkProgressBar" id="bar">
+      <object class="GtkProgressBar" id="reencode_progress_bar">
         <property name="margin">12</property>
         <property name="visible">True</property>
         <property name="text">Reencoding...</property>
@@ -666,7 +666,7 @@
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <signal name="key-press-event" handler="on_window_key_press" swapped="no"/>
     <child type="titlebar">
-      <object class="GtkHeaderBar" id="header">
+      <object class="GtkHeaderBar" id="header_bar">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="spacing">6</property>
@@ -680,7 +680,7 @@
             <property name="spacing">0</property>
             <property name="orientation">horizontal</property>
             <child>
-              <object class="GtkButton" id="previous">
+              <object class="GtkButton" id="previous_button">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="tooltip-text" translatable="yes">Previous MP3</property>
@@ -696,7 +696,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkButton" id="next">
+              <object class="GtkButton" id="next_button">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="tooltip-text" translatable="yes">Next MP3</property>
@@ -717,7 +717,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkButton" id="save">
+          <object class="GtkButton" id="save_button">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="tooltip-text" translatable="yes">Save tags to MP3</property>
@@ -736,7 +736,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkMenuButton" id="reencode">
+          <object class="GtkMenuButton" id="reencode_menu_button">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="use-popover">True</property>
@@ -757,7 +757,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkFrame" id="frame">
+      <object class="GtkFrame" id="tags_frame">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="margin">18</property>
@@ -772,13 +772,13 @@
             <property name="left-padding">12</property>
             <property name="right-padding">12</property>
             <child>
-              <object class="GtkBox" id="vbox">
+              <object class="GtkBox" id="tags_vbox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
-                  <object class="GtkGrid" id="grid">
+                  <object class="GtkGrid" id="tags_grid">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="row-spacing">6</property>
@@ -798,7 +798,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="artist">
+                      <object class="GtkEntry" id="artist_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -826,7 +826,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="title">
+                      <object class="GtkEntry" id="title_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -854,7 +854,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="album">
+                      <object class="GtkEntry" id="album_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -882,7 +882,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="band">
+                      <object class="GtkEntry" id="band_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -910,7 +910,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="year">
+                      <object class="GtkSpinButton" id="year_spin_button">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -939,7 +939,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="disc">
+                      <object class="GtkSpinButton" id="disc_spin_button">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -968,7 +968,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="track">
+                      <object class="GtkSpinButton" id="track_spin_button">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -997,7 +997,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="total">
+                      <object class="GtkSpinButton" id="total_spin_button">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -1036,7 +1036,7 @@
                         <property name="popup-fixed-width">True</property>
                         <property name="id-column">1</property>
                         <child internal-child="entry">
-                          <object class="GtkEntry" id="genre">
+                          <object class="GtkEntry" id="genre_entry">
                             <property name="can-focus">True</property>
                             <property name="hexpand">True</property>
                             <property name="text">Blues</property>
@@ -1067,7 +1067,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="comment">
+                      <object class="GtkEntry" id="comment_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -1096,7 +1096,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="composer">
+                      <object class="GtkEntry" id="composer_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -1124,7 +1124,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="original">
+                      <object class="GtkEntry" id="original_entry">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -1145,7 +1145,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="hbox">
+                  <object class="GtkBox" id="images_hbox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="spacing">6</property>
@@ -1418,7 +1418,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="time">
+                      <object class="GtkLabel" id="time_label">
                         <property name="visible">True</property>
                         <property name="label">00:00</property>
                       </object>
@@ -1430,7 +1430,7 @@
           </object>
         </child>
         <child type="label">
-          <object class="GtkLabel" id="filename">
+          <object class="GtkLabel" id="filename_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="max-width-chars">40</property>
