@@ -22,11 +22,21 @@
 
 namespace MLM {
 
+    /**
+     * Class for encoders.
+     */
     public class Encoder : Media {
 
+        /* The source filename. */
         private string source;
+        /* The target filename. */
         private string target;
 
+        /**
+         * Initializes the encoder.
+         * @param source the source filename.
+         * @param target the target filename.
+         */
         public Encoder(string source, string target) {
             base();
             this.source = source;
@@ -38,22 +48,34 @@ namespace MLM {
             sink.set_property("location", target);
         }
 
+        /**
+         * Sets the pipeline.
+         */
         protected override void set_pipeline() {
             try {
                 pipe = (Gst.Pipeline)
                 Gst.parse_launch(
-                    "filesrc name=src                         ! " +
-                    "decodebin                                ! " +
-                    "audioconvert                             ! " +
-                    "rglimiter                                ! " +
-                    "audioconvert                             ! " +
-                    "lamemp3enc target=1 bitrate=128 cbr=true ! " +
-                    "filesink name=sink");
+                    "filesrc        " +
+                    " name=src    ! " +
+                    "decodebin    ! " +
+                    "audioconvert ! " +
+                    "rglimiter    ! " +
+                    "audioconvert ! " +
+                    "lamemp3enc     " +
+                    " target=1      " +
+                    " bitrate=128   " +
+                    " cbr=true    ! " +
+                    "filesink       " +
+                    " name=sink");
             } catch (GLib.Error e) {
                 stderr.printf("%s\n", e.message);
             }
         }
 
+        /**
+         * Handles the message received.
+         * @param message the message.
+         */
         protected override void message_received(Gst.Message message) {
             switch (message.type) {
             case Gst.MessageType.EOS:
@@ -75,11 +97,17 @@ namespace MLM {
             }
         }
 
+        /**
+         * Encodes the source.
+         */
         public void encode() {
             pipe.set_state(Gst.State.PLAYING);
             working = true;
         }
 
+        /**
+         * Cancel the encoding.
+         */
         public void cancel() {
             pipe.set_state(Gst.State.NULL);
         }
