@@ -646,11 +646,11 @@
     <property name="popup-completion">False</property>
     <signal name="match-selected" handler="on_match_selected" swapped="no"/>
   </object>
-  <object class="GtkPopover" id="reencode_popover">
-    <property name="relative-to">reencode_button</property>
-    <signal name="notify::visible" handler="popover_visibility_changed" swapped="no"/>
+  <object class="GtkPopover" id="encode_popover">
+    <property name="relative-to">encode_menu_button</property>
+    <signal name="notify::visible" handler="on_popover_visibility_changed" swapped="no"/>
     <child>
-      <object class="GtkProgressBar" id="reencode_progress_bar">
+      <object class="GtkProgressBar" id="encode_progress_bar">
         <property name="margin">12</property>
         <property name="visible">True</property>
         <property name="text">Reencoding...</property>
@@ -736,13 +736,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkMenuButton" id="reencode_menu_button">
+          <object class="GtkMenuButton" id="encode_menu_button">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="use-popover">True</property>
-            <property name="tooltip-text" translatable="yes">Reencode MP3</property>
+            <property name="tooltip-text" translatable="yes">Encode MP3</property>
             <child>
-              <object class="GtkImage" id="reencode_image">
+              <object class="GtkImage" id="encode_image">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="icon-name">system-run-symbolic</property>
@@ -790,7 +790,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">_Artist</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">artist</property>
+                        <property name="mnemonic-widget">artist_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -803,7 +803,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Main artist name</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -818,7 +818,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">_Title</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">title</property>
+                        <property name="mnemonic-widget">title_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -846,7 +846,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">A_lbum</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">album</property>
+                        <property name="mnemonic-widget">album_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -874,7 +874,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">Album _band</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">band</property>
+                        <property name="mnemonic-widget">band_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -902,7 +902,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">_Year</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">year</property>
+                        <property name="mnemonic-widget">year_spin_button</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -931,7 +931,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">_Disc</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">disc</property>
+                        <property name="mnemonic-widget">disc_spin_button</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -960,7 +960,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">T_rack</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">track</property>
+                        <property name="mnemonic-widget">track_spin_button</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -989,7 +989,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">T_otal</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">total</property>
+                        <property name="mnemonic-widget">total_spin_button</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -1018,7 +1018,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">_Genre</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">genre</property>
+                        <property name="mnemonic-widget">genre_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1026,7 +1026,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="genre_combobox">
+                      <object class="GtkComboBoxText" id="genre_combo_box">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="active-id">0</property>
@@ -1059,7 +1059,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">_Comment</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">comment</property>
+                        <property name="mnemonic-widget">comment_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1087,7 +1087,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">Compo_ser</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">composer</property>
+                        <property name="mnemonic-widget">composer_entry</property>
                         <property name="tooltip-text" translatable="yes">Track composer</property>
                       </object>
                       <packing>
@@ -1116,7 +1116,7 @@
                         <property name="halign">end</property>
                         <property name="label" translatable="yes">Origi_nal artist</property>
                         <property name="use-underline">True</property>
-                        <property name="mnemonic-widget">original</property>
+                        <property name="mnemonic-widget">original_entry</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1151,7 +1151,7 @@
                     <property name="spacing">6</property>
                     <property name="homogeneous">True</property>
                     <child>
-                      <object class="GtkBox" id="cover_vbox">
+                      <object class="GtkBox" id="cover_image_vbox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
@@ -1170,7 +1170,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="cover_hbox">
+                          <object class="GtkBox" id="cover_image_hbox">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="spacing">6</property>
@@ -1194,7 +1194,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox" id="cover_buttons_vbox">
+                              <object class="GtkBox" id="cover_image_buttons_vbox">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="orientation">vertical</property>
@@ -1206,9 +1206,9 @@
                                     <property name="receives-default">True</property>
                                     <property name="always_show-image">True</property>
                                     <property name="tooltip-text" translatable="yes">Open image</property>
-                                    <signal name="clicked" handler="on_open_cover_clicked" swapped="no"/>
+                                    <signal name="clicked" handler="on_open_cover_image_clicked" swapped="no"/>
                                     <child>
-                                      <object class="GtkImage" id="open_cover_image">
+                                      <object class="GtkImage" id="open_cover_image_image">
                                         <property name="visible">True</property>
                                         <property name="can-focus">False</property>
                                         <property name="icon-name">document-open-symbolic</property>
@@ -1223,14 +1223,14 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="clear_cover_button">
+                                  <object class="GtkButton" id="clear_cover_image_button">
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <property name="tooltip-text" translatable="yes">Clear image</property>
-                                    <signal name="clicked" handler="on_clear_cover_clicked" swapped="no"/>
+                                    <signal name="clicked" handler="on_clear_cover_image_clicked" swapped="no"/>
                                     <child>
-                                      <object class="GtkImage" id="clear_cover_image">
+                                      <object class="GtkImage" id="clear_cover_image_image">
                                         <property name="visible">True</property>
                                         <property name="can-focus">False</property>
                                         <property name="icon-name">edit-clear-all-symbolic</property>
@@ -1266,7 +1266,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="artist_vbox">
+                      <object class="GtkBox" id="artist_image_vbox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
@@ -1285,7 +1285,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="artist_hbox">
+                          <object class="GtkBox" id="artist_image_hbox">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="spacing">6</property>
@@ -1309,7 +1309,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox" id="artist_buttons_vbox">
+                              <object class="GtkBox" id="artist_image_buttons_vbox">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="orientation">vertical</property>
@@ -1320,9 +1320,9 @@
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <property name="tooltip-text" translatable="yes">Open image</property>
-                                    <signal name="clicked" handler="on_open_artist_clicked" swapped="no"/>
+                                    <signal name="clicked" handler="on_open_artist_image_clicked" swapped="no"/>
                                     <child>
-                                      <object class="GtkImage" id="open_artist_image">
+                                      <object class="GtkImage" id="open_artist_image_image">
                                         <property name="visible">True</property>
                                         <property name="can-focus">False</property>
                                         <property name="icon-name">document-open-symbolic</property>
@@ -1342,7 +1342,7 @@
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">True</property>
                                     <property name="tooltip-text" translatable="yes">Clear image</property>
-                                    <signal name="clicked" handler="on_clear_artist_clicked" swapped="no"/>
+                                    <signal name="clicked" handler="on_clear_artist_image_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkImage" id="clear_artist_image">
                                         <property name="visible">True</property>
