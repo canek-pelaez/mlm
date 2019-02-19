@@ -77,15 +77,19 @@ namespace MLM.Test {
             return this.suite;
         }
 
-        /* Adaptor auxiliar class. */
+        /* Adaptor auxiliary class. */
         private class Adaptor {
 
+            /* The name. */
             [CCode (notify = false)]
             public string name { get; private set; }
 
+            /* The test method. */
             private TestMethod test;
+            /* The test case. */
             private TestCase test_case;
 
+            /* Initializes an adaptor. */
             public Adaptor(string name,
                            owned TestMethod test,
                            TestCase test_case) {
@@ -94,14 +98,17 @@ namespace MLM.Test {
                 this.test_case = test_case;
             }
 
+            /* Sets up the test case. */
             public void set_up(void* fixture) {
                 this.test_case.set_up();
             }
 
+            /* Runs the test method. */
             public void run(void* fixture) {
                 this.test();
             }
 
+            /* Tears down the test case. */
             public void tear_down(void* fixture) {
                 this.test_case.tear_down();
             }
