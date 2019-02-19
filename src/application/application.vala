@@ -22,33 +22,50 @@
 
 namespace MLM {
 
+    /**
+     * MLM GUI application class.
+     */
     public class Application : Gtk.Application {
 
-        public int total { public get; private set; }
-        public int current { public get; private set; }
-        public FileTags tags { public get; private set; }
-        public Gee.BidirListIterator<GLib.File> iterator {
-            public  get;
-            private set;
-        }
-
+        /* The application window. */
         private ApplicationWindow window;
+        /* The list of files. */
         private Gee.ArrayList<GLib.File> files;
+        /* The list iterator. */
+        private Gee.BidirListIterator<GLib.File> iterator;
+        /* The current filename. */
+        private string filename;
+        /* The file tags. */
+        private FileTags tags;
+        /* Total files. */
+        private int total;
+        /* Current index. */
+        private int current;
+        /* The player. */
         private Player player;
+        /* The encoder. */
         private Encoder encoder;
+        /* The target filename for the encoder. */
         private string target;
 
+        /**
+         * Initializes the application.
+         */
         public Application() {
             application_id = "mx.unam.MLM";
             flags |= GLib.ApplicationFlags.HANDLES_OPEN;
         }
 
+        /**
+         * Starts up the application.
+         */
         public override void startup() {
             base.startup();
 
             var action = new GLib.SimpleAction("about", null);
             action.activate.connect(about);
             add_action(action);
+            add_accelerator("<Ctrl>A", "app.quit", null);
 
             action = new GLib.SimpleAction("quit", null);
             action.activate.connect(quit);
@@ -61,25 +78,28 @@ namespace MLM {
             set_app_menu(menu);
         }
 
+        /**
+         * Activates the application.
+         */
         public override void activate() {
             if (window == null)
                 window = new ApplicationWindow(this);
 
             if (total > 0) {
-                window.enable(UIItemFlags.ALL);
+                window.enable_ui(true);
                 iterator = this.files.bidir_list_iterator();
                 next();
-                window.disable(UIItemFlags.PREVIOUS);
-                if (total == 1)
-                    window.disable(UIItemFlags.NEXT);
-                window.last = total;
             } else {
-                window.disable(UIItemFlags.ALL);
+                window.enable_ui(false);
             }
-
             window.present();
         }
 
+        /**
+         * Opens an array of files.
+         * @param files an array of GFiles to open.
+         * @param hint a hint (or ""), but never NULL
+         */
         public override void open(GLib.File[] files, string hint) {
             this.files = new Gee.ArrayList<GLib.File>();
             foreach (var file in files) {
@@ -95,147 +115,64 @@ namespace MLM {
                 }
                 var ctype = info.get_content_type();
                 if (ctype != "audio/mpeg") {
-                    var p = file.get_path();
-                    var m = "The filename ‘%s’ is not an MP3".printf(p);
-                    stderr.printf("%s\n", m);
+                    stderr.printf("The filename ‘%s’ is not an MP3",
+                                  file.get_path());
                     continue;
                 }
                 this.files.add(file);
             }
             total = this.files.size;
-            this.files.sort(compare_files);
+            this.files.sort(compare_files_by_path);
             activate();
         }
 
-        private int compare_files(GLib.File a, GLib.File b) {
-            if (a.get_path() < b.get_path())
-                return -1;
-            if (a.get_path() > b.get_path())
-                return 1;
-            return 0;
-        }
-
-        private void update_mp3() {
-            var file = iterator.get();
-            tags = new FileTags(file.get_path());
-            window.filename = file.get_path();
-            window.artist = tags.artist != null ? tags.artist : "";
-            window.title_ = tags.title != null ? tags.title : "";
-            window.album = tags.album != null ? tags.album : "";
-            window.band = tags.band != null ? tags.band : "";
-            window.year = tags.year != -1 ? tags.year : 1900;
-            window.disc = tags.disc != -1 ? tags.disc : 1;
-            window.track = tags.track != -1 ? tags.track : 1;
-            window.total = tags.total != -1 ? tags.total : 1;
-            var genre = Genre.all()[tags.genre].to_string();
-            window.genre = genre != null ? genre : "";
-            window.comment = tags.comment != null ? tags.comment : "";
-            window.composer = tags.composer != null ? tags.composer : "";
-            window.original = tags.original != null ? tags.original : "";
-            window.cover_data = tags.cover_picture;
-            window.artist_data = tags.artist_picture;
-            window.disable(UIItemFlags.SAVE);
-            window.current = current;
-        }
-
+        /**
+         * Iterates to the previous file.
+         */
         public void previous() {
-            if (player.working)
+            if (player != null && player.working)
                 player.pause();
             if (!iterator.has_previous())
                 return;
             iterator.previous();
             current--;
-            window.enable(UIItemFlags.NEXT);
-            if (!iterator.has_previous())
-                window.disable(UIItemFlags.PREVIOUS);
-            update_mp3();
+            update_file();
         }
 
+        /**
+         * Iterates to the next file.
+         */
         public void next() {
-            if (player.working)
+            if (player != null && player.working)
                 player.pause();
             if (!iterator.has_next())
                 return;
             iterator.next();
             current++;
-            window.enable(UIItemFlags.PREVIOUS);
-            if (!iterator.has_next())
-                window.disable(UIItemFlags.NEXT);
-            update_mp3();
+            update_file();
         }
 
+        /**
+         * Saves the current file.
+         */
         public void save() {
-            set_tags_from_window(tags);
+            window.update_model(tags);
             tags.update();
         }
 
-        public void set_tags_in_file(string dest) {
-            var etags = new FileTags(dest);
-            set_tags_from_window(etags);
-            etags.update();
-        }
-
-        private void set_tags_from_window(FileTags t) {
-            t.artist         = window.artist;
-            t.title          = window.title_;
-            t.album          = window.album;
-            t.band           = window.band;
-            t.year           = window.year;
-            t.disc           = window.disc;
-            t.track          = window.track;
-            t.total          = window.total;
-            t.genre          = window.genre_id;
-            t.comment        = window.comment;
-            t.composer       = window.composer;
-            t.original       = window.original;
-            t.cover_picture  = window.cover_data;
-            t.artist_picture = window.artist_data;
-        }
-
-        private void about() {
-            string[] authors = { "Canek Peláez Valdés <canek@ciencias.unam.mx>" };
-            Gtk.show_about_dialog(
-                window,
-                "authors",        authors,
-                "comments",       _("A Gtk+ based music library maintainer"),
-                "copyright",      "Copyright © 2013-2018 Canek Peláez Valdés",
-                "license-type",   Gtk.License.GPL_3_0,
-                "logo-icon-name", "mlm",
-                "version",        Config.PACKAGE_VERSION,
-                "website",        ("https://canek@aztlan.fciencias.unam.mx/" +
-                                   "gitlab/canek/mlm.git"),
-                "wrap-license",   true);
-        }
-
+        /**
+         * Starts the encoder.
+         */
         public void start_encoder() {
-            int cont = 0;
-            do {
-                string d = Path.get_dirname(filename);
-                string s = GLib.Path.DIR_SEPARATOR_S;
-                string a = artist.replace("/", "_");
-                string t = title_.replace("/", "_");
-                string e = (cont == 0) ? ".mp3" : "-%d.mp3".printf(cont);
-                target = d + s + a + " - " + t + e;
-                cont++;
-            } while (GLib.FileUtils.test(target, GLib.FileTest.EXISTS));
+            target = window.get_normalized_filename(filename);
             encoder = new Encoder(filename, target);
             encoder.encode();
-            GLib.Idle.add(upgrade_encoding);
+            GLib.Idle.add(update_encoding);
         }
 
-        private bool upgrade_encoding() {
-            if (encoder == null || target == null)
-                return false;
-            double p = encoder.get_completion();
-            window.update_progress_bar(p);
-            if (encoder.working)
-                return true;
-            set_tags_in_file();
-            encoder = null;
-            target = null;
-            return false;
-        }
-
+        /**
+         * Stops the encoder.
+         */
         public void stop_encoder() {
             if (target == null || encoder == null)
                 return;
@@ -243,6 +180,147 @@ namespace MLM {
             GLib.FileUtils.remove(target);
             target = null;
             encoder = null;
+        }
+
+        /**
+         * Sets the cover picture data.
+         * @param cover_data the cover picture data.
+         */
+        public void set_cover_picture_data(uint8[]? cover_data) {
+            tags.cover_picture = cover_data;
+        }
+
+        /**
+         * Sets the artist picture data.
+         * @param artist_data the artist picture data.
+         */
+        public void set_artist_picture_data(uint8[]? artist_data) {
+            tags.artist_picture = artist_data;
+        }
+
+        /**
+         * Starts the player.
+         */
+        public void start_player() {
+            if (is_player_playing())
+                return;
+            player.play();
+        }
+
+        /**
+         * Pauses the player.
+         */
+        public void pause_player() {
+            if (!is_player_playing())
+                return;
+            player.pause();
+        }
+
+        /**
+         * Seeks a percentage in the player.
+         * @return ''true'' if the seeking succeeds; ''false'' otherwise.
+         */
+        public bool seek_player(double percentage) {
+            return player.seek(percentage);
+        }
+
+        /**
+         * Returns the player completion percentage.
+         * @return the player completion percentage.
+         */
+        public double player_completion() {
+            if (!is_player_playing())
+                return 0.0;
+            int64 d, p;
+            return player.get_completion(out d, out p);
+        }
+
+        /**
+         * Whether the player is playing.
+         * @return ''true'' if the player is playing, ''false'' otherwise.
+         */
+        public bool is_player_playing() {
+            return (player != null && player.working);
+        }
+
+        /**
+         * Returns a string representing the playing time.
+         * @return a string representing the playing time.
+         */
+        public string player_time() {
+            if (!is_player_playing())
+                return "00:00";
+            int64 position = -1, duration = -1;
+            player.get_completion(out position, out duration);
+            int64 tsecs = duration / 1000000000l;
+            int mins = (int)(tsecs / 60);
+            int secs = (int)(tsecs % 60);
+            return "%02d:%02d".printf(mins, secs);
+        }
+
+        /* Compares two files by path. */
+        private int compare_files_by_path(GLib.File a, GLib.File b) {
+            return a.get_path().collate(b.get_path());
+        }
+
+        /* Updates a file. */
+        private void update_file() {
+            if (player != null)
+                player.finish();
+            var file = iterator.get();
+            filename = file.get_path();
+            tags = new FileTags(filename);
+            window.update_view(filename, tags, current, total);
+            GLib.Idle.add(dispose_player);
+        }
+
+        /* Save the tags in the view to a file. */
+        private void save_tags(string filename) {
+            var tags = new FileTags(filename);
+            window.update_model(tags);
+            tags.update();
+        }
+
+        /* The about action. */
+        private void about() {
+            window.about();
+        }
+
+        /* Updates the encoding process. */
+        private bool update_encoding() {
+            if (encoder == null || target == null)
+                return false;
+            double p = encoder.get_completion();
+            window.update_encoding(p);
+            if (encoder.working)
+                return true;
+            save_tags(target);
+            encoder = null;
+            target = null;
+            window.hide_encoding();
+            return false;
+        }
+
+        /* Disposes the current player. */
+        private bool dispose_player() {
+            if (player == null || player.state == Gst.State.NULL) {
+                player = new Player(filename);
+                player.state_changed.connect(player_state_changed);
+                return false;
+            }
+            return true;
+        }
+
+        /* Player state changed handler. */
+        private void player_state_changed(Gst.State state) {
+            switch (state) {
+            case Gst.State.PLAYING:
+                window.play_started();
+                break;
+            case Gst.State.PAUSED:
+                window.play_paused();
+                break;
+            }
         }
     }
 }
