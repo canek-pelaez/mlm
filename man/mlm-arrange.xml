@@ -59,16 +59,68 @@
 
     <title>Description</title>
 
-    <para><filename>mlm-arrange</filename> is a command line tool to arrange MP3
-    files with Id3v2.4.0 tags into a specified directory. This is done by
-    reading the <constant>artist</constant>, <constant>title</constant>, and
+    <para><command>mlm-arrange</command> is a command line tool to arrange MP3
+    files with Id3v2.4.0 tags into an specified output directory. This is done
+    by reading the <constant>artist</constant>, <constant>title</constant>, and
     <constant>album</constant> tags; the program will exit with an error message
     if one or more of the tags are missing. If available, the
-    <constant>band</constant>, <constant>track</constant> and
-    <constant>total</constant> tags are also used.</para>
+    <constant>band</constant> and <constant>track</constant> tags are also
+    used.</para>
 
-    <para>With the available information, <command></command>
-    </para>
+    <para>With the available information, <command>mlm-arrange</command>
+    constructs a normalized, ASCII only unique path inside the specified output
+    directory. For example, an MP3 with the following tags:</para>
+
+    <table>
+      <title>Example MP3</title>
+
+      <tgroup cols='2'>
+        <thead>
+          <row>
+            <entry>Tag</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Artist:</entry>
+            <entry>Control Machete</entry>
+          </row>
+          <row>
+            <entry>Title:</entry>
+            <entry>Sí Señor</entry>
+          </row>
+          <row>
+            <entry>Album:</entry>
+            <entry>Amores Perros</entry>
+          </row>
+          <row>
+            <entry>Year:</entry>
+            <entry>2000</entry>
+          </row>
+          <row>
+            <entry>Track:</entry>
+            <entry>6 of 12</entry>
+          </row>
+          <row>
+            <entry>Disc number:</entry>
+            <entry>2</entry>
+          </row>
+          <row>
+            <entry>Genre:</entry>
+            <entry>Hip-Hop</entry>
+          </row>
+          <row>
+            <entry>Comment:</entry>
+            <entry>Con Ely Guerra</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>Would generate the unique path:
+    <filename>v/various/amores_perros/1_-_02_-_control_machete_-_si_senor.mp3</filename>. The
+    MP3 is copied into the specified path.</para>
 
   </refsect1>
 
@@ -92,7 +144,7 @@
         <term><option>-o</option></term>
         <term><option>--output=DIRECTORY</option></term>
         <listitem>
-          <para>Set output directory.</para>
+          <para>Set the output directory.</para>
         </listitem>
       </varlistentry>
 
