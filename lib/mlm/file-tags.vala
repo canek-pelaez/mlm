@@ -454,6 +454,8 @@ namespace MLM {
             define_text_value(FrameId.ALBUM, value);
             _album = string_frames.has_key(FrameId.ALBUM) ?
                 string_frames[FrameId.ALBUM] : null;
+            if (_album == null)
+                return;
             var frame = tag.search_picture_frame(Id3Tag.PictureType.COVERFRONT);
             if (frame != null)
                 frame.set_picture_description(value + " cover");

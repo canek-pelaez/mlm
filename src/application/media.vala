@@ -22,23 +22,48 @@
 
 namespace MLM {
 
+    /**
+     * Abstract class for media.
+     */
     public abstract class Media : GLib.Object {
 
+        /**
+         * The pipeline.
+         */
         protected Gst.Pipeline pipe;
+
+        /**
+         * Whether the media is working.
+         */
         public bool working { get; protected set; }
 
+        /**
+         * Initializes the media.
+         */
         public Media() {
             set_pipeline();
-
             var bus = pipe.get_bus();
             bus.add_signal_watch();
             bus.message.connect(message_received);
         }
 
+        /**
+         * Sets the pipeline.
+         */
         protected abstract void set_pipeline();
 
+        /**
+         * Handles the message received.
+         * @param message the message.
+         */
         protected abstract void message_received(Gst.Message message);
 
+        /**
+         * Returns the completion percentage of the media.
+         * @param duration the duration of the media.
+         * @param duration the position of the media.
+         * @return the completion percentage of the media.
+         */
         public double get_completion(out int64 duration = null,
                                      out int64 position = null) {
             duration = -1;

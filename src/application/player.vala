@@ -22,13 +22,32 @@
 
 namespace MLM {
 
+    /**
+     * Class for players.
+     */
     public class Player : Media {
 
+        /**
+         * The “state-changed” signal.
+         *
+         * The ''::state-changed'' signal will be emitted when the state of the
+         * player changes.
+         * @param state the new state.
+         */
         public signal void state_changed(Gst.State state);
 
+        /**
+         * The state.
+         */
         public Gst.State state { get { return obtain_state(); } }
+
+        /* The last state. */
         private Gst.State last_state;
 
+        /**
+         * Initializes the player.
+         * @param filename the filename.
+         */
         public Player(string filename) {
             base();
             var src = pipe.get_by_name("src");
@@ -37,6 +56,9 @@ namespace MLM {
             last_state = Gst.State.PAUSED;
         }
 
+        /**
+         * Sets the pipeline.
+         */
         protected override void set_pipeline() {
             try {
                 pipe = (Gst.Pipeline)
@@ -49,6 +71,10 @@ namespace MLM {
             }
         }
 
+        /**
+         * Handles the message received.
+         * @param message the message.
+         */
         protected override void message_received(Gst.Message message) {
             switch (message.type) {
             case Gst.MessageType.EOS:
@@ -78,18 +104,31 @@ namespace MLM {
             }
         }
 
+        /**
+         * Plays the player.
+         */
         public void play() {
             pipe.set_state(Gst.State.PLAYING);
         }
 
+        /**
+         * Pauses the player.
+         */
         public void pause() {
             pipe.set_state(Gst.State.PAUSED);
         }
 
+        /**
+         * Finishes the player.
+         */
         public void finish() {
             pipe.set_state(Gst.State.READY);
         }
 
+        /**
+         * Seeks a position in the player.
+         * @para percentage the percentage position.
+         */
         public bool seek(double percentage) {
             int64 duration = -1;
             if (!pipe.query_duration(Gst.Format.TIME, out duration))
@@ -103,6 +142,10 @@ namespace MLM {
             return true;
         }
 
+        /**
+         * Returns the current state.
+         * @return the current state.
+         */
         private Gst.State obtain_state() {
             var new_state = Gst.State.NULL;
             var pending = Gst.State.NULL;
