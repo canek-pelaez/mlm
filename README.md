@@ -32,7 +32,7 @@ The utilities are:
 * `mlm-gui`: A GNOME 3 program to edit standard tags, and perhaps playing or
   reencoding the file containing them.
 
-* `mlm-accommodator`: Command line tool to acommodate an MP3 file in a standard
+* `mlm-arranger`: Command line tool to arrange an MP3 file in a standard
   hierarchical location.
 
 * `mlm-analyze`: Command line tool to analyze all the Id3v2.4.0 tags (not only the
