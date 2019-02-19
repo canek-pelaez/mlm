@@ -88,7 +88,7 @@ check_file_tags = executable('test-file-tags', check_file_tags_sources,
 test('Test file-tags', check_file_tags, args: [ meson.source_root() ])
 
 # command line utilities
-executable('mlm-accommodator', 'src/accommodator/accommodator.vala',
+executable('mlm-arranger', 'src/arranger/arranger.vala',
            dependencies: [ gee, gio ],
            include_directories: [ id3tagx_includes, mlm_includes ],
            link_with: [ id3tagx, mlm ],

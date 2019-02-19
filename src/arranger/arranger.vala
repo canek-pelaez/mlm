@@ -22,8 +22,12 @@
 
 namespace MLM {
 
-    public class Accommodator {
+    /**
+     * Class for arrangers.
+     */
+    public class Arranger {
 
+        /* Exit codes enumeration. */
         private enum ExitCode {
             OK,
             INVALID_ARGUMENT,
@@ -36,26 +40,40 @@ namespace MLM {
             NO_SUCH_FILE;
         }
 
+        /* The directory where to arrange the files. */
         private static string directory;
-        private static string prog_name;
+        /* The command. */
+        private static string command;
 
+        /* The program options. */
         private const GLib.OptionEntry[] options = {
             { "output", 'o', 0, GLib.OptionArg.FILENAME, ref directory,
               "Output directory", "DIRECTORY" },
             { null }
         };
 
+        /* The filename. */
         private string filename;
+        /* The artist. */
         private string artist;
+        /* The title. */
         private string title;
+        /* The album. */
         private string album;
+        /* The band. */
         private string band;
+        /* The disc. */
+        /* The track. */
         private int disc = -1;
         private int track = -1;
 
-        public Accommodator(string filename) {
+        /**
+         * Initializes an arranger.
+         * @param filename the filename.
+         */
+        public Arranger(string filename) {
             if (!FileUtils.test(filename, FileTest.EXISTS))
-                Util.error(false, ExitCode.NO_SUCH_FILE, prog_name,
+                Util.error(false, ExitCode.NO_SUCH_FILE, command,
                            "The file ‘%s’ does not exist.", filename);
             this.filename = filename;
             var tags = new FileTags(filename);
@@ -73,10 +91,13 @@ namespace MLM {
             track = tags.track;
         }
 
-        public void accommodate() {
+        /**
+         * Arranges the file.
+         */
+        public void arrange() {
             if (artist == null || title == null || album == null)
-                Util.error(false, ExitCode.NOT_ENOUGH_INFO, prog_name,
-                           "Not enough information to accomodate ‘%s’",
+                Util.error(false, ExitCode.NOT_ENOUGH_INFO, command,
+                           "Not enough information to arrange ‘%s’",
                            filename);
             var letter = band.get_char(0).to_string();
 
@@ -87,7 +108,7 @@ namespace MLM {
                 if (!GLib.FileUtils.test(dir, GLib.FileTest.EXISTS)) {
                     GLib.DirUtils.create(dir, 0755);
                 } else if (!GLib.FileUtils.test(dir, GLib.FileTest.IS_DIR)) {
-                    Util.error(false, ExitCode.INVALID_DESTINATION, prog_name,
+                    Util.error(false, ExitCode.INVALID_DESTINATION, command,
                                "Invalid destination");
                 }
             }
@@ -107,39 +128,40 @@ namespace MLM {
                 src.copy(dst, GLib.FileCopyFlags.OVERWRITE);
                 Util.set_file_time(dest, time);
             } catch (GLib.Error e) {
-                Util.error(false, ExitCode.COPY_ERROR, prog_name, e.message);
+                Util.error(false, ExitCode.COPY_ERROR, command, e.message);
             }
             stdout.printf("Copied\t‘%s’\ninto\t‘%s’\n",
                           Util.color(src.get_basename(), Color.RED),
                           Util.color(dst.get_basename(), Color.GREEN));
         }
 
+        /* The context. */
         private const string CONTEXT =
-            "[FILENAME...] - Accommodate MP3 files";
+            "[FILENAME...] - Arranges MP3 files";
 
         public static int main(string[] args) {
-            prog_name = args[0];
+            command = args[0];
             try {
                 var opt = new GLib.OptionContext(CONTEXT);
                 opt.set_help_enabled(true);
                 opt.add_main_entries(options, null);
                 opt.parse(ref args);
             } catch (GLib.OptionError e) {
-                Util.error(true, ExitCode.INVALID_ARGUMENT, prog_name,
+                Util.error(true, ExitCode.INVALID_ARGUMENT, command,
                            e.message);
             }
 
             if (directory == null)
-                Util.error(true, ExitCode.MISSING_OUTPUT_DIR, prog_name,
+                Util.error(true, ExitCode.MISSING_OUTPUT_DIR, command,
                            "Missing output directory");
 
             if (args.length < 2)
-                Util.error(true, ExitCode.MISSING_FILES, prog_name,
+                Util.error(true, ExitCode.MISSING_FILES, command,
                     "Missing MP3 file(s)");
 
             if (GLib.FileUtils.test(directory, GLib.FileTest.EXISTS) &&
                 !GLib.FileUtils.test(directory, GLib.FileTest.IS_DIR))
-                Util.error(true, ExitCode.INVALID_OUTPUT_DIR, prog_name,
+                Util.error(true, ExitCode.INVALID_OUTPUT_DIR, command,
                            "Invalid output directory: %s", directory);
 
             if (!GLib.FileUtils.test(directory, GLib.FileTest.EXISTS))
@@ -148,11 +170,11 @@ namespace MLM {
             for (int i = 1; i < args.length; i++) {
                 if (!GLib.FileUtils.test(args[i], GLib.FileTest.EXISTS)) {
                     stderr.printf("The file “%s” does not exists. Skipping.",
-                                  prog_name);
+                                  command);
                     continue;
                 }
-                var accommodator = new Accommodator(args[i]);
-                accommodator.accommodate();
+                var arranger = new Arranger(args[i]);
+                arranger.arrange();
             }
 
             return ExitCode.OK;
