@@ -22,6 +22,9 @@
 
 namespace MLM {
 
+    /**
+     * Enumeration for colors.
+     */
     public enum Color {
         GRAY   = 0,
         RED    = 1,
@@ -33,18 +36,35 @@ namespace MLM {
         NONE   = 999;
     }
 
+    /**
+     * Class for utility functions.
+     */
     public class Util {
 
+        /* Whether the get_colorize() function has been called. */
         private static bool get_colorize_called = false;
+        /* Whether to colorize. */
         private static bool colorize = true;
+        /* The don't colorize environment variable. */
         private const string MLM_DONT_COLORIZE = "MLM_DONT_COLORIZE";
 
-        public static string color(string s, Color c) {
-            if (!get_colorize() || c == Color.NONE)
-                return s;
-            return "\033[1m\033[9%dm%s\033[0m".printf(c, s);
+        /**
+         * Returns a colorized message.
+         * @param message the message.
+         * @param color the color.
+         * @return a colorized message.
+         */
+        public static string color(string message, Color color) {
+            if (!get_colorize() || color == Color.NONE)
+                return message;
+            return "\033[1m\033[9%dm%s\033[0m".printf(color, message);
         }
 
+        /**
+         * Returns the modification time of a file.
+         * @param filename the file name.
+         * @return the modification time of a file.
+         */
         public static GLib.TimeVal get_file_time(string filename) {
             try {
                 var file = GLib.File.new_for_path(filename);
@@ -57,6 +77,11 @@ namespace MLM {
             return GLib.TimeVal();
         }
 
+        /**
+         * Sets the modification time of a file.
+         * @param filename the file name.
+         * @param time the modification time.
+         */
         public static void set_file_time(string filename, GLib.TimeVal time) {
             try {
                 var file = GLib.File.new_for_path(filename);
@@ -71,6 +96,11 @@ namespace MLM {
             }
         }
 
+        /**
+         * Returns the NFKD normalization and ASCII conversion of a string.
+         * @param str the string.
+         * @return the NFKD normalization and ASCII conversion of a string.
+         */
         public static string asciize(string str) {
             var s = str.normalize(-1, GLib.NormalizeMode.NFKD);
             try {
@@ -100,6 +130,10 @@ namespace MLM {
             return "";
         }
 
+        /**
+         * Whether to colorize or not.
+         * @return ''true'' if we should colorize; ''false'' otherwise.
+         */
         private static bool get_colorize() {
             if (get_colorize_called)
                 return colorize;
@@ -108,6 +142,10 @@ namespace MLM {
             return colorize;
         }
 
+        /**
+         * Sets the locale for a category.
+         * @param category the category.
+         */
         public static void set_locale(GLib.LocaleCategory category) {
             switch (category) {
             case GLib.LocaleCategory.ALL:      break;
@@ -125,6 +163,14 @@ namespace MLM {
             }
         }
 
+        /**
+         * Prints an error message in the standard error.
+         * @param help whether to print a help message.
+         * @param code the exit code.
+         * @param command the command where the error occurred.
+         * @param format the message format.
+         * @param ... the message parameters.
+         */
         [PrintfFormat]
         public static void error(bool   help,
                                  int    code,
