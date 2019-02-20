@@ -159,6 +159,8 @@ namespace MLM {
 
         /* The MLM application. */
         private Application mlm;
+        /* The file tags. */
+        private FileTags tags;
 
         /**
          * Initializes the application window.
@@ -195,57 +197,50 @@ namespace MLM {
         /* The on previous clicked callback. */
         [GtkCallback]
         private void on_previous_clicked() {
-            mlm.previous();
+            mlm.activate_action("prev", null);
         }
 
         /* The on next clicked callback. */
         [GtkCallback]
         private void on_next_clicked() {
-            mlm.next();
+            mlm.activate_action("next", null);
         }
 
         /* The on popover visibility changed callback. */
         [GtkCallback]
         private void on_popover_visibility_changed() {
             if (!encode_popover.visible) {
-                mlm.stop_encoder();
+                mlm.activate_action("stop-encoder", null);
             } else {
                 encode_progress_bar.set_fraction(0.0);
-                mlm.start_encoder();
+                mlm.activate_action("start-encoder", null);
             }
         }
 
         /* The on save clicked callback. */
         [GtkCallback]
         private void on_save_clicked() {
-            mlm.save();
-            save_button.sensitive = false;
+            mlm.activate_action("save", null);
         }
 
         /* The on play clicked callback. */
         [GtkCallback]
         private void on_play_clicked() {
-            if (!mlm.is_player_playing()) {
-                play_image.set_from_icon_name(ICON_NAME_PAUSE, ICON_SIZE);
-                mlm.start_player();
-            } else {
-                play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
-                mlm.pause_player();
-            }
+            mlm.activate_action("play", null);
         }
 
         /* The on open artist image clicked callback. */
         [GtkCallback]
         private void on_open_artist_image_clicked() {
             var data = select_image(_("Select image for artist"));
-            mlm.set_artist_picture_data(data);
+            tags.artist_picture = data;
             update_image(artist_image, data);
         }
 
         /* The on clear artist image clicked callback. */
         [GtkCallback]
         private void on_clear_artist_image_clicked() {
-            mlm.set_artist_picture_data(null);
+            tags.artist_picture = null;
             set_default_image(artist_image);
             save_button.sensitive = true;
         }
@@ -254,14 +249,14 @@ namespace MLM {
         [GtkCallback]
         private void on_open_cover_image_clicked() {
             var data = select_image(_("Select image for cover"));
-            mlm.set_cover_picture_data(data);
+            tags.cover_picture = data;
             update_image(cover_image, data);
         }
 
         /* The on clear cover image clicked callback. */
         [GtkCallback]
         private void on_clear_cover_image_clicked() {
-            mlm.set_cover_picture_data(null);
+            tags.cover_picture = null;
             set_default_image(cover_image);
             save_button.sensitive = true;
         }
@@ -295,22 +290,6 @@ namespace MLM {
         /* The on window key press callback. */
         [GtkCallback]
         private bool on_window_key_press(Gdk.EventKey e) {
-            if (e.keyval == Gdk.Key.Page_Up) {
-                on_previous_clicked();
-                return true;
-            }
-            if (e.keyval == Gdk.Key.Page_Down) {
-                on_next_clicked();
-                return true;
-            }
-            if (e.keyval == Gdk.Key.Escape) {
-                mlm.quit();
-                return true;
-            }
-            if (e.keyval == Gdk.Key.space &&
-                (e.state & Gdk.ModifierType.CONTROL_MASK) != 0) {
-                on_play_clicked();
-            }
             return false;
         }
 
@@ -330,19 +309,26 @@ namespace MLM {
         }
 
         /**
-         * Sets the view at play started.
+         * Updates the player view.
+         * @param percentage the percentage of the player.
+         * @param time the player time string.
          */
-        public void play_started() {
-            play_image.set_from_icon_name(ICON_NAME_PAUSE, ICON_SIZE);
-            GLib.Idle.add(monitor_player);
+        public void update_player_view(double percentage, string time) {
+            play_adjustment.set_value(percentage);
+            time_label.set_text(time);
         }
 
         /**
-         * Sets the view at play paused.
+         * Sets the pause icon.
          */
-        public void play_paused() {
-            if (mlm.player_completion() == 0.0)
-                reset_timer();
+        public void set_pause_icon() {
+            play_image.set_from_icon_name(ICON_NAME_PAUSE, ICON_SIZE);
+        }
+
+        /**
+         * Sets the play icon.
+         */
+        public void set_play_icon() {
             play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
         }
 
@@ -358,17 +344,6 @@ namespace MLM {
             dialog.title = _("Warning");
             dialog.run();
             dialog.destroy();
-        }
-
-        /* Monitors the player in the model. */
-        private bool monitor_player() {
-            if (!mlm.is_player_playing()) {
-                play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
-                return false;
-            }
-            play_adjustment.set_value(mlm.player_completion());
-            time_label.set_text(mlm.player_time());
-            return true;
         }
 
         /* Resets the timer. */
@@ -390,6 +365,13 @@ namespace MLM {
         }
 
         /**
+         * Enables the save button.
+         */
+        public void enable_save(bool enable) {
+            save_button.sensitive = enable;
+        }
+
+        /**
          * Updates the view.
          * @param filename the filename.
          * @param tags the tags.
@@ -398,6 +380,7 @@ namespace MLM {
          */
         public void update_view(string filename, FileTags tags,
                                 int current, int total) {
+            this.tags = tags;
             header_bar.set_subtitle("%d / %d".printf(current, total));
             var basename = GLib.Path.get_basename(filename);
             var markup = GLib.Markup.printf_escaped("<b>%s</b>", basename);
@@ -470,13 +453,13 @@ namespace MLM {
         /**
          * Shows the about dialog.
          */
-        public void about() {
+        public void show_about_dialog() {
             string[] authors = { "Canek Peláez Valdés <canek@ciencias.unam.mx>" };
             Gtk.show_about_dialog(
                 this,
                 "authors",        authors,
                 "comments",       _("A Gtk+ based music library maintainer"),
-                "copyright",      "Copyright © 2013-2018 Canek Peláez Valdés",
+                "copyright",      "Copyright © 2013-2019 Canek Peláez Valdés",
                 "license-type",   Gtk.License.GPL_3_0,
                 "logo-icon-name", "mlm",
                 "version",        Config.PACKAGE_VERSION,

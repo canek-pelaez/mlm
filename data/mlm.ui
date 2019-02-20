@@ -829,7 +829,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Title of the track</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -857,7 +857,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Album name</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -885,7 +885,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Album band</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -915,7 +915,7 @@
                         <property name="adjustment">year_adjustment</property>
                         <property name="text">1900</property>
                         <property name="tooltip-text" translatable="yes">Year of release</property>
-                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
+                        <signal name="value-changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -944,7 +944,7 @@
                         <property name="adjustment">disc_adjustment</property>
                         <property name="text">1</property>
                         <property name="tooltip-text" translatable="yes">Disc number</property>
-                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
+                        <signal name="value-changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">3</property>
@@ -973,7 +973,7 @@
                         <property name="adjustment">track_adjustment</property>
                         <property name="text">1</property>
                         <property name="tooltip-text" translatable="yes">Track number</property>
-                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
+                        <signal name="value-changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1002,7 +1002,7 @@
                         <property name="adjustment">total_adjustment</property>
                         <property name="text">1</property>
                         <property name="tooltip-text" translatable="yes">Total number of tracks</property>
-                        <signal name="value-changed" handler="tags_changed" swapped="no"/>
+                        <signal name="value-changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">3</property>
@@ -1040,7 +1040,7 @@
                             <property name="text">Blues</property>
                             <property name="completion">genre_completion</property>
                             <property name="tooltip-text" translatable="yes">Genre of the track</property>
-                            <signal name="changed" handler="tags_changed" swapped="no"/>
+                            <signal name="changed" handler="on_tags_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -1070,7 +1070,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Track comment</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1099,7 +1099,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Track composer</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1127,7 +1127,7 @@
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="tooltip-text" translatable="yes">Original artist</property>
-                        <signal name="changed" handler="tags_changed" swapped="no"/>
+                        <signal name="changed" handler="on_tags_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1418,6 +1418,9 @@
                     <child>
                       <object class="GtkLabel" id="time_label">
                         <property name="visible">True</property>
+                        <property name="width-request">42</property>
+                        <property name="halign">start</property>
+                        <property name="xalign">0.0</property>
                         <property name="label">00:00</property>
                       </object>
                     </child>

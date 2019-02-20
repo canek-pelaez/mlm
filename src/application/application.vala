@@ -62,20 +62,44 @@ namespace MLM {
         public override void startup() {
             base.startup();
 
-            var action = new GLib.SimpleAction("about", null);
+            var action = new GLib.SimpleAction("prev", null);
+            action.activate.connect(previous);
+            add_action(action);
+            set_accels_for_action("app.prev", new string[]{"<Ctrl>Page_Up"});
+
+            action = new GLib.SimpleAction("next", null);
+            action.activate.connect(next);
+            add_action(action);
+            set_accels_for_action("app.next", new string[]{"<Ctrl>Page_Down"});
+
+            action = new GLib.SimpleAction("save", null);
+            action.activate.connect(save);
+            add_action(action);
+            set_accels_for_action("app.save", new string[]{"<Ctrl>S"});
+
+            action = new GLib.SimpleAction("play", null);
+            action.activate.connect(play);
+            add_action(action);
+            set_accels_for_action("app.play", new string[]{"<Ctrl>space"});
+
+            action = new GLib.SimpleAction("start-encoder", null);
+            action.activate.connect(start_encoder);
+            add_action(action);
+
+            action = new GLib.SimpleAction("stop-encoder", null);
+            action.activate.connect(stop_encoder);
+            add_action(action);
+
+            action = new GLib.SimpleAction("about", null);
             action.activate.connect(about);
             add_action(action);
-            add_accelerator("<Ctrl>A", "app.quit", null);
+            set_accels_for_action("app.about", new string[]{"<Ctrl>B"});
 
             action = new GLib.SimpleAction("quit", null);
             action.activate.connect(quit);
             add_action(action);
-            add_accelerator("<Ctrl>Q", "app.quit", null);
-
-            var menu = new GLib.Menu();
-            menu.append(_("About"), "app.about");
-            menu.append(_("Quit"), "app.quit");
-            set_app_menu(menu);
+            set_accels_for_action("app.quit", new string[]{"<Ctrl>Q",
+                                                           "Escape"});
         }
 
         /**
@@ -127,9 +151,35 @@ namespace MLM {
         }
 
         /**
-         * Iterates to the previous file.
+         * Seeks a percentage in the player.
+         * @return ''true'' if the seeking succeeds; ''false'' otherwise.
          */
-        public void previous() {
+        public bool seek_player(double percentage) {
+            return player.seek(percentage);
+        }
+
+        /* Returns the player completion percentage. */
+        private double player_completion() {
+            if (player == null || !player.working)
+                return 0.0;
+            int64 d, p;
+            return player.get_completion(out d, out p);
+        }
+
+        /* Returns a string representing the playing time. */
+        private string player_time() {
+            if (player == null || !player.working)
+                return "00:00";
+            int64 position = -1, duration = -1;
+            player.get_completion(out position, out duration);
+            int64 tsecs = duration / 1000000000l;
+            int mins = (int)(tsecs / 60);
+            int secs = (int)(tsecs % 60);
+            return "%02d:%02d".printf(mins, secs);
+        }
+
+        /* The previous action. */
+        private void previous() {
             if (player != null && player.working)
                 player.pause();
             if (!iterator.has_previous())
@@ -139,10 +189,8 @@ namespace MLM {
             update_file();
         }
 
-        /**
-         * Iterates to the next file.
-         */
-        public void next() {
+        /* The next action. */
+        private void next() {
             if (player != null && player.working)
                 player.pause();
             if (!iterator.has_next())
@@ -152,28 +200,34 @@ namespace MLM {
             update_file();
         }
 
-        /**
-         * Saves the current file.
-         */
+        /* The save action. */
         public void save() {
             window.update_model(tags);
+            window.enable_save(false);
             tags.update();
         }
 
-        /**
-         * Starts the encoder.
-         */
-        public void start_encoder() {
+        /* The play action. */
+        private void play() {
+            if (player != null && !player.working) {
+                window.set_pause_icon();
+                player.play();
+            } else {
+                window.set_play_icon();
+                player.pause();
+            }
+        }
+
+        /* Starts the encoder. */
+        private void start_encoder() {
             target = window.get_normalized_filename(filename);
             encoder = new Encoder(filename, target);
             encoder.encode();
             GLib.Idle.add(update_encoding);
         }
 
-        /**
-         * Stops the encoder.
-         */
-        public void stop_encoder() {
+        /* Stops the encoder. */
+        private void stop_encoder() {
             if (target == null || encoder == null)
                 return;
             encoder.cancel();
@@ -182,80 +236,10 @@ namespace MLM {
             encoder = null;
         }
 
-        /**
-         * Sets the cover picture data.
-         * @param cover_data the cover picture data.
-         */
-        public void set_cover_picture_data(uint8[]? cover_data) {
-            tags.cover_picture = cover_data;
-        }
-
-        /**
-         * Sets the artist picture data.
-         * @param artist_data the artist picture data.
-         */
-        public void set_artist_picture_data(uint8[]? artist_data) {
-            tags.artist_picture = artist_data;
-        }
-
-        /**
-         * Starts the player.
-         */
-        public void start_player() {
-            if (is_player_playing())
-                return;
-            player.play();
-        }
-
-        /**
-         * Pauses the player.
-         */
-        public void pause_player() {
-            if (!is_player_playing())
-                return;
-            player.pause();
-        }
-
-        /**
-         * Seeks a percentage in the player.
-         * @return ''true'' if the seeking succeeds; ''false'' otherwise.
-         */
-        public bool seek_player(double percentage) {
-            return player.seek(percentage);
-        }
-
-        /**
-         * Returns the player completion percentage.
-         * @return the player completion percentage.
-         */
-        public double player_completion() {
-            if (!is_player_playing())
-                return 0.0;
-            int64 d, p;
-            return player.get_completion(out d, out p);
-        }
-
-        /**
-         * Whether the player is playing.
-         * @return ''true'' if the player is playing, ''false'' otherwise.
-         */
-        public bool is_player_playing() {
-            return (player != null && player.working);
-        }
-
-        /**
-         * Returns a string representing the playing time.
-         * @return a string representing the playing time.
-         */
-        public string player_time() {
-            if (!is_player_playing())
-                return "00:00";
-            int64 position = -1, duration = -1;
-            player.get_completion(out position, out duration);
-            int64 tsecs = duration / 1000000000l;
-            int mins = (int)(tsecs / 60);
-            int secs = (int)(tsecs % 60);
-            return "%02d:%02d".printf(mins, secs);
+        /* The about action. */
+        private void about() {
+            window.show_about_dialog();
+            tags.update();
         }
 
         /* Compares two files by path. */
@@ -279,11 +263,6 @@ namespace MLM {
             var tags = new FileTags(filename);
             window.update_model(tags);
             tags.update();
-        }
-
-        /* The about action. */
-        private void about() {
-            window.about();
         }
 
         /* Updates the encoding process. */
@@ -315,12 +294,27 @@ namespace MLM {
         private void player_state_changed(Gst.State state) {
             switch (state) {
             case Gst.State.PLAYING:
-                window.play_started();
+                window.set_pause_icon();
+                GLib.Idle.add(monitor_player);
                 break;
             case Gst.State.PAUSED:
-                window.play_paused();
+                if (player_completion() == 0.0)
+                    window.update_player_view(0.0, "00:00");
+                window.set_play_icon();
                 break;
             }
         }
+
+        /* Monitors the player in the model. */
+        private bool monitor_player() {
+            if (player != null && !player.working) {
+                window.set_play_icon();
+                return false;
+            }
+            window.update_player_view(player_completion(),
+                                      player_time());
+            return true;
+        }
+
     }
 }
