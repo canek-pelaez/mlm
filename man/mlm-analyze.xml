@@ -58,7 +58,7 @@
 
     <title>Description</title>
 
-    <para><filename>mlm-analyze</filename> is a command line tool to analyze in
+    <para><command>mlm-analyze</command> is a command line tool to analyze in
     detail the Id3v2.4.0 tags of one or more MP3 files.</para>
 
   </refsect1>
@@ -86,6 +86,10 @@
   <refsect1>
     <title>See Also</title>
     <para>
+      <citerefentry>
+        <refentrytitle>mlm-arrange</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>.
       <citerefentry>
         <refentrytitle>mlm-copy-tags</refentrytitle>
         <manvolnum>1</manvolnum>

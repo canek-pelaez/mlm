@@ -45,6 +45,7 @@ id3tagx_includes = include_directories('lib/id3tag-x')
 
 # libmlm
 mlm_sources = [
+  'lib/mlm/exit-code.vala',
   'lib/mlm/genres.vala',
   'lib/mlm/file-tags.vala',
   'lib/mlm/pretty-box.vala',

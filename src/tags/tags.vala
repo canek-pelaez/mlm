@@ -23,24 +23,6 @@ namespace MLM {
 
     public class Tags {
 
-        private enum ExitCode {
-            OK,
-            IMAGE_FOR_MANY,
-            INVALID_ARGUMENT,
-            INVALID_DISC,
-            INVALID_GENRE,
-            INVALID_IMAGE_FILE,
-            INVALID_TRACK,
-            INVALID_YEAR,
-            MISSING_FILES,
-            NO_ID3_PICTURE,
-            NO_ID3_TAGS,
-            NO_IMAGE_FILE,
-            NO_SUCH_FILE,
-            READING_ERROR,
-            WRITING_ERROR;
-        }
-
         private enum PictureType {
             COVER,
             ARTIST;
@@ -161,7 +143,7 @@ Format for printing:
                 stdout.printf("   %s %s\n",
                               Util.color("%03d".printf(i), Color.BLUE),
                               Util.color(genres[i].to_string(), Color.YELLOW));
-            Process.exit(ExitCode.OK);
+            Process.exit(ExitCode.A_OK);
         }
 
         private static void print_standard_tags(string filename) {
@@ -422,7 +404,7 @@ Format for printing:
             if (remove) {
                 for (int i = 1; i < args.length; i++)
                     remove_tags(args[i]);
-                Process.exit(ExitCode.OK);
+                Process.exit(ExitCode.A_OK);
             }
 
             if (out_cover_picture != null || out_artist_picture != null) {
@@ -435,7 +417,7 @@ Format for printing:
                 else
                     save_picture(args[1], out_artist_picture,
                                  PictureType.ARTIST);
-                Process.exit(ExitCode.OK);
+                Process.exit(ExitCode.A_OK);
             }
 
             if (!edit_file()) {
@@ -444,7 +426,7 @@ Format for printing:
                         print_standard_tags(args[i]);
                     else
                         print_tags(args[i], format);
-                Process.exit(ExitCode.OK);
+                Process.exit(ExitCode.A_OK);
             }
 
             if (s_year != null) {
@@ -509,7 +491,7 @@ Format for printing:
             for (int i = 1; i < args.length; i++)
                 update_tags(args[i]);
 
-            return ExitCode.OK;
+            return ExitCode.A_OK;
         }
     }
 }

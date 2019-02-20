@@ -24,13 +24,6 @@ namespace MLM {
 
     public class CopyTags {
 
-        private enum ExitCode {
-            OK,
-            INVALID_ARGUMENT,
-            MISSING_ARGUMENT,
-            NO_SUCH_FILE;
-        }
-
         private string source;
         private string target;
         private FileTags source_tags;
@@ -116,7 +109,7 @@ namespace MLM {
             var ct = new CopyTags(source, target);
             ct.copy();
 
-            return ExitCode.OK;
+            return ExitCode.A_OK;
         }
     }
 }

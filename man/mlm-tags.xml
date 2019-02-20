@@ -58,7 +58,7 @@
 
     <title>Description</title>
 
-    <para><filename>mlm-tags</filename> is a command line tool to show and edit
+    <para><command>mlm-tags</command> is a command line tool to show and edit
     the standard tags of one or more MP3 files.</para>
 
   </refsect1>
@@ -965,6 +965,10 @@
     <para>
       <citerefentry>
         <refentrytitle>mlm-analyze</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>,
+      <citerefentry>
+        <refentrytitle>mlm-arrange</refentrytitle>
         <manvolnum>1</manvolnum>
       </citerefentry>,
       <citerefentry>

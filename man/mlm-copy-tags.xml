@@ -58,7 +58,7 @@
 
     <title>Description</title>
 
-    <para><filename>mlm-copy-tags</filename> is a command line tool to copy the
+    <para><command>mlm-copy-tags</command> is a command line tool to copy the
     Id3v2.4.0 tags from a source file to a target file.</para>
 
   </refsect1>
@@ -88,6 +88,10 @@
     <para>
       <citerefentry>
         <refentrytitle>mlm-analyze</refentrytitle>
+        <manvolnum>1</manvolnum>
+      </citerefentry>,
+      <citerefentry>
+        <refentrytitle>mlm-arrange</refentrytitle>
         <manvolnum>1</manvolnum>
       </citerefentry>,
       <citerefentry>
