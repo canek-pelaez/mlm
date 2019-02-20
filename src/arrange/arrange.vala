@@ -27,19 +27,6 @@ namespace MLM {
      */
     public class Arranger {
 
-        /* Exit codes enumeration. */
-        private enum ExitCode {
-            OK,
-            INVALID_ARGUMENT,
-            MISSING_OUTPUT_DIR,
-            MISSING_FILES,
-            INVALID_OUTPUT_DIR,
-            INVALID_DESTINATION,
-            NOT_ENOUGH_INFO,
-            COPY_ERROR,
-            NO_SUCH_FILE;
-        }
-
         /* The directory where to arrange the files. */
         private static string directory;
         /* The command. */
@@ -52,87 +39,51 @@ namespace MLM {
             { null }
         };
 
-        /* The filename. */
-        private string filename;
-        /* The artist. */
-        private string artist;
-        /* The title. */
-        private string title;
-        /* The album. */
-        private string album;
-        /* The band. */
-        private string band;
-        /* The disc. */
-        /* The track. */
-        private int disc = -1;
-        private int track = -1;
+        /* The tags. */
+        FileTags tags;
+        /* The source. */
+        private string source;
 
         /**
          * Initializes an arranger.
-         * @param filename the filename.
+         * @param source the source.
          */
-        public Arranger(string filename) {
-            if (!FileUtils.test(filename, FileTest.EXISTS))
+        public Arranger(string source) {
+            if (!FileUtils.test(source, FileTest.EXISTS))
                 Util.error(false, ExitCode.NO_SUCH_FILE, command,
-                           "The file ‘%s’ does not exist.", filename);
-            this.filename = filename;
-            var tags = new FileTags(filename);
-            if (tags.artist != null)
-                artist = Util.asciize(tags.artist);
-            if (tags.title != null)
-                title = Util.asciize(tags.title);
-            if (tags.album != null)
-                album = Util.asciize(tags.album);
-            if (tags.band != null)
-                band = Util.asciize(tags.band);
-            else
-                band = artist;
-            disc = tags.disc;
-            track = tags.track;
+                           "The file ‘%s’ does not exist.", source);
+            this.source = source;
+            tags = new FileTags(source);
         }
 
         /**
          * Arranges the file.
          */
         public void arrange() {
-            if (artist == null || title == null || album == null)
+            var target = string.join(GLib.Path.DIR_SEPARATOR_S, directory,
+                                     Util.normal_form(tags));
+            if (target == null)
                 Util.error(false, ExitCode.NOT_ENOUGH_INFO, command,
                            "Not enough information to arrange ‘%s’",
-                           filename);
-            var letter = band.get_char(0).to_string();
+                           source);
+            var dirname = GLib.Path.get_dirname(target);
+            if (GLib.DirUtils.create_with_parents(dirname, 0755) < 0)
+                Util.error(false, ExitCode.INVALID_OUTPUT_DIR, command,
+                           "Invalid output directory: ‘%s’",
+                           dirname);
 
-            string[] subdirs = { letter, band, album };
-            var dir = directory;
-            foreach (var subdir in subdirs) {
-                dir = dir + Path.DIR_SEPARATOR_S + subdir;
-                if (!GLib.FileUtils.test(dir, GLib.FileTest.EXISTS)) {
-                    GLib.DirUtils.create(dir, 0755);
-                } else if (!GLib.FileUtils.test(dir, GLib.FileTest.IS_DIR)) {
-                    Util.error(false, ExitCode.INVALID_DESTINATION, command,
-                               "Invalid destination");
-                }
-            }
-
-            string dest = "";
-
-            if (disc != -1 && track != -1)
-                dest = "%s/%d_-_%02d_-_%s_-_%s.mp3".printf(dir, disc, track,
-                                                           artist, title);
-            else
-                dest = "%s/%s_-_%s.mp3".printf(dir, artist, title);
-
-            var src = GLib.File.new_for_path(filename);
-            var dst = GLib.File.new_for_path(dest);
+            var source_file = GLib.File.new_for_path(source);
+            var target_file = GLib.File.new_for_path(target);
             try {
-                var time = Util.get_file_time(filename);
-                src.copy(dst, GLib.FileCopyFlags.OVERWRITE);
-                Util.set_file_time(dest, time);
+                var time = Util.get_file_time(source);
+                source_file.copy(target_file, GLib.FileCopyFlags.OVERWRITE);
+                Util.set_file_time(target, time);
             } catch (GLib.Error e) {
                 Util.error(false, ExitCode.COPY_ERROR, command, e.message);
             }
             stdout.printf("Copied\t‘%s’\ninto\t‘%s’\n",
-                          Util.color(src.get_basename(), Color.RED),
-                          Util.color(dst.get_basename(), Color.GREEN));
+                          Util.color(source_file.get_basename(), Color.RED),
+                          Util.color(target_file.get_basename(), Color.GREEN));
         }
 
         /* The context. */
@@ -177,7 +128,7 @@ namespace MLM {
                 arranger.arrange();
             }
 
-            return ExitCode.OK;
+            return ExitCode.A_OK;
         }
     }
 }
