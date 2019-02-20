@@ -1,6 +1,6 @@
 /* tags.vala - This file is part of mlm.
  *
- * Copyright © 2013-2018 Canek Peláez Valdés
+ * Copyright © 2013-2019 Canek Peláez Valdés
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -63,7 +63,7 @@ namespace MLM {
         private static string  out_cover_picture;
         private static string  out_artist_picture;
 
-        private static int     current_year = 2014;
+        private static int     current_year = 2019;
 
         private const GLib.OptionEntry[] options = {
             { "artist", 'a', 0, GLib.OptionArg.STRING,
