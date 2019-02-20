@@ -1,7 +1,7 @@
 /*
  * This file is part of mlm.
  *
- * Copyright © 2013-2018 Canek Peláez Valdés
+ * Copyright © 2013-2019 Canek Peláez Valdés
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -22,18 +22,19 @@
 
 namespace MLM {
 
+    /**
+     * Class for verifiers.
+     */
     public class Verifier {
 
-        private enum ExitCode {
-            OK,
-            INVALID_ARGUMENT,
-            NO_SUCH_FILE;
-        }
-
+        /* Whether to fix the fixable problems. */
         private static bool fixit;
+        /* Whether to check for missing pictures. */
         private static bool missing_pictures;
+        /* Whether to check for small pictures. */
         private static bool small_pictures;
 
+        /* Command line options. */
         private const GLib.OptionEntry[] options = {
             { "fixit", 'f', 0, GLib.OptionArg.NONE, ref fixit,
               "Automatically fix what is fixable", null },
@@ -44,12 +45,17 @@ namespace MLM {
             { null }
         };
 
-        private Id3Tag.Tag tag;
+        /* The tags. */
+        private Id3Tag.Tag tags;
         private string filename;
         private string report;
         private bool anomalies;
         private int current_year;
 
+        /**
+         * Initializes the verifier.
+         * @param filename the filename to verify.
+         */
         public Verifier(string filename) {
             this.filename = filename;
             report = "";
@@ -59,6 +65,7 @@ namespace MLM {
             current_year = dt.get_year();
         }
 
+        /* Adds to the final report. */
         [PrintfFormat]
         private void add_to_report(string format, ...) {
             anomalies = true;
@@ -67,6 +74,7 @@ namespace MLM {
             report += Util.color(s, Color.RED);
         }
 
+        /* Converts a string into title formatting. */
         private string to_title(string str) {
             var t = "";
             bool up = true;
@@ -92,6 +100,7 @@ namespace MLM {
             return t;
         }
 
+        /* Verifies the text encoding of a frame. */
         private void verify_frame_textencoding(Id3Tag.Frame             frame,
                                                string                   fid,
                                                Id3Tag.FieldTextEncoding te =
@@ -113,6 +122,7 @@ namespace MLM {
             }
         }
 
+        /* Verifies a text frame. */
         private void verify_text_frame(Id3Tag.Frame frame,
                                        string       fid,
                                        bool         check_empty) {
@@ -121,6 +131,7 @@ namespace MLM {
                 add_to_report("\nThe %s frame is empty.\n", fid);
         }
 
+        /* Verifies a year frame. */
         private void verify_year_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "year");
             int year = int.parse(frame.get_text());
@@ -128,6 +139,7 @@ namespace MLM {
                 add_to_report("\tThe year %d is out of range.\n", year);
         }
 
+        /* Verifies a disc frame. */
         private int verify_disc_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "disc");
             int disc = int.parse(frame.get_text());
@@ -136,6 +148,7 @@ namespace MLM {
             return disc;
         }
 
+        /* Verifies a genre frame. */
         private void verify_genre_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "genre");
             var g = frame.get_text();
@@ -166,6 +179,7 @@ namespace MLM {
             }
         }
 
+        /* Verifies a comment frame. */
         private void verify_comment_frame(Id3Tag.Frame frame) {
             for (int i = 0; i < frame.fields.length; i++) {
                 var field = frame.field(i);
@@ -198,6 +212,7 @@ namespace MLM {
                 add_to_report("\tThe comment is empty.\n");
         }
 
+        /* Verifies a picture frame. */
         private void verify_picture_frame(Id3Tag.Frame frame) {
             bool detach = false;
             var pt = Id3Tag.PictureType.OTHER;
@@ -223,7 +238,7 @@ namespace MLM {
                 }
             }
             if (detach) {
-                tag.detachframe(frame);
+                tags.detachframe(frame);
                 add_to_report("\t\t...fixed.\n");
                 return;
             }
@@ -261,7 +276,7 @@ namespace MLM {
             }
             if (desc == "(No Disc)")
                 return;
-            var album_frame = tag.search_frame(FrameId.ALBUM);
+            var album_frame = tags.search_frame(FrameId.ALBUM);
             if (album_frame == null)
                 return;
             var album = album_frame.get_text();
@@ -276,6 +291,7 @@ namespace MLM {
             }
         }
 
+        /* Verifies a track frame. */
         private int verify_track_frame(Id3Tag.Frame frame) {
             verify_frame_textencoding(frame, "track");
             var t = frame.get_text();
@@ -303,6 +319,9 @@ namespace MLM {
             return tn;
         }
 
+        /**
+         * Performs the verification.
+         */
         public void verify() {
             if (!FileUtils.test(filename, FileTest.EXISTS)) {
                 stderr.printf("%s: No such file.\n", filename);
@@ -313,14 +332,14 @@ namespace MLM {
                 stderr.printf("%s: Could not link to file.\n", filename);
                 return;
             }
-            tag = file.tag();
-            if (tag == null) {
+            tags = file.tag();
+            if (tags == null) {
                 stderr.printf("%s: Could not extract tags from file.\n",
                               filename);
                 return;
             }
             report = "%s:\n".printf(Util.color(filename, Color.CYAN));
-            if (tag.frames.length == 0)
+            if (tags.frames.length == 0)
                 add_to_report("\tFile has no frames.\n");
             int fcp = 0;
             int ap = 0;
@@ -333,8 +352,8 @@ namespace MLM {
             string track = "";
             string disc = "";
             var invalid = new Gee.ArrayList<Id3Tag.Frame>();
-            for (int i = 0; i < tag.frames.length; i++) {
-                var frame = tag.frames[i];
+            for (int i = 0; i < tags.frames.length; i++) {
+                var frame = tags.frames[i];
                 if (frame.id == FrameId.ARTIST) {
                     verify_text_frame(frame, "artist", true);
                     artist = frame.get_text();
@@ -353,6 +372,9 @@ namespace MLM {
                     }
                 } else if (frame.id == FrameId.ALBUM) {
                     verify_text_frame(frame, "album", true);
+                    album = frame.get_text();
+                } else if (frame.id == FrameId.BAND) {
+                    verify_text_frame(frame, "band", true);
                     album = frame.get_text();
                 } else if (frame.id == FrameId.COMPOSER) {
                     verify_text_frame(frame, "composer", false);
@@ -386,7 +408,7 @@ namespace MLM {
             foreach (var frame in invalid) {
                 add_to_report("\tThe frame '%s' is invalid.\n", frame.id);
                 if (fixit) {
-                    tag.detachframe(frame);
+                    tags.detachframe(frame);
                     add_to_report("\t\t...fixed.\n");
                 }
             }
@@ -408,29 +430,24 @@ namespace MLM {
             if (comments > 1)
                 add_to_report("\tFile has more than one comment.\n");
             if (anomalies && fixit) {
-                tag.options(Id3Tag.TagOption.COMPRESSION, 0);
+                tags.options(Id3Tag.TagOption.COMPRESSION, 0);
                 file.update();
             }
             file.close();
-            string dn = Path.get_dirname(filename);
-            string bn = Path.get_basename(filename);
-            artist = artist.replace("/", "_");
-            title = title.replace("/", "_");
-            string cn1 = track + " - " + artist + " - " + title + ".mp3";
-            string cn2 = artist + " - " + title + ".mp3";
-            string cn3 = disc + " - " + track + " - " + artist + " - " + title + ".mp3";
-            if (bn != cn1 && bn != cn2 && bn != cn3) {
-                add_to_report("\tFile it's not called '%s' nor '%s' nor '%s'.\n", cn1, cn2, cn3);
-                if (fixit) {
-                    if (bn.data[0] >= (int)'0' && bn.data[0] <= (int)'9')
-                        FileUtils.rename(filename, dn +
-                                         Path.DIR_SEPARATOR_S + cn1);
-                    else if (bn.has_prefix("Disc"))
-                        FileUtils.rename(filename, dn +
-                                         Path.DIR_SEPARATOR_S + cn3);
-                    else
-                        FileUtils.rename(filename, dn +
-                                         Path.DIR_SEPARATOR_S + cn2);
+            var dirname = Path.get_dirname(filename);
+            var basename = Path.get_basename(filename);
+            var normpath = Util.normal_form(new FileTags(filename));
+
+            if (normpath == null) {
+            } else {
+                var normbase = Path.get_basename(normpath);
+                if (basename != normbase) {
+                    add_to_report("\tFile it's not called '%s'.\n", normbase);
+                    if (fixit) {
+                        var target = string.join(GLib.Path.DIR_SEPARATOR_S,
+                                                 dirname, normbase);
+                        FileUtils.rename(filename, target);
+                    }
                     add_to_report("\t\t...fixed.\n");
                 }
             }
@@ -438,6 +455,7 @@ namespace MLM {
                 stdout.printf(report);
         }
 
+        /* The application context. */
         private const string CONTEXT =
             "[FILENAME...] - Verify MP3 files";
 
@@ -461,7 +479,7 @@ namespace MLM {
                 v.verify();
             }
 
-            return ExitCode.OK;
+            return ExitCode.A_OK;
         }
     }
 }
