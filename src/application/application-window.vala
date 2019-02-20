@@ -287,12 +287,6 @@ namespace MLM {
             save_button.sensitive = true;
         }
 
-        /* The on window key press callback. */
-        [GtkCallback]
-        private bool on_window_key_press(Gdk.EventKey e) {
-            return false;
-        }
-
         /**
          * Updates the encoding popover.
          * @param percentage the percentage of the encoding.

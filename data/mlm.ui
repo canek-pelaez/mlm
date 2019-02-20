@@ -662,7 +662,6 @@
     <property name="resizable">False</property>
     <property name="window-position">3</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
-    <signal name="key-press-event" handler="on_window_key_press" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="visible">True</property>
