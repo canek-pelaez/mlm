@@ -99,7 +99,7 @@ namespace MLM {
         /**
          * Returns the NFKD normalization and ASCII conversion of a string.
          * @param str the string.
-         * @return the NFKD normalization and ASCII conversion of a string.
+         * @return the NFKD normalization and ASCII conversion of the string.
          */
         public static string asciize(string str) {
             var s = str.normalize(-1, GLib.NormalizeMode.NFKD);
@@ -184,6 +184,29 @@ namespace MLM {
                 stderr.printf("Run ‘%s --help’ for a list of options.\n",
                               command);
             Process.exit(code);
+        }
+
+        public static string? normal_form(FileTags tags) {
+            if (tags.artist == null || tags.title == null || tags.album == null)
+                return null;
+            var artist = asciize(tags.artist);
+            var title = asciize(tags.title);
+            var album = asciize(tags.album);
+            var band = artist;
+            if (tags.band != null)
+                band = asciize(tags.band);
+            int disc = tags.disc;
+            int track = tags.track;
+
+            var letter = band.get_char(0).to_string();
+
+            var name = (disc != -1 && track != -1) ?
+                "%d_-_%02d_-_%s_-_%s.mp3".printf(disc, track,
+                                                    artist, title) :
+                "%s_-_%s.mp3".printf(artist, title);
+
+            return string.join(GLib.Path.DIR_SEPARATOR_S,
+                               letter, band, album, name);
         }
     }
 }
