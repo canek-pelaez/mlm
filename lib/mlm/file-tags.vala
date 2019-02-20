@@ -511,7 +511,7 @@ namespace MLM {
                 return;
             }
             if (!string_frames.has_key(FrameId.COMMENT)) {
-                frame = tag.create_comment_frame(FrameId.COMMENT);
+                frame = tag.create_comment_frame("eng");
                 tag.attachframe(frame);
             } else {
                 frame = tag.search_frame(FrameId.COMMENT);
