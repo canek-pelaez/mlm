@@ -3,5 +3,7 @@
   <gresource prefix="/mx/unam/MLM">
     <file>mlm.css</file>
     <file preprocess="xml-stripblanks">mlm.ui</file>
+    <file preprocess="xml-stripblanks">mlm.svg</file>
+    <file preprocess="xml-stripblanks">shortcuts.ui</file>
   </gresource>
 </gresources>

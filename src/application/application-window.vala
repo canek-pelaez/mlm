@@ -157,6 +157,8 @@ namespace MLM {
         [GtkChild]
         private Gtk.Label filename_label;
 
+        /* The shortcuts dialog. */
+        private ShortcutsWindow shortcuts;
         /* The MLM application. */
         private Application mlm;
         /* The file tags. */
@@ -460,6 +462,15 @@ namespace MLM {
                 "website",        ("https://canek@aztlan.fciencias.unam.mx/" +
                                    "gitlab/canek/mlm.git"),
                 "wrap-license",   true);
+        }
+
+        /**
+         * Shows the shortcuts dialog.
+         */
+        public void show_shortcuts_dialog() {
+            if (shortcuts == null)
+                shortcuts = new ShortcutsWindow();
+            shortcuts.show_all();
         }
 
         /* Selects an image from a file. */

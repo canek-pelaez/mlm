@@ -90,6 +90,11 @@ namespace MLM {
             action.activate.connect(stop_encoder);
             add_action(action);
 
+            action = new GLib.SimpleAction("shortcuts", null);
+            action.activate.connect(shortcuts);
+            add_action(action);
+            set_accels_for_action("app.shortcuts", new string[]{"<Ctrl>T"});
+
             action = new GLib.SimpleAction("about", null);
             action.activate.connect(about);
             add_action(action);
@@ -240,6 +245,11 @@ namespace MLM {
         private void about() {
             window.show_about_dialog();
             tags.update();
+        }
+
+        /* The shortcuts action. */
+        private void shortcuts() {
+            window.show_shortcuts_dialog();
         }
 
         /* Compares two files by path. */
