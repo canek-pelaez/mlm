@@ -1,5 +1,5 @@
 # General
-project('mlm', ['vala', 'c'], version: '0.1')
+project('mlm', ['vala', 'c'], version: '0.8')
 add_global_arguments('-DGETTEXT_PACKAGE="mlm"', language: 'c')
 vapidir = join_paths(meson.current_source_dir(), 'vapi')
 add_project_arguments(['--enable-experimental',

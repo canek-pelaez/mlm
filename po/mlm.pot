@@ -1,12 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Canek Peláez Valdés
+# Music Library Maintainer translation.
+# Copyright (C) 2019 Canek Peláez Valdés
 # This file is distributed under the same license as the mlm package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Canek Peláez Valdés <canek@ciencias.unam.mx>, 2019.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: mlm 0.1\n"
+"Project-Id-Version: mlm 0.8\n"
 "Report-Msgid-Bugs-To: https://github.com/canek-pelaez/mlm/issues\n"
 "POT-Creation-Date: 2017-05-14 19:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
