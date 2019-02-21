@@ -660,6 +660,7 @@
     <property name="visible">False</property>
     <property name="can-focus">False</property>
     <property name="resizable">False</property>
+    <property name="width-request">520</property>
     <property name="window-position">3</property>
     <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <child type="titlebar">
