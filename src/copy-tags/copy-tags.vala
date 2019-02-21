@@ -38,42 +38,14 @@ namespace MLM {
 
         public void copy() {
             var time = Util.get_file_time(source);
-
-            if (source_tags.artist != null)
-                target_tags.artist = source_tags.artist;
-            if (source_tags.title != null)
-                target_tags.title = source_tags.title;
-            if (source_tags.album != null)
-                target_tags.album = source_tags.album;
-            target_tags.year = source_tags.year;
-            if (source_tags.track != -1) {
-                target_tags.track = source_tags.track;
-                if (source_tags.total != -1)
-                    target_tags.total = source_tags.total;
-            }
-            target_tags.disc = source_tags.disc;
-            if (source_tags.genre != -1)
-                target_tags.genre = source_tags.genre;
-            if (source_tags.comment != null)
-                target_tags.comment = source_tags.comment;
-            if (source_tags.composer != null)
-                target_tags.composer = source_tags.composer;
-            if (source_tags.original != null)
-                target_tags.original = source_tags.original;
-            if (source_tags.cover_picture != null)
-                target_tags.cover_picture = source_tags.cover_picture;
-            if (source_tags.artist_picture != null)
-                target_tags.artist_picture = source_tags.artist_picture;
-            if (source_tags.band != null)
-                target_tags.band = source_tags.band;
+            target_tags.copy(source_tags);
             target_tags.update();
             target_tags = null;
-
-            Util.set_file_time(source, time);
+            Util.set_file_time(target, time);
         }
 
         private const string CONTEXT =
-            "SOURCE TARGET - Copy Id3v2.4.0 tags";
+            "SOURCE TARGET - Copy Id3v2.4.0 standard tags";
 
         private const string DESCRIPTION =
             "The SOURCE and TARGET MP3 files need to exist.\n";
