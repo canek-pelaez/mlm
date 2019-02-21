@@ -17,7 +17,7 @@ flags = [
 
 command = [ xsltproc, '-o', '@OUTPUT@' ] + flags
 
-pages = [ 'analyze', 'arrange', 'copy-tags', 'tags' ]
+pages = [ 'analyze', 'arrange', 'copy-tags', 'tags', 'verify' ]
 man_pages = []
 html_pages = []
 

@@ -974,6 +974,10 @@
       <citerefentry>
         <refentrytitle>mlm-copy-tags</refentrytitle>
         <manvolnum>1</manvolnum>
+      </citerefentry>,
+      <citerefentry>
+        <refentrytitle>mlm-verify</refentrytitle>
+        <manvolnum>1</manvolnum>
       </citerefentry>.
     </para>
   </refsect1>

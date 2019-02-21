@@ -3,7 +3,7 @@
         "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
 <!--
-  This file is part of mlm.
+  mlm-verify.xml - This file is part of mlm.
 
   Copyright © 2013-2019 Canek Peláez Valdés
 
@@ -21,10 +21,10 @@
   along with this program; If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<refentry id="mlm-copy-tags">
+<refentry id="mlm-verify">
 
   <refentryinfo>
-    <title>mlm-copy-tags</title>
+    <title>mlm-verify</title>
     <productname>mlm</productname>
     <authorgroup>
       <author>
@@ -37,20 +37,20 @@
   </refentryinfo>
 
   <refmeta>
-    <refentrytitle>mlm-copy-tags</refentrytitle>
+    <refentrytitle>mlm-verify</refentrytitle>
     <manvolnum>1</manvolnum>
   </refmeta>
 
   <refnamediv>
-    <refname>mlm-copy-tags</refname>
-    <refpurpose>Copy-Tags Id3v2.4.0 tags</refpurpose>
+    <refname>mlm-verify</refname>
+    <refpurpose>Verify MP3 files managed by MLM</refpurpose>
   </refnamediv>
 
   <refsynopsisdiv>
     <cmdsynopsis>
-      <command>mlm-copy-tags</command>
-      <arg choice="plain">SOURCE</arg>
-      <arg choice="plain">TARGET</arg>
+      <command>mlm-verify</command>
+      <arg choice="opt" rep="repeat">OPTION</arg>
+      <arg choice="opt" rep="repeat">FILENAME</arg>
     </cmdsynopsis>
   </refsynopsisdiv>
 
@@ -58,8 +58,12 @@
 
     <title>Description</title>
 
-    <para><command>mlm-copy-tags</command> is a command line tool to copy the
-    Id3v2.4.0 tags from a source file to a target file.</para>
+    <para><command>mlm-verify</command> is a command line tool to verify MP3
+    files managed by MLM. It verifies that the standard tags comply with several
+    rules if present; and also for the presence of some of them.</para>
+
+    <para>The tool can also fix some tags automatically, check for missing
+    pictures, and check for small pictures.</para>
 
   </refsect1>
 
@@ -79,6 +83,30 @@
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><option>-f</option></term>
+        <term><option>--fixit</option></term>
+        <listitem>
+          <para>Automatically fix what is fixable.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-m</option></term>
+        <term><option>--missing-pictures</option></term>
+        <listitem>
+          <para>Warn about missing pictures.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-s</option></term>
+        <term><option>--small-pictures</option></term>
+        <listitem>
+          <para>Warn about small pictures.</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
 
   </refsect1>
@@ -95,11 +123,11 @@
         <manvolnum>1</manvolnum>
       </citerefentry>,
       <citerefentry>
-        <refentrytitle>mlm-tags</refentrytitle>
+        <refentrytitle>mlm-copy-tags</refentrytitle>
         <manvolnum>1</manvolnum>
       </citerefentry>,
       <citerefentry>
-        <refentrytitle>mlm-verify</refentrytitle>
+        <refentrytitle>mlm-tags</refentrytitle>
         <manvolnum>1</manvolnum>
       </citerefentry>.
     </para>
