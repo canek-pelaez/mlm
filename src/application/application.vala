@@ -29,6 +29,8 @@ namespace MLM {
 
         /* The application window. */
         private ApplicationWindow window;
+        /* The shortcuts dialog. */
+        private ShortcutsWindow sc_window;
         /* The list of files. */
         private Gee.ArrayList<GLib.File> files;
         /* The list iterator. */
@@ -243,13 +245,25 @@ namespace MLM {
 
         /* The about action. */
         private void about() {
-            window.show_about_dialog();
-            tags.update();
+            string[] authors = { "Canek Peláez Valdés <canek@ciencias.unam.mx>" };
+            Gtk.show_about_dialog(
+                window,
+                "authors",        authors,
+                "comments",       _("A Gtk+ based music library maintainer"),
+                "copyright",      "Copyright © 2013-2019 Canek Peláez Valdés",
+                "license-type",   Gtk.License.GPL_3_0,
+                "logo-icon-name", "mlm",
+                "version",        Config.PACKAGE_VERSION,
+                "website",        ("https://canek@aztlan.fciencias.unam.mx/" +
+                                   "gitlab/canek/mlm.git"),
+                "wrap-license",   true);
         }
 
         /* The shortcuts action. */
         private void shortcuts() {
-            window.show_shortcuts_dialog();
+            if (shortcuts == null)
+                sc_window = new ShortcutsWindow();
+            sc_window.show_all();
         }
 
         /* Compares two files by path. */

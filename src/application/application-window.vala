@@ -157,8 +157,6 @@ namespace MLM {
         [GtkChild]
         private Gtk.Label filename_label;
 
-        /* The shortcuts dialog. */
-        private ShortcutsWindow shortcuts;
         /* The MLM application. */
         private Application mlm;
         /* The file tags. */
@@ -444,33 +442,6 @@ namespace MLM {
                 cont++;
             } while (GLib.FileUtils.test(norm, GLib.FileTest.EXISTS));
             return norm;
-        }
-
-        /**
-         * Shows the about dialog.
-         */
-        public void show_about_dialog() {
-            string[] authors = { "Canek Peláez Valdés <canek@ciencias.unam.mx>" };
-            Gtk.show_about_dialog(
-                this,
-                "authors",        authors,
-                "comments",       _("A Gtk+ based music library maintainer"),
-                "copyright",      "Copyright © 2013-2019 Canek Peláez Valdés",
-                "license-type",   Gtk.License.GPL_3_0,
-                "logo-icon-name", "mlm",
-                "version",        Config.PACKAGE_VERSION,
-                "website",        ("https://canek@aztlan.fciencias.unam.mx/" +
-                                   "gitlab/canek/mlm.git"),
-                "wrap-license",   true);
-        }
-
-        /**
-         * Shows the shortcuts dialog.
-         */
-        public void show_shortcuts_dialog() {
-            if (shortcuts == null)
-                shortcuts = new ShortcutsWindow();
-            shortcuts.show_all();
         }
 
         /* Selects an image from a file. */
