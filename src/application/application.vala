@@ -29,8 +29,8 @@ namespace MLM {
 
         /* The application window. */
         private ApplicationWindow window;
-        /* The shortcuts dialog. */
-        private ShortcutsWindow sc_window;
+        /* The shortcuts window. */
+        private ShortcutsWindow shortcuts_window;
         /* The list of files. */
         private Gee.ArrayList<GLib.File> files;
         /* The list iterator. */
@@ -49,6 +49,8 @@ namespace MLM {
         private Encoder encoder;
         /* The target filename for the encoder. */
         private string target;
+        /* Whether the tags have been modified. */
+        private bool modified;
 
         /**
          * Initializes the application.
@@ -209,8 +211,8 @@ namespace MLM {
 
         /* The save action. */
         public void save() {
-            window.update_model(tags);
-            window.enable_save(false);
+            if (!modified)
+                return;
             tags.update();
         }
 
@@ -227,7 +229,18 @@ namespace MLM {
 
         /* Starts the encoder. */
         private void start_encoder() {
-            target = window.get_normalized_filename(filename);
+            var target = "";
+            string prefix = (
+                (tags.artist != null ? tags.artist.replace("/", "_") : "") +
+                " - " +
+                (tags.title != null ? tags.title.replace("/", "_") : ""));
+            int cont = 0;
+            do {
+                string name = prefix + ((cont == 0) ? ".mp3" :
+                                        "-%d.mp3".printf(cont));
+                target = string.join(Path.get_dirname(filename), name);
+                cont++;
+            } while (GLib.FileUtils.test(target, GLib.FileTest.EXISTS));
             encoder = new Encoder(filename, target);
             encoder.encode();
             GLib.Idle.add(update_encoding);
@@ -245,7 +258,8 @@ namespace MLM {
 
         /* The about action. */
         private void about() {
-            string[] authors = { "Canek Peláez Valdés <canek@ciencias.unam.mx>" };
+            string[] authors = { "Canek Peláez Valdés " +
+                                 "<canek@ciencias.unam.mx>" };
             Gtk.show_about_dialog(
                 window,
                 "authors",        authors,
@@ -262,8 +276,8 @@ namespace MLM {
         /* The shortcuts action. */
         private void shortcuts() {
             if (shortcuts == null)
-                sc_window = new ShortcutsWindow();
-            sc_window.show_all();
+                shortcuts_window = new ShortcutsWindow();
+            shortcuts_window.show_all();
         }
 
         /* Compares two files by path. */
@@ -278,15 +292,9 @@ namespace MLM {
             var file = iterator.get();
             filename = file.get_path();
             tags = new FileTags(filename);
+            tags.modified.connect(() => modified = true);
             window.update_view(filename, tags, current, total);
             GLib.Idle.add(dispose_player);
-        }
-
-        /* Save the tags in the view to a file. */
-        private void save_tags(string filename) {
-            var tags = new FileTags(filename);
-            window.update_model(tags);
-            tags.update();
         }
 
         /* Updates the encoding process. */
@@ -297,10 +305,12 @@ namespace MLM {
             window.update_encoding(p);
             if (encoder.working)
                 return true;
-            save_tags(target);
+            var ntags = new FileTags(filename);
+            ntags.copy(tags);
+            ntags.update();
             encoder = null;
             target = null;
-            window.hide_encoding();
+            window.update_encoding(-1.0);
             return false;
         }
 

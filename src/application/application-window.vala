@@ -161,6 +161,8 @@ namespace MLM {
         private Application mlm;
         /* The file tags. */
         private FileTags tags;
+        /* Whether the UI is in flux. */
+        private bool ui_in_flux;
 
         /**
          * Initializes the application window.
@@ -178,7 +180,7 @@ namespace MLM {
                 stderr.printf("There was a problem loading ‘%s’\n", CSS_URI);
             }
             Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
-                                                      provider, 999);
+                                                     provider, 999);
             var date_time = new GLib.DateTime.now_local();
             year_adjustment.upper = date_time.get_year();
             encode_menu_button.bind_property(
@@ -233,6 +235,8 @@ namespace MLM {
         [GtkCallback]
         private void on_open_artist_image_clicked() {
             var data = select_image(_("Select image for artist"));
+            if (data == null)
+                return;
             tags.artist_picture = data;
             update_image(artist_image, data);
         }
@@ -242,13 +246,14 @@ namespace MLM {
         private void on_clear_artist_image_clicked() {
             tags.artist_picture = null;
             set_default_image(artist_image);
-            save_button.sensitive = true;
         }
 
         /* The on open cover image clicked callback. */
         [GtkCallback]
         private void on_open_cover_image_clicked() {
             var data = select_image(_("Select image for cover"));
+            if (data == null)
+                return;
             tags.cover_picture = data;
             update_image(cover_image, data);
         }
@@ -258,7 +263,6 @@ namespace MLM {
         private void on_clear_cover_image_clicked() {
             tags.cover_picture = null;
             set_default_image(cover_image);
-            save_button.sensitive = true;
         }
 
         /* The on scale change callback. */
@@ -278,12 +282,30 @@ namespace MLM {
         /* The on window destroy callback. */
         [GtkCallback]
         private void on_window_destroy() {
-            mlm.quit();
+            mlm.activate_action("quit", null);
         }
 
         /* The on tags changed callback. */
         [GtkCallback]
         private void on_tags_changed() {
+            if (ui_in_flux)
+                return;
+            tags.artist = artist_entry.text != "" ? artist_entry.text : null;
+            tags.title = title_entry.text != "" ? title_entry.text : null;
+            tags.album = album_entry.text != "" ? album_entry.text : null;
+            tags.band = band_entry.text != "" ? band_entry.text : null;
+            tags.year = (int)year_spin_button.value;
+            tags.disc = (int)disc_spin_button.value;
+            tags.track = (int)track_spin_button.value;
+            tags.total = (int)total_spin_button.value;
+            tags.genre = genre_entry.text != "" ?
+                Genre.index_of(genre_entry.text) : -1;
+            tags.comment = comment_entry.text != "" ?
+                comment_entry.text : null;
+            tags.composer = composer_entry.text != "" ?
+                composer_entry.text : null;
+            tags.original = original_entry.text != "" ?
+                original_entry.text : null;
             save_button.sensitive = true;
         }
 
@@ -292,14 +314,10 @@ namespace MLM {
          * @param percentage the percentage of the encoding.
          */
         public void update_encoding(double percentage) {
-            encode_progress_bar.set_fraction(percentage);
-        }
-
-        /**
-         * Hides the encoding popover.
-         */
-        public void hide_encoding() {
-            encode_popover.visible = false;
+            if (percentage < 0.0)
+                encode_popover.visible = false;
+            else
+                encode_progress_bar.set_fraction(percentage);
         }
 
         /**
@@ -340,13 +358,6 @@ namespace MLM {
             dialog.destroy();
         }
 
-        /* Resets the timer. */
-        private void reset_timer() {
-            play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
-            play_adjustment.set_value(0.0);
-            time_label.set_text("00:00");
-        }
-
         /**
          * Enables the UI.
          */
@@ -359,13 +370,6 @@ namespace MLM {
         }
 
         /**
-         * Enables the save button.
-         */
-        public void enable_save(bool enable) {
-            save_button.sensitive = enable;
-        }
-
-        /**
          * Updates the view.
          * @param filename the filename.
          * @param tags the tags.
@@ -375,12 +379,18 @@ namespace MLM {
         public void update_view(string filename, FileTags tags,
                                 int current, int total) {
             this.tags = tags;
+            tags.updated.connect(() => save_button.sensitive = false);
+
             header_bar.set_subtitle("%d / %d".printf(current, total));
             var basename = GLib.Path.get_basename(filename);
             var markup = GLib.Markup.printf_escaped("<b>%s</b>", basename);
             filename_label.set_markup(markup);
+            previous_button.sensitive = current != 1;
+            next_button.sensitive = current < total;
+            save_button.sensitive = false;
             reset_timer();
 
+            ui_in_flux = true;
             artist_entry.text = tags.artist != null ? tags.artist : "";
             title_entry.text = tags.title != null ? tags.title : "";
             album_entry.text = tags.album != null ? tags.album : "";
@@ -397,51 +407,14 @@ namespace MLM {
             original_entry.text = tags.original != null ? tags.original : "";
             update_image(cover_image, tags.cover_picture);
             update_image(artist_image, tags.artist_picture);
-            previous_button.sensitive = current != 1;
-            next_button.sensitive = current < total;
-            save_button.sensitive = false;
+            ui_in_flux = false;
         }
 
-        /**
-         * Updates the model.
-         * @param tags the tags to update.
-         */
-        public void update_model(FileTags tags) {
-            tags.artist = artist_entry.text != "" ? artist_entry.text : null;
-            tags.title = title_entry.text != "" ? title_entry.text : null;
-            tags.album = album_entry.text != "" ? album_entry.text : null;
-            tags.band = band_entry.text != "" ? band_entry.text : null;
-            tags.year = (int)year_spin_button.value;
-            tags.disc = (int)disc_spin_button.value;
-            tags.track = (int)track_spin_button.value;
-            tags.total = (int)total_spin_button.value;
-            tags.genre = genre_entry.text != "" ?
-                Genre.index_of(genre_entry.text) : -1;
-            tags.comment = comment_entry.text != "" ?
-                comment_entry.text : null;
-            tags.composer = composer_entry.text != "" ?
-                composer_entry.text : null;
-            tags.original = original_entry.text != "" ?
-                original_entry.text : null;
-        }
-
-        /**
-         * Returns the normalized filename for the view.
-         * @param filename the filename.
-         */
-        public string get_normalized_filename(string filename) {
-            var norm = "";
-            int cont = 0;
-            do {
-                string d = Path.get_dirname(filename);
-                string s = GLib.Path.DIR_SEPARATOR_S;
-                string a = artist_entry.text.replace("/", "_");
-                string t = title_entry.text.replace("/", "_");
-                string e = (cont == 0) ? ".mp3" : "-%d.mp3".printf(cont);
-                norm = d + s + a + " - " + t + e;
-                cont++;
-            } while (GLib.FileUtils.test(norm, GLib.FileTest.EXISTS));
-            return norm;
+        /* Resets the timer. */
+        private void reset_timer() {
+            play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
+            play_adjustment.set_value(0.0);
+            time_label.set_text("00:00");
         }
 
         /* Selects an image from a file. */
@@ -473,6 +446,7 @@ namespace MLM {
             else
                 image.set_from_icon_name(ICON_NAME_AVATAR, ICON_SIZE);
             image.pixel_size = 140;
+            save_button.sensitive = true;
         }
 
         /* Updates an image. */
