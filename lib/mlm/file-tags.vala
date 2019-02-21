@@ -93,6 +93,20 @@ namespace MLM {
      */
     public class FileTags {
 
+        /**
+         * The “modified” signal.
+         *
+         * The ''::modified'' signal will be emitted when the tags are modified.
+         */
+        public signal void modified();
+
+        /**
+         * The “updated” signal.
+         *
+         * The ''::updated'' signal will be emitted when the tags are updated.
+         */
+        public signal void updated();
+
         /* String frames. */
         private Gee.HashMap<string, string?> string_frames;
         /* Integer frames. */
@@ -351,7 +365,7 @@ namespace MLM {
                     invalid_frames.add(frame);
                 }
             }
-            foreach (Id3Tag.Frame frame in invalid_frames) {
+            foreach (var frame in invalid_frames) {
                 tag.detachframe(frame);
             }
         }
@@ -411,6 +425,28 @@ namespace MLM {
                 tag.options(Id3Tag.TagOption.COMPRESSION, 0);
                 file.update();
             }
+            updated();
+        }
+
+        /**
+         * Copies the tags from the source.
+         * @param tags the source tags.
+         */
+        public void copy(FileTags tags) {
+            artist = tags.artist;
+            title = tags.title;
+            album = tags.album;
+            band = tags.band;
+            year = tags.year;
+            disc = tags.disc;
+            track = tags.track;
+            total = tags.total;
+            genre = tags.genre;
+            comment = tags.comment;
+            composer = tags.composer;
+            original = tags.original;
+            cover_picture = tags.cover_picture;
+            artist_picture = tags.artist_picture;
         }
 
         /**
@@ -507,6 +543,7 @@ namespace MLM {
                     string_frames.unset(FrameId.COMMENT);
                     frame = tag.search_frame(FrameId.COMMENT);
                     tag.detachframe(frame);
+                    modified();
                 }
                 return;
             }
@@ -520,6 +557,7 @@ namespace MLM {
             string_frames[FrameId.COMMENT] = value;
             _comment = string_frames.has_key(FrameId.COMMENT) ?
                 string_frames[FrameId.COMMENT] : null;
+            modified();
         }
 
         /* Defines the composer. */
@@ -561,6 +599,7 @@ namespace MLM {
                     string_frames.unset(frame_id);
                     frame = tag.search_frame(frame_id);
                     tag.detachframe(frame);
+                    modified();
                 }
                 return;
             }
@@ -572,6 +611,7 @@ namespace MLM {
             }
             frame.set_text(value);
             string_frames[frame_id] = value;
+            modified();
         }
 
         /* Defines the int_value. */
@@ -582,6 +622,7 @@ namespace MLM {
                     int_frames.unset(frame_id);
                     frame = tag.search_frame(frame_id);
                     tag.detachframe(frame);
+                    modified();
                 }
                 return;
             }
@@ -593,6 +634,7 @@ namespace MLM {
             }
             frame.set_text("%d".printf(value));
             int_frames[frame_id] = value;
+            modified();
         }
 
         /* Defines the data_value. */
@@ -605,6 +647,7 @@ namespace MLM {
                     data_frames.unset(pt);
                     frame = tag.search_picture_frame(pt);
                     tag.detachframe(frame);
+                    modified();
                 }
                 return;
             }
@@ -616,6 +659,7 @@ namespace MLM {
             }
             frame.set_picture(value, text != null ? text : "");
             data_frames[pt] = new GLib.Bytes(value);
+            modified();
         }
     }
 }
