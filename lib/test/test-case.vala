@@ -1,4 +1,5 @@
-/* This file is part of mlm.
+/*
+ * This file is part of mlm.
  *
  * Copyright © 2009 Julien Peeters
  *

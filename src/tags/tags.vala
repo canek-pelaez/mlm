@@ -1,4 +1,5 @@
-/* tags.vala - This file is part of mlm.
+/*
+ * This file is part of mlm.
  *
  * Copyright © 2013-2019 Canek Peláez Valdés
  *
