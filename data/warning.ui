@@ -13,17 +13,17 @@
       </object>
     </child>
     <child type="titlebar">
-      <object class="GtkHeaderBar" id="header">
+      <object class="GtkHeaderBar">
         <property name="visible">true</property>
         <property name="title">Warning</property>
         <child>
-          <object class="GtkBox" id="icon_box">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
+          <object class="GtkBox">
+            <property name="visible">true</property>
+            <property name="can-focus">false</property>
             <property name="spacing">0</property>
             <property name="orientation">horizontal</property>
             <child>
-              <object class="GtkImage" id="dialog_icon">
+              <object class="GtkImage">
                 <property name="visible">true</property>
                 <property name="can-focus">false</property>
                 <property name="margin-left">6</property>
@@ -48,7 +48,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkImage" id="message_icon">
+          <object class="GtkImage">
             <property name="visible">true</property>
             <property name="can-focus">false</property>
             <property name="margin">20</property>

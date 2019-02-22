@@ -7,31 +7,31 @@
     <property name="icon">resource:///mx/unam/MLM/mlm.svg</property>
     <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
     <child>
-      <object class="GtkShortcutsSection" id="all">
+      <object class="GtkShortcutsSection">
         <property name="visible">true</property>
         <property name="section-name">main</property>
         <property name="title">Main shortcuts</property>
         <property name="max-height">10</property>
         <child>
-          <object class="GtkShortcutsGroup" id="global">
+          <object class="GtkShortcutsGroup">
             <property name="visible">true</property>
             <property name="title">Global</property>
             <child>
-              <object class="GtkShortcutsShortcut" id="shortcuts">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Show shortcuts dialog</property>
                 <property name="accelerator">&lt;ctrl&gt;t</property>
               </object>
             </child>
             <child>
-              <object class="GtkShortcutsShortcut" id="about">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Show about dialog</property>
                 <property name="accelerator">&lt;ctrl&gt;b</property>
               </object>
             </child>
             <child>
-              <object class="GtkShortcutsShortcut" id="quit">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Quit application</property>
                 <property name="accelerator">&lt;ctrl&gt;q</property>
@@ -40,32 +40,32 @@
           </object>
         </child>
         <child>
-          <object class="GtkShortcutsGroup" id="tags">
+          <object class="GtkShortcutsGroup">
             <property name="visible">true</property>
             <property name="title">Tags</property>
             <child>
-              <object class="GtkShortcutsShortcut" id="previous">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Go to previous file</property>
                 <property name="accelerator">&lt;ctrl&gt;Page_Up</property>
               </object>
             </child>
             <child>
-              <object class="GtkShortcutsShortcut" id="next">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Go to next file</property>
                 <property name="accelerator">&lt;ctrl&gt;Page_Down</property>
               </object>
             </child>
             <child>
-              <object class="GtkShortcutsShortcut" id="save">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Save file</property>
                 <property name="accelerator">&lt;ctrl&gt;s</property>
               </object>
             </child>
             <child>
-              <object class="GtkShortcutsShortcut" id="play">
+              <object class="GtkShortcutsShortcut">
                 <property name="visible">true</property>
                 <property name="title">Play file</property>
                 <property name="accelerator">&lt;ctrl&gt;space</property>
