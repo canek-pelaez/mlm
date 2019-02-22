@@ -142,7 +142,8 @@ namespace MLM {
                                            GLib.FileQueryInfoFlags.NONE);
                 } catch (GLib.Error e) {
                     var p = file.get_path();
-                    var m = "There was a problem getting info from ‘%s’.".printf(p);
+                    var m = ("There was a problem getting info " +
+                             "from ‘%s’.").printf(p);
                     stderr.printf("%s\n", m);
                     continue;
                 }
@@ -230,7 +231,6 @@ namespace MLM {
         /* Starts the encoder. */
         private void start_encoder() {
             window.update_encoding(0.0);
-            var target = "";
             string prefix = (
                 (tags.artist != null ? tags.artist.replace("/", "_") : "") +
                 " - " +
@@ -239,7 +239,8 @@ namespace MLM {
             do {
                 string name = prefix + ((cont == 0) ? ".mp3" :
                                         "-%d.mp3".printf(cont));
-                target = string.join(Path.get_dirname(filename), name);
+                target = string.join(GLib.Path.DIR_SEPARATOR_S,
+                                     GLib.Path.get_dirname(filename), name);
                 cont++;
             } while (GLib.FileUtils.test(target, GLib.FileTest.EXISTS));
             encoder = new Encoder(filename, target);
@@ -301,7 +302,7 @@ namespace MLM {
             window.update_encoding(p);
             if (encoder.working)
                 return true;
-            var ntags = new FileTags(filename);
+            var ntags = new FileTags(target);
             ntags.copy(tags);
             ntags.update();
             encoder = null;
