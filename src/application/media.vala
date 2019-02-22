@@ -35,7 +35,7 @@ namespace MLM {
         /**
          * Whether the media is working.
          */
-        public bool working { get; protected set; }
+        public bool working { public get; protected set; }
 
         /**
          * Initializes the media.
@@ -70,9 +70,9 @@ namespace MLM {
             position = -1;
 
             if (!pipe.query_duration(Gst.Format.TIME, out duration))
-                return -1;
+                return 0.0;
             if (!pipe.query_position(Gst.Format.TIME, out position))
-                return -1;
+                return 0.0;
 
             return (double)position/duration;
         }
