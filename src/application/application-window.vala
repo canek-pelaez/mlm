@@ -417,7 +417,9 @@ namespace MLM {
                 FileUtils.get_data(fn, out data);
                 return data;
             } catch (GLib.FileError fe) {
-                warning(_("There was an error loading image '%s'").printf(fn));
+                var bn = GLib.Path.get_basename(fn);
+                var m = _("There was an error loading image '%s'").printf(bn);
+                show_warning(m);
             }
             return null;
         }
@@ -447,12 +449,19 @@ namespace MLM {
                                             (int)(pixbuf.height*scale),
                                             Gdk.InterpType.BILINEAR);
             } catch (GLib.Error e) {
-                warning(_("Could not set pixbuf from data."));
+                show_warning(_("Could not set pixbuf from data."));
                 set_default_image(image);
                 return;
             }
             save_button.sensitive = true;
             image.set_from_pixbuf(thumb);
+        }
+
+        /* Shows a warning dialog. */
+        private void show_warning(string message) {
+            var dialog = new WarningDialog(this, message);
+            dialog.run();
+            dialog.destroy();
         }
     }
 }

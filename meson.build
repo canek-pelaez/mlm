@@ -135,7 +135,8 @@ mlm_gui_sources = [
   'src/application/main.vala',
   'src/application/media.vala',
   'src/application/player.vala',
-  'src/application/shortcuts-window.vala'
+  'src/application/shortcuts-window.vala',
+  'src/application/warning-dialog.vala'
 ]
 
 mlm_gui_dependencies = [

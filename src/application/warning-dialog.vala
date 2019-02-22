@@ -20,16 +20,21 @@
 namespace MLM {
 
     /**
-     * Class for shortcuts windows.
+     * Class for warning dialogs.
      */
-    [GtkTemplate (ui = "/mx/unam/MLM/shortcuts.ui")]
-    public class ShortcutsWindow : Gtk.ShortcutsWindow {
+    [GtkTemplate (ui = "/mx/unam/MLM/warning.ui")]
+    public class WarningDialog : Gtk.Dialog {
+
+        [GtkChild]
+        private Gtk.Label message_label;
 
         /**
          * Initializes a shortcuts window.
          */
-        public ShortcutsWindow(Gtk.Window window) {
+        public WarningDialog(Gtk.Window window, string message) {
+            GLib.Object(use_header_bar: 1);
             transient_for = window;
+            message_label.label = message;
         }
     }
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="MLMWarningDialog" parent="GtkDialog">
+    <property name="visible">false</property>
+    <property name="type-hint">dialog</property>
+    <property name="icon">resource:///mx/unam/MLM/mlm.svg</property>
+    <child type="action">
+      <object class="GtkButton" id="understood_button">
+        <property name="label" translatable="yes">Understood</property>
+        <property name="visible">true</property>
+        <property name="can-default">true</property>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header">
+        <property name="visible">true</property>
+        <property name="title">Warning</property>
+        <child>
+          <object class="GtkBox" id="icon_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="spacing">0</property>
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkImage" id="dialog_icon">
+                <property name="visible">true</property>
+                <property name="can-focus">false</property>
+                <property name="margin-left">6</property>
+                <property name="tooltip-text" translatable="yes">Warning</property>
+                <property name="icon-name">dialog-warning-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="message_label">
+            <property name="visible">true</property>
+            <property name="can-focus">false</property>
+            <property name="margin">20</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="message_icon">
+            <property name="visible">true</property>
+            <property name="can-focus">false</property>
+            <property name="margin">20</property>
+            <property name="icon-name">dialog-warning-symbolic</property>
+            <property name="icon-size">5</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="ok" default="true">understood_button</action-widget>
+    </action-widgets>
+  </template>
+</interface>

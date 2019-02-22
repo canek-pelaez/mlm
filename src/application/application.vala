@@ -277,7 +277,7 @@ namespace MLM {
         /* The shortcuts action. */
         private void shortcuts() {
             if (shortcuts_window == null)
-                shortcuts_window = new ShortcutsWindow();
+                shortcuts_window = new ShortcutsWindow(window);
             shortcuts_window.show_all();
         }
 
