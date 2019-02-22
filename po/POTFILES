@@ -1,5 +1,6 @@
 data/mlm.ui
 data/shortcuts.ui
+data/warning.ui
 data/mlm.desktop.in
 src/application/application.vala
 src/application/application-window.vala
