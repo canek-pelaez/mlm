@@ -28,16 +28,22 @@ namespace MLM {
     [GtkTemplate (ui = "/mx/unam/MLM/mlm.ui")]
     public class ApplicationWindow : Gtk.ApplicationWindow {
 
+        /**
+         * Play icon name.
+         */
+        public const string ICON_NAME_PLAY = "media-playback-start-symbolic";
+
+        /**
+         * Pause icon name.
+         */
+        public const string ICON_NAME_PAUSE = "media-playback-pause-symbolic";
+
         /* Cascade Style Sheet. */
         private const string CSS_URI = "resource:///mx/unam/MLM/mlm.css";
         /* CD icon name. */
         private const string ICON_NAME_CD = "media-optical-cd-audio-symbolic";
         /* Avatar icon name. */
         private const string ICON_NAME_AVATAR = "avatar-default-symbolic";
-        /* Play icon name. */
-        private const string ICON_NAME_PLAY = "media-playback-start-symbolic";
-        /* Pause icon name. */
-        private const string ICON_NAME_PAUSE = "media-playback-pause-symbolic";
         /* Icon size. */
         private const Gtk.IconSize ICON_SIZE = Gtk.IconSize.SMALL_TOOLBAR;
 
@@ -211,12 +217,10 @@ namespace MLM {
         /* The on popover visibility changed callback. */
         [GtkCallback]
         private void on_popover_visibility_changed() {
-            if (!encode_popover.visible) {
+            if (!encode_popover.visible)
                 mlm.activate_action("stop-encoder", null);
-            } else {
-                encode_progress_bar.set_fraction(0.0);
+            else
                 mlm.activate_action("start-encoder", null);
-            }
         }
 
         /* The on save clicked callback. */
@@ -331,31 +335,10 @@ namespace MLM {
         }
 
         /**
-         * Sets the pause icon.
-         */
-        public void set_pause_icon() {
-            play_image.set_from_icon_name(ICON_NAME_PAUSE, ICON_SIZE);
-        }
-
-        /**
          * Sets the play icon.
          */
-        public void set_play_icon() {
-            play_image.set_from_icon_name(ICON_NAME_PLAY, ICON_SIZE);
-        }
-
-        /**
-         * Shows a warning dialog.
-         * @param message the warning message.
-         */
-        public void warning(string message) {
-            var dialog = new Gtk.MessageDialog(
-                this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                Gtk.MessageType.WARNING, Gtk.ButtonsType.CLOSE,
-                message);
-            dialog.title = _("Warning");
-            dialog.run();
-            dialog.destroy();
+        public void set_play_icon(string name) {
+            play_image.set_from_icon_name(name, ICON_SIZE);
         }
 
         /**

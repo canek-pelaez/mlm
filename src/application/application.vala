@@ -155,7 +155,7 @@ namespace MLM {
                 this.files.add(file);
             }
             total = this.files.size;
-            this.files.sort(compare_files_by_path);
+            this.files.sort((a,b) => a.get_path().collate(b.get_path()));
             activate();
         }
 
@@ -219,16 +219,17 @@ namespace MLM {
         /* The play action. */
         private void play() {
             if (player != null && !player.working) {
-                window.set_pause_icon();
+                window.set_play_icon(ApplicationWindow.ICON_NAME_PAUSE);
                 player.play();
             } else {
-                window.set_play_icon();
+                window.set_play_icon(ApplicationWindow.ICON_NAME_PLAY);
                 player.pause();
             }
         }
 
         /* Starts the encoder. */
         private void start_encoder() {
+            window.update_encoding(0.0);
             var target = "";
             string prefix = (
                 (tags.artist != null ? tags.artist.replace("/", "_") : "") +
@@ -280,11 +281,6 @@ namespace MLM {
             shortcuts_window.show_all();
         }
 
-        /* Compares two files by path. */
-        private int compare_files_by_path(GLib.File a, GLib.File b) {
-            return a.get_path().collate(b.get_path());
-        }
-
         /* Updates a file. */
         private void update_file() {
             if (player != null)
@@ -328,13 +324,13 @@ namespace MLM {
         private void player_state_changed(Gst.State state) {
             switch (state) {
             case Gst.State.PLAYING:
-                window.set_pause_icon();
+                window.set_play_icon(ApplicationWindow.ICON_NAME_PAUSE);
                 GLib.Idle.add(monitor_player);
                 break;
             case Gst.State.PAUSED:
                 if (player_completion() == 0.0)
                     window.update_player_view(0.0, "00:00");
-                window.set_play_icon();
+                window.set_play_icon(ApplicationWindow.ICON_NAME_PLAY);
                 break;
             }
         }
@@ -342,7 +338,7 @@ namespace MLM {
         /* Monitors the player in the model. */
         private bool monitor_player() {
             if (player != null && !player.working) {
-                window.set_play_icon();
+                window.set_play_icon(ApplicationWindow.ICON_NAME_PLAY);
                 return false;
             }
             window.update_player_view(player_completion(),
