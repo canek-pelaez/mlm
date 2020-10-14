@@ -297,18 +297,18 @@ namespace MLM {
         /* Updates the encoding process. */
         private bool update_encoding() {
             if (encoder == null || target == null)
-                return false;
+                return GLib.Source.REMOVE;
             double p = encoder.get_completion();
             window.update_encoding(p);
             if (encoder.working)
-                return true;
+                return GLib.Source.CONTINUE;
             var ntags = new FileTags(target);
             ntags.copy(tags);
             ntags.update();
             encoder = null;
             target = null;
             window.update_encoding(-1.0);
-            return false;
+            return GLib.Source.CONTINUE;
         }
 
         /* Disposes the current player. */
