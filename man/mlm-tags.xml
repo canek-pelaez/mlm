@@ -166,7 +166,7 @@
 
       <varlistentry>
         <term><option>-c</option></term>
-        <term>--comment=COMMENT</term>
+        <term><option>--comment=COMMENT</option></term>
         <listitem>
           <para>Set the comment.</para>
         </listitem>
@@ -174,7 +174,7 @@
 
       <varlistentry>
         <term><option>-s</option></term>
-        <term>--composer=COMPOSER</term>
+        <term><option>--composer=COMPOSER</option></term>
         <listitem>
           <para>Set the composer.</para>
         </listitem>
@@ -182,7 +182,7 @@
 
       <varlistentry>
         <term><option>-o</option></term>
-        <term>--original-artist=ARTIST</term>
+        <term><option>--original-artist=ARTIST</option></term>
         <listitem>
           <para>Set the original artist.</para>
         </listitem>
@@ -190,7 +190,7 @@
 
       <varlistentry>
         <term><option>-f</option></term>
-        <term>--cover-picture=FILENAME</term>
+        <term><option>--cover-picture=FILENAME</option></term>
         <listitem>
           <para>Set the album cover picture. It can be a PNG or a JPG
           file.</para>
@@ -199,7 +199,7 @@
 
       <varlistentry>
         <term><option>-u</option></term>
-        <term>--artist-picture=FILENAME</term>
+        <term><option>--artist-picture=FILENAME</option></term>
         <listitem>
           <para>Set the artist picture. It can be a PNG or a JPG file.</para>
         </listitem>
@@ -207,7 +207,7 @@
 
       <varlistentry>
         <term><option>-r</option></term>
-        <term>--remove</term>
+        <term><option>--remove</option></term>
         <listitem>
           <para>Remove all tags from the MP3 files.</para>
         </listitem>
@@ -215,7 +215,7 @@
 
       <varlistentry>
         <term><option>-p</option></term>
-        <term>--print=FORMAT</term>
+        <term><option>--print=FORMAT</option></term>
         <listitem>
           <para>Formated print; see the <citetitle><replaceable>FORMAT
           FLAGS</replaceable></citetitle> section below.</para>
@@ -224,7 +224,7 @@
 
       <varlistentry>
         <term><option>-G</option></term>
-        <term>--genres</term>
+        <term><option>--genres</option></term>
         <listitem>
           <para>Printa all the standard genres.</para>
         </listitem>
@@ -232,7 +232,7 @@
 
       <varlistentry>
         <term><option>-F</option></term>
-        <term>--output-cover-picture=FILENAME</term>
+        <term><option>--output-cover-picture=FILENAME</option></term>
         <listitem>
           <para>Saves the album cover picture in the specified filename. This
           option cannot be used with multiple MP3 files.</para>
@@ -241,7 +241,7 @@
 
       <varlistentry>
         <term><option>-A</option></term>
-        <term>--output-artist-picture=FILENAME</term>
+        <term><option>--output-artist-picture=FILENAME</option></term>
         <listitem>
           <para>Saves the artist picture in the specified filename. This option
           cannot be used with multiple MP3 files.</para>
