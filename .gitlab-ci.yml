@@ -1,14 +1,26 @@
-configure:
+cache:
+  paths:
+    - _build
+
+stages:
+  - config
+  - compile
+  - test
+
+config:
+  stage: config
+  needs: []
   script:
-    - meson build
+    - meson _build
 
 compile:
+  stage: compile
+  needs: ["config"]
   script:
-    - meson build
-    - ninja -C build
+    - ninja -C _build
 
 test:
+  stage: test
+  needs: ["compile"]
   script:
-    - meson build
-    - ninja -C build
-    - ninja -C build test
+    - ninja -C _build test

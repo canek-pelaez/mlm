@@ -65,16 +65,16 @@ namespace MLM {
          * @param filename the file name.
          * @return the modification time of a file.
          */
-        public static GLib.TimeVal get_file_time(string filename) {
+        public static GLib.DateTime get_file_time(string filename) {
             try {
                 var file = GLib.File.new_for_path(filename);
                 var info = file.query_info("time::modified",
                                            GLib.FileQueryInfoFlags.NONE);
-                return info.get_modification_time();
+                return info.get_modification_date_time();
             } catch (GLib.Error e) {
                 GLib.warning("There was an error reading from ‘%s’.\n", filename);
             }
-            return GLib.TimeVal();
+            return new GLib.DateTime.now_local();
         }
 
         /**
@@ -82,14 +82,11 @@ namespace MLM {
          * @param filename the file name.
          * @param time the modification time.
          */
-        public static void set_file_time(string filename, GLib.TimeVal time) {
+        public static void set_file_time(string filename, GLib.DateTime time) {
             try {
                 var file = GLib.File.new_for_path(filename);
                 var info = new GLib.FileInfo();
-                info.set_attribute_uint64("time::modified", (uint64)time.tv_sec);
-                info.set_attribute_uint32("time::modified-usec", (uint32)time.tv_usec);
-                info.set_attribute_uint64("time::access", (uint64)time.tv_sec);
-                info.set_attribute_uint32("time::access-usec", (uint32)time.tv_usec);
+                info.set_modification_date_time(time);
                 file.set_attributes_from_info(info, GLib.FileQueryInfoFlags.NONE);
             } catch (GLib.Error e) {
                 GLib.warning("There was an error writing to ‘%s’.\n", filename);

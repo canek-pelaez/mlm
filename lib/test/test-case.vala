@@ -41,7 +41,7 @@ namespace MLM.Test {
          * Creates a new test case with a given name.
          * @param name the name of the test case.
          */
-        public TestCase(string name) {
+        protected TestCase(string name) {
             this.suite = new GLib.TestSuite(name);
         }
 

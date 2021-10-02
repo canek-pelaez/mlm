@@ -259,7 +259,7 @@ namespace MLM {
         /* The path of the file. */
         private string path;
         /* The modification date of the file. */
-        private GLib.TimeVal time;
+        private GLib.DateTime time;
         /* The file. */
         private Id3Tag.File file;
         /* The ID3 tag. */

@@ -40,7 +40,7 @@ namespace MLM {
         /**
          * Initializes the media.
          */
-        public Media() {
+        protected Media() {
             set_pipeline();
             var bus = pipe.get_bus();
             bus.add_signal_watch();
