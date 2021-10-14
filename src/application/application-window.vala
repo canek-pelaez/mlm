@@ -175,7 +175,7 @@ namespace MLM {
          * @param application the application.
          */
         public ApplicationWindow(Gtk.Application application) {
-            GLib.Object(application: application)
+            GLib.Object(application: application);
             mlm = application as Application;
             Gtk.Window.set_default_icon_name("mlm");
             var provider = new Gtk.CssProvider();
