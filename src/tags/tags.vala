@@ -379,6 +379,7 @@ Format for printing:
         }
 
         public static int main(string[] args) {
+            GLib.Intl.setlocale();
             prog_name = args[0];
             Util.set_locale(GLib.LocaleCategory.NUMERIC);
             try {
