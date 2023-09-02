@@ -26,7 +26,7 @@ namespace MLM {
     public class WarningDialog : Gtk.Dialog {
 
         [GtkChild]
-        private Gtk.Label message_label;
+        private unowned Gtk.Label message_label;
 
         /**
          * Initializes a shortcuts window.

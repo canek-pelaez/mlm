@@ -94,6 +94,8 @@ namespace MLM {
                     working = false;
                 }
                 break;
+            default:
+                break;
             }
         }
 

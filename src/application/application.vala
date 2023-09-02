@@ -333,6 +333,8 @@ namespace MLM {
                     window.update_player_view(0.0, "00:00");
                 window.set_play_icon(ApplicationWindow.ICON_NAME_PLAY);
                 break;
+            default:
+                break;
             }
         }
 

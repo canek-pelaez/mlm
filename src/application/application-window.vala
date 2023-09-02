@@ -49,119 +49,119 @@ namespace MLM {
 
         /* The header bar. */
         [GtkChild]
-        private Gtk.HeaderBar header_bar;
+        private unowned Gtk.HeaderBar header_bar;
 
         /* The previous button. */
         [GtkChild]
-        private Gtk.Button previous_button;
+        private unowned Gtk.Button previous_button;
 
         /* The next button. */
         [GtkChild]
-        private Gtk.Button next_button;
+        private unowned Gtk.Button next_button;
 
         /* The save button. */
         [GtkChild]
-        private Gtk.Button save_button;
+        private unowned Gtk.Button save_button;
 
         /* The encode menu button. */
         [GtkChild]
-        private Gtk.MenuButton encode_menu_button;
+        private unowned Gtk.MenuButton encode_menu_button;
 
         /* The encode popover. */
         [GtkChild]
-        private Gtk.Popover encode_popover;
+        private unowned Gtk.Popover encode_popover;
 
         /* The encode progress bar. */
         [GtkChild]
-        private Gtk.ProgressBar encode_progress_bar;
+        private unowned Gtk.ProgressBar encode_progress_bar;
 
         /* The tags frame. */
         [GtkChild]
-        private Gtk.Frame tags_frame;
+        private unowned Gtk.Frame tags_frame;
 
         /* The artist entry. */
         [GtkChild]
-        private Gtk.Entry artist_entry;
+        private unowned Gtk.Entry artist_entry;
 
         /* The title entry. */
         [GtkChild]
-        private Gtk.Entry title_entry;
+        private unowned Gtk.Entry title_entry;
 
         /* The album entry. */
         [GtkChild]
-        private Gtk.Entry album_entry;
+        private unowned Gtk.Entry album_entry;
 
         /* The band entry. */
         [GtkChild]
-        private Gtk.Entry band_entry;
+        private unowned Gtk.Entry band_entry;
 
         /* The year spin button. */
         [GtkChild]
-        private Gtk.SpinButton year_spin_button;
+        private unowned Gtk.SpinButton year_spin_button;
 
         /* The year adjustment. */
         [GtkChild]
-        private Gtk.Adjustment year_adjustment;
+        private unowned Gtk.Adjustment year_adjustment;
 
         /* The disc spin button. */
         [GtkChild]
-        private Gtk.SpinButton disc_spin_button;
+        private unowned Gtk.SpinButton disc_spin_button;
 
         /* The track spin button. */
         [GtkChild]
-        private Gtk.SpinButton track_spin_button;
+        private unowned Gtk.SpinButton track_spin_button;
 
         /* The total spin button. */
         [GtkChild]
-        private Gtk.SpinButton total_spin_button;
+        private unowned Gtk.SpinButton total_spin_button;
 
         /* The genre combo box. */
         [GtkChild]
-        private Gtk.ComboBox genre_combo_box;
+        private unowned Gtk.ComboBox genre_combo_box;
 
         /* The genre entry. */
         [GtkChild]
-        private Gtk.Entry genre_entry;
+        private unowned Gtk.Entry genre_entry;
 
         /* The genre model. */
         [GtkChild]
-        private Gtk.ListStore genre_model;
+        private unowned Gtk.ListStore genre_model;
 
         /* The comment entry. */
         [GtkChild]
-        private Gtk.Entry comment_entry;
+        private unowned Gtk.Entry comment_entry;
 
         /* The composer entry. */
         [GtkChild]
-        private Gtk.Entry composer_entry;
+        private unowned Gtk.Entry composer_entry;
 
         /* The original entry. */
         [GtkChild]
-        private Gtk.Entry original_entry;
+        private unowned Gtk.Entry original_entry;
 
         /* The cover image. */
         [GtkChild]
-        private Gtk.Image cover_image;
+        private unowned Gtk.Image cover_image;
 
         /* The artist image. */
         [GtkChild]
-        private Gtk.Image artist_image;
+        private unowned Gtk.Image artist_image;
 
         /* The play image. */
         [GtkChild]
-        private Gtk.Image play_image;
+        private unowned Gtk.Image play_image;
 
         /* The play adjustment. */
         [GtkChild]
-        private Gtk.Adjustment play_adjustment;
+        private unowned Gtk.Adjustment play_adjustment;
 
         /* The time label. */
         [GtkChild]
-        private Gtk.Label time_label;
+        private unowned Gtk.Label time_label;
 
         /* The filename label. */
         [GtkChild]
-        private Gtk.Label filename_label;
+        private unowned Gtk.Label filename_label;
 
         /* The MLM application. */
         private Application mlm;
